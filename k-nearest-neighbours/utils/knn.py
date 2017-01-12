@@ -10,8 +10,8 @@ class Knn(object):
         self.train_set_y = None
 
     def fit(self, train_set_x, train_set_y):
-        self.train_set_x = train_set_x.tolist()
-        self.train_set_y = train_set_y.tolist()
+        self.train_set_x = train_set_x
+        self.train_set_y = train_set_y
 
     def predict(self, test_set_x, k):
         test_set_x = test_set_x.tolist()
@@ -47,7 +47,7 @@ class Knn(object):
             # counting frequency of each label
             label_count_dict = dict()
             for index in final_point_indices:
-                value = self.train_set_y[index]
+                value = self.train_set_y[index][0]  # nd-array
                 if value in label_count_dict.keys():
                     label_count_dict[value] += 1
                 else:

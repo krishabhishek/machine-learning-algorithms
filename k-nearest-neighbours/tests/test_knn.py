@@ -22,13 +22,6 @@ with open(label_file_path) as label_file:
         labels.append(label)
 
 
-# X_train, X_test, y_train, y_test = train_test_split(data_vectors, labels, test_size=0.1, random_state=42)
-#
-# knn = Knn(X_train, X_test, y_train, y_test, 3)
-# test_set_predicted_y = knn.get_test_set_predictions()
-# print test_set_predicted_y
-# print y_test
-
 kf = KFold(n_splits=10)
 
 total = 0
