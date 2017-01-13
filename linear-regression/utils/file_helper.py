@@ -1,4 +1,5 @@
 import json
+import numpy as np
 
 
 def read_data_file(data_file_path):
@@ -7,7 +8,7 @@ def read_data_file(data_file_path):
     with open(data_file_path) as data_file:
         for line in data_file:
             vector = line.split(",")
-            result = list(map(int, vector))
+            result = [1.0] + list(map(float, vector))
             data_vectors.append(result)
 
     return data_vectors
