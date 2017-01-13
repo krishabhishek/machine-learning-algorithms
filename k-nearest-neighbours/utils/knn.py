@@ -16,13 +16,13 @@ class Knn(object):
     def predict(self, test_set_x, k):
         test_set_x = test_set_x.tolist()
         test_set_predicted_y = list()
-        for i in xrange(len(test_set_x)):
+        for i in range(len(test_set_x)):
 
             # dictionary containing mapping of distances of test_set[i] to a list of indices in the train_set
             dist_dict = dict()
 
             # calculate distance vs each point in the train set, and add it to the dictionary
-            for j in xrange(len(self.train_set_x)):
+            for j in range(len(self.train_set_x)):
                 dist = distance.euclidean(test_set_x[i], self.train_set_x[j])
                 prev_list = None
                 if dist in dist_dict:

@@ -1,5 +1,4 @@
 import json
-import numpy as np
 
 
 def read_data_file(data_file_path):
@@ -19,7 +18,7 @@ def read_label_file(label_file_path):
     labels = list()
     with open(label_file_path) as label_file:
         for line in label_file:
-            label = line.strip()
+            label = float(line.strip())
             labels.append(label)
 
     return labels

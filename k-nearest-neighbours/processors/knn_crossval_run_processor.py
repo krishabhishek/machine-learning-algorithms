@@ -21,14 +21,14 @@ class KnnCrossvalRunProcessor(Processor):
 
         data_vectors = list()
         labels = list()
-        for i in xrange(1, 11):
+        for i in range(1, 11):
             data_vectors.extend(file_helper.read_data_file(self.options.input_data_folder + "data" + str(i) + ".csv"))
             labels.extend(file_helper.read_data_file(self.options.input_data_folder + "labels" + str(i) + ".csv"))
 
         log.info("Running 10-fold cross validation segment")
         kf = KFold(n_splits=10)
         results = dict()
-        for i in xrange(self.options.min_k, self.options.max_k + 1):
+        for i in range(self.options.min_k, self.options.max_k + 1):
             total = 0
             correct = 0
             for train_index, test_index in kf.split(data_vectors):
@@ -39,7 +39,7 @@ class KnnCrossvalRunProcessor(Processor):
                 knn.fit(X_train, y_train)
                 predicted_y = knn.predict(X_test, i)
 
-                for j in xrange(len(predicted_y)):
+                for j in range(len(predicted_y)):
                     if predicted_y[j] == y_test[j]:
                         correct += 1
                     total += 1

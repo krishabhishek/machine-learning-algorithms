@@ -6,7 +6,7 @@ class LinearRegression(object):
     def __init__(self, x_train, y_train, lambda_value):
         dimensions = len(x_train[0])
 
-        identity_matrix = numpy.matrix(numpy.identity(3))
+        identity_matrix = numpy.matrix(numpy.identity(dimensions))
         lambda_matrix = identity_matrix * lambda_value
         A = numpy.matrix(numpy.zeros((dimensions, dimensions)))
         b = numpy.matrix(numpy.zeros((dimensions, 1)))

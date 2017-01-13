@@ -21,7 +21,7 @@ class KnnFullRunProcessor(Processor):
 
         data_vectors = list()
         labels = list()
-        for i in xrange(1, 11):
+        for i in range(1, 11):
             data_vectors.extend(file_helper.read_data_file(self.options.input_data_folder + "data" + str(i) + ".csv"))
             labels.extend(file_helper.read_data_file(self.options.input_data_folder + "labels" + str(i) + ".csv"))
 
@@ -32,11 +32,11 @@ class KnnFullRunProcessor(Processor):
 
         knn.fit(X_train, y_train)
         results = dict()
-        for i in xrange(self.options.min_k, self.options.max_k + 1):
+        for i in range(self.options.min_k, self.options.max_k + 1):
             predicted_y = knn.predict(X_train, i)
             total = 0
             correct = 0
-            for j in xrange(len(predicted_y)):
+            for j in range(len(predicted_y)):
                 if predicted_y[j] == y_train[j]:
                     correct += 1
                 total += 1
