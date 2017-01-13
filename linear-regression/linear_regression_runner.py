@@ -23,9 +23,15 @@ def parse_args(argv):
     :param argv:
     :return:
     """
-    parser = ArgumentParser(prog="semeval2015-task5")
+    parser = ArgumentParser(prog="linear_regression")
     parser.add_argument('--input_data_folder', metavar='Data folder',
                         type=str, required=True)
+    parser.add_argument('--min_lambda', metavar='Minimum Lambda',
+                        type=float, required=True)
+    parser.add_argument('--max_lambda', metavar='Maximum Lambda',
+                        type=float, required=True)
+    parser.add_argument('--lambda_increment', metavar='Lambda Increment',
+                        type=float, required=True)
     parser.add_argument('--metrics_file', metavar='Metrics File',
                         type=str, required=True)
 

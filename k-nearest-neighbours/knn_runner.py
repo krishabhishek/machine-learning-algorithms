@@ -29,7 +29,7 @@ def parse_args(argv):
     :param argv:
     :return:
     """
-    parser = ArgumentParser(prog="semeval2015-task5")
+    parser = ArgumentParser(prog="k_nearest_neighbours")
     parser.add_argument('--crossval', metavar='Cross-validated run',
                         type=bool, required=False)
     parser.add_argument('--full', metavar='Full training data run',
