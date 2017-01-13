@@ -47,7 +47,7 @@ class Knn(object):
             # counting frequency of each label
             label_count_dict = dict()
             for index in final_point_indices:
-                value = self.train_set_y[index][0]  # nd-array
+                value = self.train_set_y[index]
                 if value in label_count_dict.keys():
                     label_count_dict[value] += 1
                 else:

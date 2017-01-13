@@ -23,7 +23,7 @@ class KnnCrossvalRunProcessor(Processor):
         labels = list()
         for i in range(1, 11):
             data_vectors.extend(file_helper.read_data_file(self.options.input_data_folder + "data" + str(i) + ".csv"))
-            labels.extend(file_helper.read_data_file(self.options.input_data_folder + "labels" + str(i) + ".csv"))
+            labels.extend(file_helper.read_label_file(self.options.input_data_folder + "labels" + str(i) + ".csv"))
 
         log.info("Running 10-fold cross validation segment")
         kf = KFold(n_splits=10)
