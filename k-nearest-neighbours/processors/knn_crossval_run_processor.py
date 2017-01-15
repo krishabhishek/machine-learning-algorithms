@@ -44,8 +44,9 @@ class KnnCrossvalRunProcessor(Processor):
                         correct += 1
                     total += 1
 
-            log.info("accuracy: " + str(round((correct * 1.0 / total), 2)) + " for k = " + str(i))
-            results[i] = round((correct * 1.0 / total), 2)
+            accuracy = (correct * 1.0) / total
+            log.info("accuracy: " + str(accuracy) + " for k = " + str(i))
+            results[i] = accuracy
 
         file_helper.dump_dict_to_file(results, self.options.metrics_file)
 
