@@ -6,6 +6,7 @@ from processors.processor import Processor
 from utils import file_helper
 from utils import log_helper
 from utils.linear_regressor import LinearRegression
+from utils.metrics_helper import calculate_euclidean_loss
 
 log = log_helper.get_logger("LinearRegressionProcessor")
 
@@ -38,11 +39,11 @@ class LinearRegressionProcessor(Processor):
                 lr = LinearRegression(X_train, y_train, l)
                 predicted_y = lr.predict(X_test)
 
-                error = r2_score(y_test.tolist(), predicted_y)
+                error = calculate_euclidean_loss(predictions=predicted_y, target=y_test.tolist())
                 error_list.append(error)
 
             avg_error = sum(error_list) / float(len(error_list))
-            log.info("For lambda = " + str(round(l, 1)) + ", r2_score = " + str(avg_error))
+            log.info("For lambda = " + str(round(l, 1)) + ", euclidean loss = " + str(avg_error))
             results[round(l, 1)] = avg_error
 
             l += self.options.lambda_increment
