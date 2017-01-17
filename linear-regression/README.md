@@ -2,7 +2,6 @@
 
 ## Pre-requisites
 * Numpy
-* Scikit-Learn
 
 ## Run Command
 

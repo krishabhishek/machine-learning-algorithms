@@ -3,7 +3,6 @@
 ## Pre-requisites
 * Numpy
 * Scipy
-* Scikit-Learn
 
 
 ## Run Command
