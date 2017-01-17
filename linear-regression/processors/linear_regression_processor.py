@@ -35,18 +35,15 @@ class LinearRegressionProcessor(Processor):
 
                 for i in range(1, 11):
                     if j == i:
-                        # print("test set is " + str(i))
                         X_test = file_helper.read_data_file(self.options.input_data_folder + "fData" + str(i) + ".csv")
                         y_test = file_helper.read_label_file(self.options.input_data_folder + "fLabels" + str(i) + ".csv")
                         continue
+
                     X_train.extend(file_helper.read_data_file(self.options.input_data_folder + "fData" + str(i) + ".csv"))
                     y_train.extend(file_helper.read_label_file(self.options.input_data_folder + "fLabels" + str(i) + ".csv"))
 
                 lr = LinearRegression(X_train, y_train, l)
                 predicted_y = lr.predict(X_test)
-
-                # log.info("predicted_y: " + str(predicted_y))
-                # log.info("actual_y: " + str(y_test))
 
                 error = calculate_euclidean_loss(predictions=predicted_y, target=y_test)
                 error_list.append(error)

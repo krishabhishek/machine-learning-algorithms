@@ -3,8 +3,8 @@ import json
 import matplotlib.pyplot as plt
 
 results_file_path = \
-    "/home/v2john/Dropbox/Personal/Academic/Masters/UWaterloo/" \
-    "Academics/Winter2017/cs698/assignments/A1/lreg_results.json"
+    "/home/v2john/Dropbox/Personal/Academic/Masters/UWaterloo/Academics/" \
+    "Winter2017/CS698/Assignments/A1/results/results_linear_reg.json"
 
 with open(results_file_path) as results_file:
     results = json.load(results_file)

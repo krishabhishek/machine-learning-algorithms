@@ -13,12 +13,11 @@ class LinearRegression(object):
         for i in range(len(x_train)):
             nmat = numpy.matrix(x_train[i])
             temp_a = nmat.T * nmat
-            temp_a += lambda_matrix
             A += temp_a
-
             temp_b = nmat.T * numpy.matrix(y_train[i])
             b += temp_b
 
+        A += lambda_matrix
         self.weights = A.I * b
 
     def predict(self, x_test):
