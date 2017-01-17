@@ -29,4 +29,6 @@ plt.ylabel('Error - Euclidean loss')
 plt.title('Linear Regression Error Graph\n Best Lambda = ' + str(best_lambda))
 plt.plot(x_values, y_values, 'ro')
 
+# plt.axis([0, 40, 0, 4])
+
 plt.show()

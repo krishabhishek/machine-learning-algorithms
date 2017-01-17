@@ -20,26 +20,35 @@ class LinearRegressionProcessor(Processor):
         log.info("max_lambda: " + str(self.options.max_lambda))
         log.info("lambda_increment: " + str(self.options.lambda_increment))
 
-        data_vectors = list()
-        labels = list()
-        for i in range(1, 11):
-            data_vectors.extend(file_helper.read_data_file(self.options.input_data_folder + "fData" + str(i) + ".csv"))
-            labels.extend(file_helper.read_label_file(self.options.input_data_folder + "fLabels" + str(i) + ".csv"))
-
         log.info("Running 10-fold cross validation segment")
-        kf = KFold(n_splits=10)
         results = dict()
         l = self.options.min_lambda
+        j = 1
         while l <= self.options.max_lambda + self.options.lambda_increment:
             error_list = list()
-            for train_index, test_index in kf.split(data_vectors):
-                X_train, X_test = numpy.array(data_vectors)[train_index], numpy.array(data_vectors)[test_index]
-                y_train, y_test = numpy.array(labels)[train_index], numpy.array(labels)[test_index]
+            for j in range(1, 11):
+
+                X_train = list()
+                y_train = list()
+                X_test = list()
+                y_test = list()
+
+                for i in range(1, 11):
+                    if j == i:
+                        # print("test set is " + str(i))
+                        X_test = file_helper.read_data_file(self.options.input_data_folder + "fData" + str(i) + ".csv")
+                        y_test = file_helper.read_label_file(self.options.input_data_folder + "fLabels" + str(i) + ".csv")
+                        continue
+                    X_train.extend(file_helper.read_data_file(self.options.input_data_folder + "fData" + str(i) + ".csv"))
+                    y_train.extend(file_helper.read_label_file(self.options.input_data_folder + "fLabels" + str(i) + ".csv"))
 
                 lr = LinearRegression(X_train, y_train, l)
                 predicted_y = lr.predict(X_test)
 
-                error = calculate_euclidean_loss(predictions=predicted_y, target=y_test.tolist())
+                # log.info("predicted_y: " + str(predicted_y))
+                # log.info("actual_y: " + str(y_test))
+
+                error = calculate_euclidean_loss(predictions=predicted_y, target=y_test)
                 error_list.append(error)
 
             avg_error = sum(error_list) / float(len(error_list))
