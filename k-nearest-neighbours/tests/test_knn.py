@@ -1,10 +1,8 @@
-from sklearn.model_selection import KFold
-import numpy as np
-
+from utils import file_helper
 from utils.knn import Knn
 
-data_file_path = "/home/v2john/cs698_code/cs698-assignments/k-nearest-neighbours/data/data1.csv"
-label_file_path = "/home/v2john/cs698_code/cs698-assignments/k-nearest-neighbours/data/labels1.csv"
+data_file_path = "/home/v2john/CourseProjects/machine-learning-algorithms/k-nearest-neighbours/data/data1.csv"
+label_file_path = "/home/v2john/CourseProjects/machine-learning-algorithms/k-nearest-neighbours/data/labels1.csv"
 
 
 data_vectors = list()
@@ -21,22 +19,21 @@ with open(label_file_path) as label_file:
         label = line.strip()
         labels.append(label)
 
-
-kf = KFold(n_splits=10)
-
 total = 0
 correct = 0
-for train_index, test_index in kf.split(data_vectors):
-    X_train, X_test = np.array(data_vectors)[train_index], np.array(data_vectors)[test_index]
-    y_train, y_test = np.array(labels)[train_index], np.array(labels)[test_index]
 
-    knn = Knn()
-    knn.fit(X_train, y_train)
-    predicted_y = knn.predict(X_test, 4)
+x_test = file_helper.read_data_file(data_file_path)
+y_test = file_helper.read_label_file(label_file_path)
+x_train = file_helper.read_data_file(data_file_path)
+y_train = file_helper.read_label_file(label_file_path)
 
-    for i in xrange(len(predicted_y)):
-        if predicted_y[i] == y_test[i]:
-            correct += 1
-        total += 1
+knn = Knn()
+knn.fit(x_train, y_train)
+predicted_y = knn.predict(x_test, 4)
 
-print "accuracy: " + str(correct * 1.0/total)
+for k in range(len(predicted_y)):
+    if predicted_y[k] == y_test[k]:
+        correct += 1
+    total += 1
+
+print("accuracy: " + str(correct / total))
