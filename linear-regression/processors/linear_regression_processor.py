@@ -1,7 +1,3 @@
-from sklearn.metrics import r2_score
-from sklearn.model_selection import KFold
-import numpy
-
 from processors.processor import Processor
 from utils import file_helper
 from utils import log_helper
