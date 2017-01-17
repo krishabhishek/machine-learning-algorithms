@@ -1,7 +1,3 @@
-import numpy as np
-
-from sklearn.model_selection import KFold
-
 from processors.processor import Processor
 from utils import file_helper
 from utils import log_helper
