@@ -14,7 +14,6 @@ class Knn(object):
         self.train_set_y = train_set_y
 
     def predict(self, test_set_x, k):
-        test_set_x = test_set_x.tolist()
         test_set_predicted_y = list()
         for i in range(len(test_set_x)):
 
@@ -31,8 +30,6 @@ class Knn(object):
                 else:
                     prev_list = [j]
                 dist_dict[dist] = prev_list
-
-            # print dist_dict
 
             # getting the nearest k options by finding the minimum distances in dist_dict
             final_point_indices = list()

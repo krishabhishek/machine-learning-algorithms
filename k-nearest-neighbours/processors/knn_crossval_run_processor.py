@@ -26,25 +26,36 @@ class KnnCrossvalRunProcessor(Processor):
             labels.extend(file_helper.read_label_file(self.options.input_data_folder + "labels" + str(i) + ".csv"))
 
         log.info("Running 10-fold cross validation segment")
-        kf = KFold(n_splits=10)
+
         results = dict()
         for i in range(self.options.min_k, self.options.max_k + 1):
             total = 0
             correct = 0
-            for train_index, test_index in kf.split(data_vectors):
-                X_train, X_test = np.array(data_vectors)[train_index], np.array(data_vectors)[test_index]
-                y_train, y_test = np.array(labels)[train_index], np.array(labels)[test_index]
+
+            for j in range(1, 11):
+                x_train = list()
+                y_train = list()
+                x_test = list()
+                y_test = list()
+
+                for k in range(1, 11):
+                    if j == k:
+                        x_test = file_helper.read_data_file(self.options.input_data_folder + "data" + str(k) + ".csv")
+                        y_test = file_helper.read_label_file(self.options.input_data_folder + "labels" + str(k) + ".csv")
+                        continue
+                    x_train.extend(file_helper.read_data_file(self.options.input_data_folder + "data" + str(k) + ".csv"))
+                    y_train.extend(file_helper.read_label_file(self.options.input_data_folder + "labels" + str(k) + ".csv"))
 
                 knn = Knn()
-                knn.fit(X_train, y_train)
-                predicted_y = knn.predict(X_test, i)
+                knn.fit(x_train, y_train)
+                predicted_y = knn.predict(x_test, i)
 
-                for j in range(len(predicted_y)):
-                    if predicted_y[j] == y_test[j]:
+                for k in range(len(predicted_y)):
+                    if predicted_y[k] == y_test[k]:
                         correct += 1
                     total += 1
 
-            accuracy = (correct * 1.0) / total
+            accuracy = correct / total
             log.info("accuracy: " + str(accuracy) + " for k = " + str(i))
             results[i] = accuracy
 
