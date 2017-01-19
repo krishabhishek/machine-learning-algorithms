@@ -14,18 +14,17 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
-\title{CS698 - Winter 2017}
-\author{Assignment 1 - Q3a}
-
+\title{CS698 - Winter 2017\\Assignment 1 - Q3a}
+\author{Vineet John (v2john@uwaterloo.ca)}
+\date{}
 \begin{document}
 \maketitle
-
 
 \section{Problem Statement}
 
 Theory. In class, we discussed several loss functions for linear regression. However all the loss functions that we discussed assume that the error contributed by each data point have the same importance. Consider a scenario where we would like to give more weight to some data points. Our goal is to fit the data points $(x_n , y_n )$ in proportion to their weights $r_n$ by minimizing the following objective:
 
-$$L(w, b) = \sum_{n=1}^{\\m} r_n (y_n − wx_n + b)^2$$
+$$L(w, b) = \sum_{n=1}^m r_n (y_n − wx_n + b)^2$$
 
 \section{Solution}
 
@@ -42,8 +41,6 @@ Since the loss function needs to be minimized with respect to 2 variables, the p
 	\sum_{n=1}^m r_n y_n x_n − w \sum_{n=1}^m r_n x_n x_n^T + b \sum_{n=1}^m r_n x_n &= 0\\
 	w \sum_{n=1}^m r_n x_n x_n^T &=  \sum_{n=1}^m r_n y_n x_n + b \sum_{n=1}^m r_n x_n
 \end{align*}
-
-
 
 \begin{align}
 \label{pd_w}
@@ -64,7 +61,6 @@ Also,
 	b \sum_{n=1}^m r_n &= w \sum_{n=1}^m r_n x_n - \sum_{n=1}^m r_n y_n
 \end{align*}
 
-
 \begin{align}
 \label{pd_b}
 	\Aboxed{b = \frac{w \sum_{n=1}^m r_n x_n - \sum_{n=1}^m  r_n y_n}{\sum_{n=1}^m  r_n}}
@@ -75,41 +71,36 @@ Also,
 
 The value of b, as obtained in Equation \ref{pd_b} is substituted in Equation \ref{pd_w}.
 
-$$w  = \frac{\frac{w \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n}{\sum_{n=1}^{\\m} r_n} \sum_{n=1}^{\\m} r_n x_n + \sum_{n=1}^{\\m} r_n y_n x_n} {\sum_{n=1}^{\\m}r_n x_n x_n^T}$$
+\begin{align*}
+	w &= \frac{\frac{w \sum_{n=1}^m r_n x_n - \sum_{n=1}^m r_n y_n}{\sum_{n=1}^m r_n} \sum_{n=1}^m r_n x_n + \sum_{n=1}^m r_n y_n x_n} {\sum_{n=1}^m r_n x_n x_n^T}\\
+	w &= \frac{(w \sum_{n=1}^m r_n x_n - \sum_{n=1}^m r_n y_n) \sum_{n=1}^m r_n x_n + \sum_{n=1}^m r_n y_n x_n \sum_{n=1}^m r_n} {\sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m r_n}\\
+	w &= \frac{w ({\sum_{n=1}^m r_n x_n})^2 - \sum_{n=1}^m r_n y_n \sum_{n=1}^m r_n x_n + \sum_{n=1}^m r_n y_n x_n \sum_{n=1}^m r_n} {\sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m r_n}\\
+	w \sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m  r_n &= w ({\sum_{n=1}^m r_n x_n})^2 - \sum_{n=1}^m  r_n y_n \sum_{n=1}^m  r_n x_n + \sum_{n=1}^m  r_n y_n x_n \sum_{n=1}^m  r_n\\
+	w \sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m  r_n - w ({\sum_{n=1}^m r_n x_n})^2 &= - \sum_{n=1}^m  r_n y_n \sum_{n=1}^m  r_n x_n + \sum_{n=1}^m  r_n y_n x_n \sum_{n=1}^m  r_n\\
+	w (\sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m  r_n - ({\sum_{n=1}^m r_n x_n})^2) &= - \sum_{n=1}^m  r_n y_n \sum_{n=1}^m  r_n x_n + \sum_{n=1}^m  r_n y_n x_n \sum_{n=1}^m  r_n\\
+\end{align*}
 
-$$w  = \frac{(w \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n) \sum_{n=1}^{\\m} r_n x_n + \sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n} {\sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n}$$
-
-$$w  = \frac{w ({\sum_{n=1}^{\\m}r_n x_n})^2 - \sum_{n=1}^{\\m} r_n y_n \sum_{n=1}^{\\m} r_n x_n + \sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n} {\sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n}$$
-
-$$w \sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n  = w ({\sum_{n=1}^{\\m}r_n x_n})^2 - \sum_{n=1}^{\\m} r_n y_n \sum_{n=1}^{\\m} r_n x_n + \sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n$$
-
-$$w \sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n - w ({\sum_{n=1}^{\\m}r_n x_n})^2 = - \sum_{n=1}^{\\m} r_n y_n \sum_{n=1}^{\\m} r_n x_n + \sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n$$
-
-$$w (\sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n - ({\sum_{n=1}^{\\m}r_n x_n})^2) = - \sum_{n=1}^{\\m} r_n y_n \sum_{n=1}^{\\m} r_n x_n + \sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n$$
-
-\begin{equation}
+\begin{align}
 \label{cf_w}
-w  = \frac{\sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n - \sum_{n=1}^{\\m} r_n y_n \sum_{n=1}^{\\m} r_n x_n}{\sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n - ({\sum_{n=1}^{\\m}r_n x_n})^2}
-\end{equation}
+	\Aboxed{w  = \frac{\sum_{n=1}^m  r_n y_n x_n \sum_{n=1}^m  r_n - \sum_{n=1}^m  r_n y_n \sum_{n=1}^m  r_n x_n}{\sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m  r_n - ({\sum_{n=1}^m r_n x_n})^2}}
+\end{align}
 
 \vspace{10mm}
 
 Now that the value of $w$ has been expressed in terms of $r_n$, $x_n$ and $y_n$, we can substitute this value of w in Equation \ref{pd_b} to obtain a closed form expression for $b$.
 
-$$b = \frac{w \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n}{\sum_{n=1}^{\\m} r_n} $$
+\begin{align*}
+	b &= \frac{w \sum_{n=1}^m r_n x_n - \sum_{n=1}^m  r_n y_n}{\sum_{n=1}^m  r_n} \\
+	b \sum_{n=1}^m  r_n &= w \sum_{n=1}^m r_n x_n - \sum_{n=1}^m  r_n y_n\\
+	b \sum_{n=1}^m  r_n &= \frac{\sum_{n=1}^m  r_n y_n x_n \sum_{n=1}^m  r_n - \sum_{n=1}^m  r_n y_n \sum_{n=1}^m  r_n x_n}{\sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m  r_n - ({\sum_{n=1}^m r_n x_n})^2} \sum_{n=1}^m r_n x_n - \sum_{n=1}^m  r_n y_n\\
+	b \sum_{n=1}^m  r_n &= \frac{\sum_{n=1}^m  r_n y_n x_n \sum_{n=1}^m  r_n - \sum_{n=1}^m  r_n y_n \sum_{n=1}^m  r_n x_n}{\sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m  r_n - ({\sum_{n=1}^m r_n x_n})^2} \sum_{n=1}^m r_n x_n - \sum_{n=1}^m  r_n y_n\\
+	b \sum_{n=1}^m  r_n &= \frac{\sum_{n=1}^m  r_n y_n x_n \sum_{n=1}^m  r_n \sum_{n=1}^m r_n x_n - \sum_{n=1}^m  r_n y_n (\sum_{n=1}^m  r_n x_n)^2}{\sum_{n=1}^m r_n x_n x_n^T \sum_{n=1}^m  r_n - ({\sum_{n=1}^m r_n x_n})^2} - \sum_{n=1}^m  r_n y_n
+\end{align*}
 
-$$b \sum_{n=1}^{\\m} r_n = w \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n$$
-
-$$b \sum_{n=1}^{\\m} r_n = \frac{\sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n - \sum_{n=1}^{\\m} r_n y_n \sum_{n=1}^{\\m} r_n x_n}{\sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n - ({\sum_{n=1}^{\\m}r_n x_n})^2} \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n$$
-
-$$b \sum_{n=1}^{\\m} r_n = \frac{\sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n - \sum_{n=1}^{\\m} r_n y_n \sum_{n=1}^{\\m} r_n x_n}{\sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n - ({\sum_{n=1}^{\\m}r_n x_n})^2} \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n$$
-
-$$b \sum_{n=1}^{\\m} r_n = \frac{\sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n (\sum_{n=1}^{\\m} r_n x_n)^2}{\sum_{n=1}^{\\m}r_n x_n x_n^T \sum_{n=1}^{\\m} r_n - ({\sum_{n=1}^{\\m}r_n x_n})^2} - \sum_{n=1}^{\\m} r_n y_n$$
-
-\begin{equation}
+\begin{align}
 \label{cf_b}
-b = \frac{\sum_{n=1}^{\\m} r_n y_n x_n \sum_{n=1}^{\\m} r_n \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n (\sum_{n=1}^{\\m} r_n x_n)^2}{\sum_{n=1}^{\\m}r_n x_n x_n^T (\sum_{n=1}^{\\m} r_n)^2 - \sum_{n=1}^{\\m} r_n ({\sum_{n=1}^{\\m}r_n x_n})^2} - \frac{\sum_{n=1}^{\\m} r_n y_n}{\sum_{n=1}^{\\m} r_n}
-\end{equation}
+	\Aboxed{b &= \frac{\sum_{n=1}^m r_n y_n x_n \sum_{n=1}^m r_n \sum_{n=1}^mr_n x_n - \sum_{n=1}^m r_n y_n (\sum_{n=1}^m r_n x_n)^2}{\sum_{n=1}^mr_n x_n x_n^T (\sum_{n=1}^m r_n)^2 - \sum_{n=1}^m r_n ({\sum_{n=1}^mr_n x_n})^2} - \frac{\sum_{n=1}^m r_n y_n}{\sum_{n=1}^m r_n}}
+\end{align}
 
 \vspace{5mm}
 

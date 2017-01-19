@@ -68,12 +68,13 @@ The variance for this model can be evaluated by equating the assumption made in 
 	\frac{1}{\sigma_n^3} &= r_n\\
 	\sigma_n^3 &= r_n^{-1}
 \end{align*}
-\begin{equation}
-\label{eq-variance}
-	\sigma_n^2 = r_n^{-2/3}
-\end{equation}
-
+\\
 Equation \ref{eq-variance} gives the variance of each point in the model of linear regression where each point has a different Gaussian measurement.
+\begin{align}
+\label{eq-variance}
+	\sigma_n^2 &= r_n^{-2/3}
+\end{align}
+
 
 \section{Conclusion}
 The negative log-likelihood for linear regression, with each data point having a different Gaussian noise is proven to be the same as the objective with a different weight for each data point in the loss function.\\
