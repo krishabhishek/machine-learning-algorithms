@@ -1,20 +1,16 @@
 \documentclass[a4paper]{article}
 
 %% Language and font encodings
-\usepackage[english]{babel}
-\usepackage[T1]{fontenc}
+% \usepackage[english]{babel}
+% \usepackage[T1]{fontenc}
 
 %% Sets page size and margins
 \usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
-
-%% Useful packages
 \usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage[colorinlistoftodos]{todonotes}
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
-\title{CS698 - Winter 2017}
-\author{Assignment 1 - Q3b}
+\title{Assignment 1 - Q3b\\CS698 - Winter 2017}
+\author{Vineet John (v2john@uwaterloo.ca)}
+\date{}
 
 \begin{document}
 \maketitle
@@ -27,9 +23,60 @@ $$L(w, b) = \sum_{n=1}^{\\m} r_n (y_n − wx_n + b)^2$$
 
 \section{Solution}
 
-Assume that linear regression problem is modeled such that $wx_n - b$ is the prediction term rather than just $wx_n$ as in the above equation.
+Assume that linear regression problem is modeled such that $w^T\bar{x_n} - b$ is the prediction term rather than just $w^T\bar{x_n}$ as in the above equation.\\\\
+Given that $y = f(x) + \epsilon$, where $\epsilon$ is the measurement error and $f(x)$ is the underlying function to be predicted, $f(x) = w^T\bar{x_n} - b$.\\
+The measurement noise $\epsilon$ is assumed to be a Gaussian distribution such that $\epsilon = N(0, \sigma^2)$\\\\
+Now, the probability of the target variable y, given the input parameters X, w and b can be denoted as: \\
+\begin{align*}
+	Pr(y|\bar{X},w,b,\sigma) &= N(y|w^T\bar{x_n} - b,\sigma)\\
+	&= \prod_{n=1}^{N} \frac{1}{\sqrt{2\pi}\sigma} e ^{-\frac{(y - w^T\bar{x_n} + b)^2}{2\sigma^2}}
+\end{align*}
+\\
+To obtain the optimal value of w and b, the maximum likelihood estimate is evaluated:
+\begin{align*}
+	w^*, b^* &= argmax_{w,b} Pr(y|\bar{X},w,b,\sigma_)\\
+	&= \prod_{n=1}^{N} \frac{1}{\sqrt{2\pi}\sigma_n} e ^{-\frac{(y - w^T\bar{x_n} + b)^2}{2\sigma_n^2}}
+\end{align*}
+\\
+Here, $\sigma_n$ denotes that each of the data-points has a different Gaussian measurement associated with it. 
+\\
+\\
+Evaluating, the log of the maximum likelihood equation above,
+\\
+$$w^*, b^* = argmax_{w,b} \sum_{n=1}^{N} \frac{1}{\sqrt{2\pi}\sigma_n} * (-\frac{(y - w^T\bar{x_n} + b)^2}{2\sigma_n^2})$$
+\\
+Now, discarding the constant terms $\frac{1}{\sqrt{2\pi}}$ and $\frac{1}{2}$,
+\\
+\begin{align*}
+	w^*, b^* &= argmax_{w,b} \sum_{n=1}^{N} \frac{1}{\sigma_n} * (-\frac{(y - w^T\bar{x_n} + b)^2}{2\sigma_n^2})\\
+	&= argmax_{w,b} \sum_{n=1}^{N} \frac{1}{\sigma_n} * (-\frac{(y - w^T\bar{x_n} + b)^2}{\sigma_n^2})\\
+	&= argmax_{w,b} \sum_{n=1}^{N} -\frac{(y - w^T\bar{x_n} + b)^2}{\sigma_n^3}\\
+\end{align*}
+Here, the standard deviation term $\sigma_n^3$ could be said to represent $r_n$, which models a distinct weight for each of the data-points.
+\\
+\\
+Consequently, the final expression could be written as:\\
+\begin{equation}
+\label{final-eq}
+	w^*, b^* = argmin_{w,b} \sum_{n=1}^{N} r_n (y - w^T\bar{x_n} + b)^2
+\end{equation}
+which is the originial linear regression loss function, obtained from the negative log-likelihood of linear regression where each point has a different Gaussian measurement, with $\mu = 0$ and $variance = \sigma_i^2$ for a datapoint i.
+\\
+\\
+The variance for this model can be evaluated by equating the assumption made in Equation \ref{final-eq}.
+\begin{align*}
+	\frac{1}{\sigma_n^3} &= r_n\\
+	\sigma_n^3 &= r_n^{-1}
+\end{align*}
+\begin{equation}
+\label{eq-variance}
+	\sigma_n^2 = r_n^{-2/3}
+\end{equation}
 
+Equation \ref{eq-variance} gives the variance of each point in the model of linear regression where each point has a different Gaussian measurement.
 
 \section{Conclusion}
-
+The negative log-likelihood for linear regression, with each data point having a different Gaussian noise is proven to be the same as the objective with a different weight for each data point in the loss function.\\
+\\
+Also, the variance of each point in the model is expressed in terms of the weight assigned in the weighted linear regression loss function.
 \end{document}
