@@ -10,6 +10,7 @@
 %% Useful packages
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{mathtools}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
@@ -32,46 +33,42 @@ $$L(w, b) = \sum_{n=1}^{\\m} r_n (y_n − wx_n + b)^2$$
 
 Since the loss function needs to be minimized with respect to 2 variables, the partial derivative of the loss function L with respect to each variable is calculated independently.
 
-$$\frac{\partial L}{\partial w} = 0$$
+\begin{align*}
+	\frac{\partial L}{\partial w} &= 0\\
+	2 * \sum_{n=1}^m r_n (y_n − wx_n + b) * (x_n) &= 0\\
+	\sum_{n=1}^m r_n (y_n − wx_n + b) * (x_n) &= 0\\
+	\sum_{n=1}^m r_n (y_nx_n − wx_nx_n^T + bx_n) &= 0\\
+	\sum_{n=1}^m r_n y_n x_n − r_n w x_n x_n^T + r_n b x_n &= 0\\
+	\sum_{n=1}^m r_n y_n x_n − w \sum_{n=1}^m r_n x_n x_n^T + b \sum_{n=1}^m r_n x_n &= 0\\
+	w \sum_{n=1}^m r_n x_n x_n^T &=  \sum_{n=1}^m r_n y_n x_n + b \sum_{n=1}^m r_n x_n
+\end{align*}
 
-$$2 * \sum_{n=1}^{\\m} r_n (y_n − wx_n + b) * (x_n) = 0$$
 
-$$\sum_{n=1}^{\\m} r_n (y_n − wx_n + b) * (x_n) = 0$$
 
-$$\sum_{n=1}^{\\m} r_n (y_nx_n − wx_nx_n^T + bx_n) = 0$$
-
-$$\sum_{n=1}^{\\m} r_n y_n x_n − r_n w x_n x_n^T + r_n b x_n = 0$$
-
-$$\sum_{n=1}^{\\m} r_n y_n x_n − w \sum_{n=1}^{\\m}r_n x_n x_n^T + b \sum_{n=1}^{\\m} r_n x_n = 0$$
-
-$$w \sum_{n=1}^{\\m}r_n x_n x_n^T =  \sum_{n=1}^{\\m} r_n y_n x_n + b \sum_{n=1}^{\\m} r_n x_n$$
-
-\begin{equation}
+\begin{align}
 \label{pd_w}
-w  = \frac{b \sum_{n=1}^{\\m} r_n x_n + \sum_{n=1}^{\\m} r_n y_n x_n} {\sum_{n=1}^{\\m}r_n x_n x_n^T}
-\end{equation}
+	\Aboxed{w  = \frac{b \sum_{n=1}^m r_n x_n + \sum_{n=1}^m r_n y_n x_n} {\sum_{n=1}^m r_n x_n x_n^T}}
+\end{align}
 
 \vspace{5mm}
 
 Also, 
-$$\frac{\partial L}{\partial b} = 0$$
 
-$$2 * \sum_{n=1}^{\\m} r_n (y_n − w x_n + b) = 0$$
+\begin{align*}
+	\frac{\partial L}{\partial b} &= 0\\
+	2 * \sum_{n=1}^m r_n (y_n − w x_n + b) &= 0\\
+	\sum_{n=1}^m r_n (y_n − w x_n + b) &= 0\\
+	\sum_{n=1}^m r_n (y_n − w x_n + b) &= 0\\
+	\sum_{n=1}^m r_n y_n − r_n w x_n + r_n b &= 0\\
+	\sum_{n=1}^m r_n y_n − w \sum_{n=1}^m r_n x_n + b \sum_{n=1}^m r_n &= 0\\
+	b \sum_{n=1}^m r_n &= w \sum_{n=1}^m r_n x_n - \sum_{n=1}^m r_n y_n
+\end{align*}
 
-$$\sum_{n=1}^{\\m} r_n (y_n − w x_n + b) = 0$$
 
-$$\sum_{n=1}^{\\m} r_n (y_n − w x_n + b) = 0$$
-
-$$\sum_{n=1}^{\\m} r_n y_n − r_n w x_n + r_n b = 0$$
-
-$$\sum_{n=1}^{\\m} r_n y_n − w \sum_{n=1}^{\\m}r_n x_n + b \sum_{n=1}^{\\m} r_n = 0$$
-
-$$b \sum_{n=1}^{\\m} r_n = w \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n$$
-
-\begin{equation}
+\begin{align}
 \label{pd_b}
-b = \frac{w \sum_{n=1}^{\\m}r_n x_n - \sum_{n=1}^{\\m} r_n y_n}{\sum_{n=1}^{\\m} r_n} 
-\end{equation}
+	\Aboxed{b = \frac{w \sum_{n=1}^m r_n x_n - \sum_{n=1}^m  r_n y_n}{\sum_{n=1}^m  r_n}}
+\end{align}
 
 
 \subsection{Solution of the system of linear equations}
