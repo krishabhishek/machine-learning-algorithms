@@ -17,7 +17,7 @@ class LinearRegression(object):
             temp_b = nmat.T * numpy.matrix(y_train[i])
             b += temp_b
 
-        A += lambda_matrix
+        A += 2 * lambda_matrix
         self.weights = A.I * b
 
     def predict(self, x_test):

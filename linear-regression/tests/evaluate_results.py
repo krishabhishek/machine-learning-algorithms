@@ -3,12 +3,12 @@ import json
 import matplotlib.pyplot as plt
 
 results_file_path = \
-    "/home/v2john/Dropbox/Personal/Academic/Masters/UWaterloo/Academics/" \
-    "Winter2017/CS698/Assignments/A1/results/results_linear_reg.json"
+    "/home/v2john/results_linear_reg.json"
 
 with open(results_file_path) as results_file:
     results = json.load(results_file)
 
+print(results)
 
 x_values = list()
 y_values = list()
@@ -27,7 +27,7 @@ for k in results.keys():
 plt.xlabel('Lambda')
 plt.ylabel('Error - Euclidean loss')
 plt.title('Linear Regression Error Graph\n Best Lambda = ' + str(best_lambda))
-plt.plot(x_values, y_values, 'ro')
+plt.plot(x_values, y_values)
 
 # plt.axis([0, 40, 0, 4])
 
