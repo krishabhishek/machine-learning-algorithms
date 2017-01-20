@@ -7,6 +7,7 @@
 %% Sets page size and margins
 \usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage{amsmath}
+\usepackage{mathtools}
 
 \title{Assignment 1 - Q3b\\CS698 - Winter 2017}
 \author{Vineet John (v2john@uwaterloo.ca)}
@@ -56,10 +57,10 @@ Here, the standard deviation term $\sigma_n^3$ could be said to represent $r_n$,
 \\
 \\
 Consequently, the final expression could be written as:\\
-\begin{equation}
+\begin{align}
 \label{final-eq}
-	w^*, b^* = argmin_{w,b} \sum_{n=1}^{N} r_n (y - w^T\bar{x_n} + b)^2
-\end{equation}
+	\Aboxed{w^*, b^* &= argmin_{w,b} \sum_{n=1}^{N} r_n (y - w^T\bar{x_n} + b)^2}
+\end{align}
 which is the originial linear regression loss function, obtained from the negative log-likelihood of linear regression where each point has a different Gaussian measurement, with $\mu = 0$ and $variance = \sigma_i^2$ for a datapoint i.
 \\
 \\
@@ -72,7 +73,7 @@ The variance for this model can be evaluated by equating the assumption made in 
 Equation \ref{eq-variance} gives the variance of each point in the model of linear regression where each point has a different Gaussian measurement.
 \begin{align}
 \label{eq-variance}
-	\sigma_n^2 &= r_n^{-2/3}
+	\Aboxed{\sigma_n^2 &= r_n^{-2/3}}
 \end{align}
 
 
