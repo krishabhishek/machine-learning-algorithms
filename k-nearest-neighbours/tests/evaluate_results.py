@@ -25,7 +25,7 @@ for k in results.keys():
 plt.xlabel('k')
 plt.ylabel('Accuracy')
 plt.title('KNN Accuracy Graph - Full Training Set\nBest k = ' + str(best_k))
-plt.plot(x_values, y_values, 'ro')
+plt.plot(x_values, y_values)
 plt.axis([0, 30, 0, 1])
 
 plt.show()
