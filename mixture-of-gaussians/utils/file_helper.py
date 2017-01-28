@@ -9,7 +9,7 @@ def read_data_file(data_file_path):
     data_vectors = list()
     with open(data_file_path) as data_file:
         for line in data_file:
-            vector = line.split(",")
+            vector = list(map(int, line.split(",")))
             data_vectors.append(vector)
 
     return data_vectors

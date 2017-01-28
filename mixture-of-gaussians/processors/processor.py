@@ -7,8 +7,7 @@ class Processor(object):
 
     def __init__(self, options):
         self.options = options
-        return
 
     @abc.abstractmethod
     def process(self):
-        return
+        pass
