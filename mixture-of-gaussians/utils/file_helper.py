@@ -20,7 +20,7 @@ def read_label_file(label_file_path):
     labels = list()
     with open(label_file_path) as label_file:
         for line in label_file:
-            label = float(line.strip())
+            label = str(line.strip())
             labels.append(label)
 
     return labels

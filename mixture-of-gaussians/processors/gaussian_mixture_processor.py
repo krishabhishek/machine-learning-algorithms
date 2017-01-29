@@ -1,4 +1,5 @@
 import numpy
+import math
 
 from processors.processor import Processor
 from utils import file_helper
@@ -25,24 +26,80 @@ class GaussianMixtureProcessor(Processor):
     def run_classifier(self, train_set_vectors, train_set_labels, test_set_vectors, test_set_labels):
 
         distinct_labels = set(train_set_labels)
+        train_set_size = len(train_set_vectors)
+        dimensions = len(train_set_vectors[0])
+        covariance_matrix = numpy.zeros((dimensions, dimensions))
+        class_properties = dict()
+
+        label_train_vectors = dict()
+        for i in range(len(train_set_vectors)):
+            key = train_set_labels[i]
+            if key in label_train_vectors:
+                vectors = label_train_vectors[key]
+            else:
+                vectors = list()
+            vectors.append(train_set_vectors[i])
+            label_train_vectors[key] = vectors
 
         for label in distinct_labels:
-            class_count = train_set_labels.count(label)
-            prior = train_set_labels.count(label)/class_count
-            mean = numpy.mean(numpy.array(train_set_vectors), axis=0)
-            class_covariance = \
-                self.get_class_covariance(label, train_set_vectors, train_set_labels, mean, class_count)
+            class_count = len(label_train_vectors[label])
+            prior = class_count/len(train_set_labels)
+            mean = numpy.mean(numpy.array(label_train_vectors[label]), axis=0)
 
+            property = dict()
+            property['mean'] = mean
+            property['prior'] = prior
+            class_properties[label] = property
 
-    def get_class_covariance(self, label, train_set_vectors, train_set_labels, mean, class_count):
+            class_covariance_matrix = \
+                self.get_class_covariance(
+                    label_train_vectors[label], mean, dimensions, train_set_size
+                )
+            print(class_covariance_matrix)
+            covariance_matrix = numpy.add(covariance_matrix, class_covariance_matrix)
 
-        dimensions = len(train_set_vectors[0])
+        inv_covariance_matrix = numpy.linalg.pinv(covariance_matrix)
+
+        w = \
+            numpy.dot(
+                inv_covariance_matrix,
+                (class_properties.get('5').get('mean') - class_properties.get('6').get('mean'))
+            )
+
+        w0 = \
+            -0.5 * (
+                numpy.dot(
+                    numpy.dot(
+                        numpy.transpose(class_properties.get('5').get('mean')),
+                        inv_covariance_matrix
+                    ),
+                    class_properties.get('5').get('mean')
+                )
+            ) + \
+            0.5 * (
+                numpy.dot(
+                    numpy.dot(
+                        numpy.transpose(class_properties.get('6').get('mean')),
+                        inv_covariance_matrix
+                    ),
+                    class_properties.get('6').get('mean')
+                )
+            ) + \
+            math.log(class_properties.get('5').get('prior')/class_properties.get('6').get('prior'))
+
+        for i in range(len(test_set_vectors)):
+            wx_term = numpy.dot(numpy.transpose(w), numpy.array(test_set_vectors[i]))
+            expt_term = wx_term + w0
+            prob_5 = 1 / (1 + math.exp(-1 * expt_term))
+            print(prob_5)
+
+    def get_class_covariance(self, class_vectors, mean, dimensions, train_set_size):
+
         final_matrix = numpy.zeros((dimensions, dimensions))
 
-        for i in range(len(train_set_vectors)):
-            if label == train_set_labels[i]:
-                vector = numpy.subtract(numpy.array(train_set_vectors[i]), mean)
-                matrix = numpy.multiply(vector, numpy.transpose(vector))
-                final_matrix = numpy.add(final_matrix, matrix)
+        for i in range(len(class_vectors)):
+            vector = numpy.subtract(numpy.array(class_vectors[i]), mean)
+            matrix = numpy.dot(vector, numpy.transpose(vector))
+            final_matrix = numpy.add(final_matrix, matrix)
 
-        return final_matrix/class_count
+        return final_matrix/train_set_size
