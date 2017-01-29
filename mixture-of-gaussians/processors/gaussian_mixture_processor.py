@@ -19,7 +19,7 @@ class GaussianMixtureProcessor(Processor):
                 file_helper.get_datasets(self.options.input_data_folder, test_set_identifier, file_range)
 
             self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors, test_set_labels)
-            break
+            # break
 
         log.info("GaussianMixtureProcessor concluded")
 
@@ -67,7 +67,6 @@ class GaussianMixtureProcessor(Processor):
                 inv_covariance_matrix,
                 mean_diff
             )
-        # print(w)
 
         w0 = \
             -0.5 * (
@@ -90,15 +89,19 @@ class GaussianMixtureProcessor(Processor):
             ) + \
             math.log(class_properties.get('5').get('prior')/class_properties.get('6').get('prior'))
 
-        num_5 = 0
+        accuracy_score = 0
         for i in range(len(test_set_vectors)):
             wx_term = numpy.dot(numpy.transpose(w), numpy.array(test_set_vectors[i]))
             expt_term = wx_term + w0
             prob_5 = 1 / (1 + math.exp(-1 * expt_term))
-            if prob_5 > 0.5:
-                num_5 += 1
+            if prob_5 > 0.5 and test_set_labels[i] == '5':
+                accuracy_score += 1
+            elif 1 - prob_5 > 0.5 and test_set_labels[i] == '6':
+                accuracy_score += 1
 
-        print("in the test set, 5s are: " + str(num_5))
+        print("Accuracy: " + str(accuracy_score/len(test_set_vectors)))
+
+
 
     def get_class_covariance(self, class_vectors, mean, dimensions, train_set_size):
 
