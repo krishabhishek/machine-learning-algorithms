@@ -15,6 +15,7 @@ class LogisticRegressionProcessor(Processor):
         log.info("LogisticRegressionProcessor begun")
 
         for test_set_identifier in file_range:
+            # test_set_identifier = 10
             train_set_vectors, train_set_labels, test_set_vectors, test_set_labels = \
                 file_helper.get_datasets(self.options.input_data_folder, test_set_identifier, file_range)
 
@@ -30,7 +31,7 @@ class LogisticRegressionProcessor(Processor):
         log.info("Train set size: " + str(train_set_size))
         dimensions = len(train_set_vectors[0]) + 1
 
-        weights = numpy.ones(dimensions)
+        weights = numpy.zeros(dimensions)
         log.info("Weight dimensions: " + str(weights.shape))
 
         constant_weight_term = numpy.ones(train_set_size)
@@ -50,15 +51,13 @@ class LogisticRegressionProcessor(Processor):
             for i in range(len(x_matrix_transpose)):
                 vector = numpy.array(x_matrix_transpose[i])
                 exponent = -1 * numpy.dot(weights_transpose, vector)
-                print(exponent)
+                # print(exponent)
                 try:
                     # print(numpy.dot(weights_transpose, vector))
                     sigma = 1 / (1 + math.exp(exponent))
                 except OverflowError:
-                    if exponent > 0:
-                        sigma = 0.0
-                    else:
-                        sigma = 1.0
+                    print(exponent)
+                    sigma = 1.0
 
                 # print(sigma)
                 r_matrix[i][i] = sigma * (1 - sigma)
@@ -89,6 +88,8 @@ class LogisticRegressionProcessor(Processor):
                 (numpy.transpose(numpy.ones(len(test_set_vectors))),
                  numpy.transpose(numpy.array(test_set_vectors))),
             )
+
+        accuracy_score = 0
         for i in range(len(numpy.transpose(test_vectors_matrix))):
             try:
                 sigma = \
@@ -97,5 +98,14 @@ class LogisticRegressionProcessor(Processor):
                     )
             except OverflowError:
                 sigma = 1.0
-            print(sigma)
-            break
+
+
+            # print("(sigma, actual) = " + str((sigma, test_set_labels[i])))
+            if sigma > 0.5 and test_set_labels[i] == 5:
+                accuracy_score += 1
+            elif sigma <= 0.5 and test_set_labels[i] == 6:
+                accuracy_score += 1
+
+
+        print(accuracy_score/len(test_set_labels))
+            # break
