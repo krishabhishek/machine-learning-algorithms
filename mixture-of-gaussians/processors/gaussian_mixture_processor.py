@@ -100,6 +100,8 @@ class GaussianMixtureProcessor(Processor):
             math.log(class_properties.get('5').get('prior')/class_properties.get('6').get('prior'))
 
         accuracy_score = 0
+        log.info("w = " + str(w))
+        log.info("w0 = " + str(w0))
         for i in range(len(test_set_vectors)):
             wx_term = numpy.dot(numpy.transpose(w), numpy.array(test_set_vectors[i]))
             expt_term = wx_term + w0
