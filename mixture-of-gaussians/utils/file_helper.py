@@ -35,17 +35,41 @@ def get_datasets(input_data_folder, test_set_identifier, file_range):
     for current_segment in file_range:
         if current_segment == test_set_identifier:
             test_set_vectors.extend(
-                read_data_file(input_data_folder + data_file_prefix + str(test_set_identifier) + data_file_suffix)
+                read_data_file(input_data_folder + data_file_prefix + str(current_segment) + data_file_suffix)
             )
             test_set_labels.extend(
-                read_label_file(input_data_folder + label_file_prefix + str(test_set_identifier) + label_file_suffix)
+                read_label_file(input_data_folder + label_file_prefix + str(current_segment) + label_file_suffix)
             )
         else:
             train_set_vectors.extend(
-                read_data_file(input_data_folder + data_file_prefix + str(test_set_identifier) + data_file_suffix)
+                read_data_file(input_data_folder + data_file_prefix + str(current_segment) + data_file_suffix)
             )
             train_set_labels.extend(
-                read_label_file(input_data_folder + label_file_prefix + str(test_set_identifier) + label_file_suffix)
+                read_label_file(input_data_folder + label_file_prefix + str(current_segment) + label_file_suffix)
             )
 
     return train_set_vectors, train_set_labels, test_set_vectors, test_set_labels
+
+
+def get_full_datasets(input_data_folder, file_range):
+    train_set_vectors = list()
+    train_set_labels = list()
+    test_set_vectors = list()
+    test_set_labels = list()
+
+    for current_segment in file_range:
+        test_set_vectors.extend(
+            read_data_file(input_data_folder + data_file_prefix + str(current_segment) + data_file_suffix)
+        )
+        test_set_labels.extend(
+            read_label_file(input_data_folder + label_file_prefix + str(current_segment) + label_file_suffix)
+        )
+        train_set_vectors.extend(
+            read_data_file(input_data_folder + data_file_prefix + str(current_segment) + data_file_suffix)
+        )
+        train_set_labels.extend(
+            read_label_file(input_data_folder + label_file_prefix + str(current_segment) + label_file_suffix)
+        )
+
+    return train_set_vectors, train_set_labels, test_set_vectors, test_set_labels
+

@@ -14,12 +14,24 @@ class GaussianMixtureProcessor(Processor):
     def process(self):
         log.info("GaussianMixtureProcessor begun")
 
-        for test_set_identifier in file_range:
+        if self.options.full:
             train_set_vectors, train_set_labels, test_set_vectors, test_set_labels = \
-                file_helper.get_datasets(self.options.input_data_folder, test_set_identifier, file_range)
+                file_helper.get_full_datasets(self.options.input_data_folder, file_range)
 
-            self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors, test_set_labels)
-            # break
+            accuracy = self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors, test_set_labels)
+
+            log.info("Accuracy: " + str(accuracy))
+        else:
+            accuracy_list = list()
+            for test_set_identifier in file_range:
+                train_set_vectors, train_set_labels, test_set_vectors, test_set_labels = \
+                    file_helper.get_datasets(self.options.input_data_folder, test_set_identifier, file_range)
+
+                accuracy = self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors, test_set_labels)
+                accuracy_list.append(accuracy)
+
+            log.info(accuracy_list)
+            log.info("Average Accuracy: " + str(numpy.mean(accuracy_list)))
 
         log.info("GaussianMixtureProcessor concluded")
 
@@ -57,11 +69,9 @@ class GaussianMixtureProcessor(Processor):
                 )
             covariance_matrix = numpy.add(covariance_matrix, class_covariance_matrix)
 
-        # print(covariance_matrix)
         inv_covariance_matrix = numpy.linalg.inv(covariance_matrix)
         mean_diff = class_properties.get('5').get('mean') - class_properties.get('6').get('mean')
 
-        # print(inv_covariance_matrix)
         w = \
             numpy.dot(
                 inv_covariance_matrix,
@@ -99,21 +109,16 @@ class GaussianMixtureProcessor(Processor):
             elif 1 - prob_5 > 0.5 and test_set_labels[i] == '6':
                 accuracy_score += 1
 
-        print("Accuracy: " + str(accuracy_score/len(test_set_vectors)))
-
-
+        accuracy = round(accuracy_score/len(test_set_vectors), 3)
+        return accuracy
 
     def get_class_covariance(self, class_vectors, mean, dimensions, train_set_size):
-
-        # print(len(class_vectors), mean, dimensions, train_set_size)
 
         final_matrix = numpy.zeros((dimensions, dimensions))
 
         for i in range(len(class_vectors)):
             vector = numpy.subtract(numpy.array(class_vectors[i]), mean)
-            # print(vector)
             matrix = numpy.outer(vector, numpy.transpose(vector))
-            # print(matrix.shape)
             final_matrix = numpy.add(final_matrix, matrix)
 
         return final_matrix/train_set_size
