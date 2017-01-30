@@ -49,15 +49,25 @@ class LogisticRegressionProcessor(Processor):
 
             for i in range(len(x_matrix_transpose)):
                 vector = numpy.array(x_matrix_transpose[i])
+                exponent = -1 * numpy.dot(weights_transpose, vector)
+                print(exponent)
                 try:
-                    sigma = 1 / (1 + math.exp(-1 * numpy.dot(weights_transpose, vector)))
-                except:
-                    sigma = 0
+                    # print(numpy.dot(weights_transpose, vector))
+                    sigma = 1 / (1 + math.exp(exponent))
+                except OverflowError:
+                    if exponent > 0:
+                        sigma = 0.0
+                    else:
+                        sigma = 1.0
 
                 # print(sigma)
                 r_matrix[i][i] = sigma * (1 - sigma)
+                if train_set_labels[i] == 5:
+                    y = 1
+                else:
+                    y = 0
 
-                gradient += (sigma - train_set_labels[i]) * vector
+                gradient = numpy.add(gradient, (sigma - y) * vector)
 
             log.debug("R matrix dimensions: " + str(r_matrix.shape))
 
@@ -65,15 +75,14 @@ class LogisticRegressionProcessor(Processor):
             hessian_inverse = numpy.linalg.pinv(hessian)
             log.debug("Hessian dimensions: " + str(hessian.shape))
             log.debug("Gradient dimensions: " + str(gradient.shape))
-            print(hessian_inverse)
-            print(gradient)
+            # print(hessian_inverse)
+            # print(gradient)
 
             step = numpy.dot(hessian_inverse, gradient)
-            print("step " + str(step))
+            # print("step " + str(step))
             log.debug("Step dimensions: " + str(step.shape))
             weights -= step
-            print(weights)
-            # print(weights)
+        print(weights)
 
         test_vectors_matrix = \
             numpy.vstack(
@@ -81,5 +90,12 @@ class LogisticRegressionProcessor(Processor):
                  numpy.transpose(numpy.array(test_set_vectors))),
             )
         for i in range(len(numpy.transpose(test_vectors_matrix))):
-            prediction = numpy.dot(numpy.transpose(weights), numpy.transpose(test_vectors_matrix)[i])
-            print(prediction)
+            try:
+                sigma = \
+                    1 / (
+                        1 + math.exp(-1 * numpy.dot(numpy.transpose(weights), numpy.transpose(test_vectors_matrix)[i]))
+                    )
+            except OverflowError:
+                sigma = 1.0
+            print(sigma)
+            break
