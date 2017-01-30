@@ -58,7 +58,7 @@ class GaussianMixtureProcessor(Processor):
             covariance_matrix = numpy.add(covariance_matrix, class_covariance_matrix)
 
         # print(covariance_matrix)
-        inv_covariance_matrix = numpy.linalg.pinv(covariance_matrix)
+        inv_covariance_matrix = numpy.linalg.inv(covariance_matrix)
         mean_diff = class_properties.get('5').get('mean') - class_properties.get('6').get('mean')
 
         # print(inv_covariance_matrix)
