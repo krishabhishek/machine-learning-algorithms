@@ -30,8 +30,7 @@ class LogisticRegressionProcessor(Processor):
         log.info("Train set size: " + str(train_set_size))
         dimensions = len(train_set_vectors[0]) + 1
 
-        weights = numpy.zeros(dimensions)
-        weights_transpose = numpy.transpose(weights)
+        weights = numpy.ones(dimensions)
         log.info("Weight dimensions: " + str(weights.shape))
 
         constant_weight_term = numpy.ones(train_set_size)
@@ -43,16 +42,44 @@ class LogisticRegressionProcessor(Processor):
         x_matrix_transpose = numpy.transpose(x_matrix)
         log.info("Input dimensions: " + str(x_matrix.shape))
 
-        sigma_list = list()
-        r_matrix = numpy.zeros((train_set_size, train_set_size))
-        for i in range(len(x_matrix_transpose)):
-            vector = numpy.array(x_matrix_transpose[i])
-            sigma = 1 / (1 + math.exp(-1 * numpy.dot(weights_transpose, vector)))
-            sigma_list.append(sigma)
-            r_matrix[i][i] = sigma * (1 - sigma)
+        for count in range(1, 11):
+            weights_transpose = numpy.transpose(weights)
+            r_matrix = numpy.zeros((train_set_size, train_set_size))
+            gradient = numpy.zeros(dimensions)
 
-        log.info("Sigma list length: " + str(len(sigma_list)))
-        log.info("R matrix dimensions: " + str(r_matrix.shape))
+            for i in range(len(x_matrix_transpose)):
+                vector = numpy.array(x_matrix_transpose[i])
+                try:
+                    sigma = 1 / (1 + math.exp(-1 * numpy.dot(weights_transpose, vector)))
+                except:
+                    sigma = 0
 
-        hessian = numpy.dot(numpy.dot(x_matrix, r_matrix), x_matrix_transpose)
-        log.info("Hessian dimensions: " + str(hessian.shape))
+                # print(sigma)
+                r_matrix[i][i] = sigma * (1 - sigma)
+
+                gradient += (sigma - train_set_labels[i]) * vector
+
+            log.debug("R matrix dimensions: " + str(r_matrix.shape))
+
+            hessian = numpy.dot(numpy.dot(x_matrix, r_matrix), x_matrix_transpose)
+            hessian_inverse = numpy.linalg.pinv(hessian)
+            log.debug("Hessian dimensions: " + str(hessian.shape))
+            log.debug("Gradient dimensions: " + str(gradient.shape))
+            print(hessian_inverse)
+            print(gradient)
+
+            step = numpy.dot(hessian_inverse, gradient)
+            print("step " + str(step))
+            log.debug("Step dimensions: " + str(step.shape))
+            weights -= step
+            print(weights)
+            # print(weights)
+
+        test_vectors_matrix = \
+            numpy.vstack(
+                (numpy.transpose(numpy.ones(len(test_set_vectors))),
+                 numpy.transpose(numpy.array(test_set_vectors))),
+            )
+        for i in range(len(numpy.transpose(test_vectors_matrix))):
+            prediction = numpy.dot(numpy.transpose(weights), numpy.transpose(test_vectors_matrix)[i])
+            print(prediction)
