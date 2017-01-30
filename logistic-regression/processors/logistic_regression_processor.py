@@ -20,7 +20,7 @@ class LogisticRegressionProcessor(Processor):
                 file_helper.get_datasets(self.options.input_data_folder, test_set_identifier, file_range)
 
             self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors, test_set_labels)
-            break
+            # break
 
         log.info("LogisticRegressionProcessor concluded")
 
@@ -70,8 +70,8 @@ class LogisticRegressionProcessor(Processor):
 
             log.debug("R matrix dimensions: " + str(r_matrix.shape))
 
-            hessian = numpy.dot(numpy.dot(x_matrix, r_matrix), x_matrix_transpose)
-            hessian_inverse = numpy.linalg.pinv(hessian)
+            hessian = numpy.dot(numpy.dot(x_matrix, r_matrix), x_matrix_transpose) + (1 * numpy.identity(dimensions))
+            hessian_inverse = numpy.linalg.inv(hessian)
             log.debug("Hessian dimensions: " + str(hessian.shape))
             log.debug("Gradient dimensions: " + str(gradient.shape))
             # print(hessian_inverse)
@@ -108,4 +108,3 @@ class LogisticRegressionProcessor(Processor):
 
 
         print(accuracy_score/len(test_set_labels))
-            # break
