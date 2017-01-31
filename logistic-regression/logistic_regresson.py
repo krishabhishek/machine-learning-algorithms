@@ -15,6 +15,7 @@ def main(argv):
 def parse_args(argv):
     parser = ArgumentParser(prog="logistic_regression_classifier")
     parser.add_argument('--input_data_folder', metavar='Data folder', type=str, required=True)
+    parser.add_argument('--full', dest='full', action='store_true')
 
     return parser.parse_args(argv, namespace=Options)
 
