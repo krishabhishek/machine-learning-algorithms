@@ -9,13 +9,13 @@
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{graphicx}
+\usepackage{indentfirst}
 \graphicspath {{images/}}
 
 \title{CS698 - Winter 2017 - Assignment 2}
 \author{Vineet John (v2john@uwaterloo.ca)}
 \date{}
-
-
+	
 \begin{document}
 \maketitle
 
@@ -24,8 +24,7 @@
 \section{Classification Algorithms}
 
 \subsection{Mixture of Gaussians}
-The cross-validation accuracy for each run is as reporting in below table.\\
-The average accuracy is \textbf{0.8677}
+The cross-validation accuracy for each run is as reporting in below table. The average accuracy is \textbf{0.8677}
 
 \begin{center} 
 	\begin{tabular}{ |c|c| } 
@@ -55,9 +54,15 @@ The average accuracy is \textbf{0.8677}
 		\hline
 	\end{tabular}
 \end{center}
+
 The accuracy while training and evaluating on the complete dataset is \textbf{0.889}
-\\\\
-\textbf{Parameters}: (after training on the full dataset)\\\\
+
+\vspace{5mm}
+
+\textbf{Parameters}: (after training on the full dataset)
+
+\vspace{5mm}
+
 $\bar{w} =
 	\begin{tabular}{  c c c c c c  } 
 		[-0.00039919 &  0.01608376 &  0.03035347 &  0.01290756 &  0.05312515 &  0.15887134 \\
@@ -72,7 +77,8 @@ $\bar{w} =
 		 -0.07233379 &  0.00984539 & -0.02589944 & -0.07307696 &  0.09056223 &  0.05856089 \\
 		 -0.01847382 & -0.04885932 &  0.00456147 &  0.01576207] & & \\
 	\end{tabular}$
-\\\\
+
+\vspace{5mm}
 $w_0 = 0.105720724448$
 
 \begin{center}
@@ -80,8 +86,7 @@ $w_0 = 0.105720724448$
 \end{center}
 
 \subsection{Logistic Regression}
-The cross-validation accuracy for each run is as reporting in below table.\\
-The average accuracy is \textbf{0.8632}
+The cross-validation accuracy for each run is as reporting in below table. The average accuracy is \textbf{0.8632}
 
 \begin{center} 
 	\begin{tabular}{ |c|c| } 
@@ -111,9 +116,15 @@ The average accuracy is \textbf{0.8632}
 		\hline
 	\end{tabular}
 \end{center}
-The accuracy while training and evaluating on the complete dataset is \textbf{0.889}\\\\
-\\\\
-\textbf{Parameters}: (after training on the full dataset)\\\\
+
+The accuracy while training and evaluating on the complete dataset is \textbf{0.889}
+
+\vspace{5mm}
+
+\textbf{Parameters}: (after training on the full dataset)
+
+\vspace{5mm}
+
 $\bar{w} =
 	\begin{tabular}{  c c c c c c  } 
 		[ 1.34693295e-01 & -2.95016036e-02 &  1.42379140e-02 &  3.48930440e-02 \\
@@ -141,15 +152,23 @@ $\bar{w} =
 
 \subsection{Discussion of results}
 \subsubsection*{Parameterizations and Objectives - Mixture of Gaussians vs. Logistic Regression}
+The main difference between Mixture of Gaussians and Logistic Regression as classification approaches, is the way in which the probabilities of a hypothesis being true are modelled. 
+
+Mixture of Gaussians attempts to model this as a joint probability distribution, and hence, is a generative model. It can predict the posterior probability of each class, given a new data point by relying on Bayesian inference. 
+
+In contrast, Logistic regression uses conditional probabilities, and is hence, a discriminative model. It is used to directly predict the posterior probability through an iterative method of gradient descent to coverge at the minima of the convex loss function.
 
 \subsubsection*{Separators - Mixture of Gaussians \& Logistic Regression vs. K Nearest Neighbours}
+The choice of classifier depends on the how the data that is intended to be classified is separated.
+A dataset is said to be linear separable if there exists a class-separating hyperplane. If there exists such a hyperplane, then having a classification method with a a linear decision boundary will provide better accuracy results.
+On the other hand, if the convex hulls of the 2 classes in n-dimensional space overlap, and the dataset isn't linearly separable, then better classification results will be obtained by using a non-linear classifier like KNN.
 
 \newpage
 
 \section{Linear Separability}
 
 \subsection{Threshold perceptron - Activation function encoding}
-Assuming that the input variables are $x_1$ and $x_2$, a direct encoding of the functions 'AND' and 'OR' are given below
+Assuming that the input variables are $x_1$ and $x_2$, a direct encoding of the functions 'AND' and 'OR' is possible, with a compounding of these encodings being used to produce, 'XOR' and 'IFF'
 \begin{itemize}
 	\item AND: The activation weights are $w_0 = -1.5$; $w_1 = 1;$ $w_2 = 1$
 	\item OR: The activation weights are $w_0 = -0.5$; $w_1 = 1;$ $w_2 = 1$
