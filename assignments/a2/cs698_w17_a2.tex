@@ -154,20 +154,20 @@ Assuming that the input variables are $x_1$ and $x_2$, a direct encoding of the 
 	\item OR: The activation weights are $w_0 = -0.5$; $w_1 = 1;$ $w_2 = 1$
 	\item XOR: 
 		\begin{itemize}
-			\item The mapping functions are $\phi_1(x) = x_1 \land x_2$ and $\phi_2(x) = x_1 \lor x_2$. The input variables are now $\phi_1(x)$ and $\phi_2(x)$.
-			\item The activation weights are $w_0 = -0.5$; $w_1 = -1;$ $w_2 = 1$
+			\item The mapping functions are $\phi_1(x) = x_1 \land x_2$ and $\phi_2(x) = x_1 \lor x_2$. The input variables are $\phi_1(x)$ and $\phi_2(x)$.
+			\item The activation weights are $w_0 = -0.5$; $w_1 = -1$; $w_2 = 1$
 		\end{itemize}
 	\item IFF: 
 		\begin{itemize}
-			\item The mapping function is $\phi_3(x) = x_1 \lxor x_2$. The input variables is now $\phi_3(x)$.
-			\item The activation weights are $w_0 = -0.5$; $w_1 = -1;$ $w_2 = 1$
+			\item The mapping function is $\phi_3(x) = x_1 \oplus x_2$. The input variable is $\phi_3(x)$.
+			\item The activation weights are $w_0 = 0.5$; $w_1 = -1$
 		\end{itemize}
 \end{itemize}
-
+All of the weights are illustrated in Figure \ref{fig_activation_function_weights}
 
 \begin{figure*}[h]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/activation_functions.png}
+    \includegraphics[width=0.6\textwidth]{images/activation_functions.png}
     \caption{Activation Function Weights}
     \label{fig_activation_function_weights}
 \end{figure*}
