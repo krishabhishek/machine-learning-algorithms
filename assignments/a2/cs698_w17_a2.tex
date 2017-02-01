@@ -81,6 +81,8 @@ $\bar{w} =
 \vspace{5mm}
 $w_0 = 0.105720724448$
 
+The code is provided in the folder 'mixture-of-gaussians'. Run commands are present in the README.md file.
+
 \begin{center}
 	\noindent\rule{4cm}{0.4pt}
 \end{center}
@@ -146,6 +148,8 @@ $\bar{w} =
 		  3.50403361e-02] & & & \\
 	\end{tabular}$
 
+The code is provided in the folder 'logistic-regression'. Run commands are present in the README.md file.
+
 \begin{center}
 	\noindent\rule{4cm}{0.4pt}
 \end{center}
@@ -195,5 +199,9 @@ All of the weights are illustrated in Figure \ref{fig_activation_function_weight
 \newpage
 
 \subsection{Logistic Regression Experiment - Linear Separability}
+When a given dataset is linearly separable, then the weights tend to infinity. The graph of the sigmoid is no longer smooth, but assumes the appearances of a step function.
+For the experimental setup, the choice can be made to simply not regularize the loss function that is being minimized. The learning algorithm is now no longer constrained by excessively large weights. 
+
+The experiment run involves running logistic regression on the dataset and observing if the weight become arbitrarily large after a few iterations of Newton's Algorithm.
 
 \end{document}
