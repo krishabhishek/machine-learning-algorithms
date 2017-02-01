@@ -87,7 +87,7 @@ The code is provided in the folder 'mixture-of-gaussians'. Run commands are pres
 	\noindent\rule{4cm}{0.4pt}
 \end{center}
 
-\subsection{Logistic Regression}
+\subsection{Logistic Regression} \label{logistic_regression_section}
 The cross-validation accuracy for each run is as reporting in below table. The average accuracy is \textbf{0.8632}
 
 \begin{center} 
@@ -202,6 +202,8 @@ All of the weights are illustrated in Figure \ref{fig_activation_function_weight
 When a given dataset is linearly separable, then the weights tend to infinity. The graph of the sigmoid is no longer smooth, but assumes the appearances of a step function.
 For the experimental setup, the choice can be made to simply not regularize the loss function that is being minimized. The learning algorithm is now no longer constrained by excessively large weights. 
 
-The experiment run involves running logistic regression on the dataset and observing if the weight become arbitrarily large after a few iterations of Newton's Algorithm.
+The experiment run involves running logistic regression on the dataset and observing if the weights become arbitrarily large after a few iterations of Newton's Algorithm. The same logistic regression experiment, as described in \ref{logistic_regression_section} has been used here, without any weight penalization parameters. 
+
+However, even after 100 iterations of Newton's algorithm, the weights do not go to infinity, which leads to the conclusion that the data points in the given set are \textbf{not linearly separable}.
 
 \end{document}

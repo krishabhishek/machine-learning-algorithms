@@ -41,7 +41,7 @@ class LogisticRegressionProcessor(Processor):
         x_matrix_transpose = numpy.transpose(x_matrix)
         log.debug("Input dimensions: " + str(x_matrix.shape))
 
-        for count in range(1, 11):
+        for count in range(1, 101):
             weights_transpose = numpy.transpose(weights)
             r_matrix = numpy.zeros((train_set_size, train_set_size))
             gradient = numpy.zeros(dimensions)
@@ -70,7 +70,7 @@ class LogisticRegressionProcessor(Processor):
             log.debug("Step dimensions: " + str(step.shape))
             weights -= step
 
-        # log.info("weights: " + str(weights))
+        log.info("weights: " + str(weights))
         test_vectors_matrix = \
             numpy.vstack(
                 (numpy.transpose(numpy.ones(len(test_set_vectors))),
