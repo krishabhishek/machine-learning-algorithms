@@ -2,7 +2,7 @@
 
 %% Language and font encodings
 % \usepackage[english]{babel}
-% \usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc}
 
 %% Sets page size and margins
 \usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
@@ -57,11 +57,11 @@ The cross-validation accuracy for each run is as reporting in below table. The a
 
 The accuracy while training and evaluating on the complete dataset is \textbf{0.889}
 
-\vspace{5mm}
+\vspace{3mm}
 
 \textbf{Parameters}: (after training on the full dataset)
 
-\vspace{5mm}
+\vspace{3mm}
 
 $\bar{w} =
 	\begin{tabular}{  c c c c c c  } 
@@ -78,10 +78,12 @@ $\bar{w} =
 		 -0.01847382 & -0.04885932 &  0.00456147 &  0.01576207] & & \\
 	\end{tabular}$
 
-\vspace{5mm}
+\vspace{3mm}
 $w_0 = 0.105720724448$
 
-The code is provided in the folder 'mixture-of-gaussians'. Run commands are present in the README.md file.
+\vspace{3mm}
+
+The code is provided in the folder `mixture-of-gaussians'. Run commands are present in the README.md file.
 
 \begin{center}
 	\noindent\rule{4cm}{0.4pt}
@@ -121,11 +123,11 @@ The cross-validation accuracy for each run is as reporting in below table. The a
 
 The accuracy while training and evaluating on the complete dataset is \textbf{0.889}
 
-\vspace{5mm}
+\vspace{3mm}
 
 \textbf{Parameters}: (after training on the full dataset)
 
-\vspace{5mm}
+\vspace{3mm}
 
 $\bar{w} =
 	\begin{tabular}{  c c c c c c  } 
@@ -148,7 +150,9 @@ $\bar{w} =
 		  3.50403361e-02] & & & \\
 	\end{tabular}$
 
-The code is provided in the folder 'logistic-regression'. Run commands are present in the README.md file.
+\vspace{3mm}
+
+$w_0$ is the first term in the above vector. The code is provided in the folder `logistic-regression'. Run commands are present in the README.md file.
 
 \begin{center}
 	\noindent\rule{4cm}{0.4pt}
@@ -199,11 +203,10 @@ All of the weights are illustrated in Figure \ref{fig_activation_function_weight
 \newpage
 
 \subsection{Logistic Regression Experiment - Linear Separability}
-When a given dataset is linearly separable, then the weights tend to infinity. The graph of the sigmoid is no longer smooth, but assumes the appearances of a step function.
-For the experimental setup, the choice can be made to simply not regularize the loss function that is being minimized. The learning algorithm is now no longer constrained by excessively large weights. 
+When a given dataset is linearly separable, then the step-size becomes zero and the learning function converges. For the experimental setup, the choice can be made to simply not regularize the loss function that is being minimized. The learning algorithm is now no longer constrained by excessively large values for weights. 
 
-The experiment run involves running logistic regression on the dataset and observing if the weights become arbitrarily large after a few iterations of Newton's Algorithm. The same logistic regression experiment, as described in \ref{logistic_regression_section} has been used here, without any weight penalization parameters. 
+The experiment run involves running logistic regression on the dataset and observing if the step begins to fluctuate back and forth after a few iterations of Newton's Algorithm. The same logistic regression experiment, as described in \ref{logistic_regression_section} has been used here, without any weight penalization parameters($\lambda$). 
 
-However, even after 100 iterations of Newton's algorithm, the weights do not go to infinity, which leads to the conclusion that the data points in the given set are \textbf{not linearly separable}.
+However, even after 100 iterations of Newton's algorithm, the iterative step does not close in on zero, which leads to the conclusion that the data points in the given set are \textbf{not linearly separable}.
 
 \end{document}
