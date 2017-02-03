@@ -79,12 +79,13 @@ class LogisticRegressionProcessor(Processor):
             log.debug("Hessian dimensions: " + str(hessian.shape))
             log.debug("Gradient dimensions: " + str(gradient.shape))
 
-            step = numpy.dot(hessian_inverse, gradient)
-            log.info("Step Norm: " + str(numpy.linalg.norm(step)))
-            log.debug("Step dimensions: " + str(step.shape))
+            step = numpy.around(numpy.dot(hessian_inverse, gradient), decimals=4)
+            log.debug("Step: " + str(step))
+            log.debug("Step Norm: " + str(numpy.linalg.norm(step)))
             weights -= step
+            log.debug("weights: " + str(weights))
 
-        log.info("weights: " + str(weights))
+        log.debug("weights: " + str(weights))
         test_vectors_matrix = \
             numpy.vstack(
                 (numpy.transpose(numpy.ones(len(test_set_vectors))),

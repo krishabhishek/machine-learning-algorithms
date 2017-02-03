@@ -97,7 +97,7 @@ $\begin{tabular}{  c c c c c  }
       21.80482522 & 21.61760544 & 22.97601251 & 21.82179568 & 22.54277748 \\
       20.54191687 & 19.63753807 & 19.4810553  & 21.52908508 & 21.37512933 \\
       19.53557028 & 21.32065948 & 23.18661058 & 20.33026801]& \\
-\end{tabular}$$
+\end{tabular}$
 
 \vspace{3mm}
 
@@ -157,7 +157,7 @@ The cross-validation accuracy for each run is as reporting in below table. The a
 	\end{tabular}
 \end{center}
 
-The accuracy while training and evaluating on the complete dataset is \textbf{0.889}
+The accuracy while training and evaluating on the complete dataset is \textbf{0.887}
 
 \vspace{3mm}
 
@@ -241,13 +241,17 @@ When a given dataset is linearly separable, then the step-size becomes zero and 
 
 The experiment run involves running logistic regression on the dataset and observing if the step begins to fluctuate back and forth after a few iterations of Newton's Algorithm. The same logistic regression experiment, as described in \ref{logistic_regression_section} has been used here, without any weight penalization parameters($\lambda$). 
 
-\textbf{Experimental Setup}:
+\subsubsection*{Experimental Setup}
 \begin{itemize}
     \item Run Newton's algorithm iterations over the given dataset an arbitrarily high number of times.
-    \item Measure the norm of the step vector ($H^{-1} \Delta L(w)$) for every iteration.
+	\item Measure the norm of the step vector ($H^{-1} \Delta L(w)$) for every iteration. (The step vector is rounded off to 4 decimals)
     \item If the norm doesn't progressively reduce and become zero, this implies that the step vector is not converging to a minima.
 \end{itemize}
 
-However, even after 1000 iterations of Newton's algorithm, the iterative step magnitude does not close in on zero. In fact, for that final 991 iterations, the norm fluctuates between magnituudes of $10^{-15}$ and $10^{-16}$. This leads to the conclusion that the data points in the given set are \textbf{not linearly separable}.
+\subsubsection*{Observation}
+After 6 iterations of Newton's algorithm, the iterative step norm converges to 0.
+
+\subsubsection*{Conclusion}
+This leads to the conclusion that the data points in the given set are \textbf{linearly separable}.
 
 \end{document}
