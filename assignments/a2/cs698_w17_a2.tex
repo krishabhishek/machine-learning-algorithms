@@ -63,6 +63,44 @@ The accuracy while training and evaluating on the complete dataset is \textbf{0.
 
 \vspace{3mm}
 
+Variance for Label 5: 
+$\begin{tabular}{  c c c c c  }
+    [ 19.2166544  & 19.5197397  & 22.3296676  & 21.01331568 & 18.00399274 \\
+      22.0238518  & 22.35962787 & 17.44205621 & 19.18318209 & 21.1330423 \\
+      18.96626608 & 20.90767319 & 22.2647079  & 21.40778601 & 19.72100522 \\
+      18.71266657 & 17.41137326 & 21.72900705 & 20.09414169 & 23.6765684 \\
+      20.54920619 & 18.85736335 & 18.15233891 & 17.36921895 & 18.76942496 \\
+      20.48911561 & 20.32647275 & 22.31978221 & 23.72603783 & 22.93736204 \\
+      17.83163781 & 18.66148363 & 18.86834748 & 20.82754043 & 22.61927699 \\
+      23.28439365 & 23.40934255 & 23.05357009 & 20.53472311 & 16.19298246 \\
+      18.6255555  & 18.35211981 & 19.02730498 & 20.88145387 & 22.96913393 \\
+      22.07457367 & 20.56364677 & 17.42282173 & 17.01701411 & 20.14538677 \\
+      22.14428476 & 22.64114714 & 22.89979889 & 22.91875542 & 21.39598437 \\
+      18.35453966 & 18.40332892 & 17.97829009 & 23.35579863 & 20.62316509 \\
+      22.78647831 & 22.69232027 & 19.61217115 & 20.13740129] & \\
+\end{tabular}$
+
+\vspace{3mm}
+
+Variance for Label 6: 
+$\begin{tabular}{  c c c c c  }
+    [ 20.64206998 & 20.05145611 & 20.9265935  & 21.39779529 & 22.38896034 \\
+      19.94142694 & 21.29769698 & 18.33850989 & 18.45884704 & 18.50073974 \\
+      22.69260423 & 20.52305114 & 21.57993521 & 18.44925462 & 19.53336879 \\
+      18.50814356 & 18.55568341 & 19.22506406 & 22.45103708 & 23.08554852 \\
+      19.18702638 & 19.39292495 & 17.93102226 & 19.37047817 & 17.5607536 \\
+      19.90213219 & 19.71137005 & 23.68418186 & 21.80484456 & 20.4728102 \\
+      19.79193541 & 18.46132895 & 18.95928702 & 21.84798466 & 19.3203855 \\
+      20.9425164  & 21.61415655 & 22.20206933 & 20.91113153 & 16.83199407 \\
+      18.94408613 & 21.43140421 & 20.84368805 & 23.54909507 & 23.48812713 \\
+      21.29490242 & 22.94041483 & 18.18635917 & 18.22072556 & 20.05706458 \\
+      21.80482522 & 21.61760544 & 22.97601251 & 21.82179568 & 22.54277748 \\
+      20.54191687 & 19.63753807 & 19.4810553  & 21.52908508 & 21.37512933 \\
+      19.53557028 & 21.32065948 & 23.18661058 & 20.33026801]& \\
+\end{tabular}$$
+
+\vspace{3mm}
+
 $\bar{w} =
 	\begin{tabular}{  c c c c c c  } 
 		[-0.00039919 &  0.01608376 &  0.03035347 &  0.01290756 &  0.05312515 &  0.15887134 \\
@@ -85,9 +123,7 @@ $w_0 = 0.105720724448$
 
 The code is provided in the folder `mixture-of-gaussians'. Run commands are present in the README.md file.
 
-\begin{center}
-	\noindent\rule{4cm}{0.4pt}
-\end{center}
+\newpage
 
 \subsection{Logistic Regression} \label{logistic_regression_section}
 The cross-validation accuracy for each run is as reporting in below table. The average accuracy is \textbf{0.8632}
@@ -154,11 +190,9 @@ $\bar{w} =
 
 $w_0$ is the first term in the above vector. The code is provided in the folder `logistic-regression'. Run commands are present in the README.md file.
 
-\begin{center}
-	\noindent\rule{4cm}{0.4pt}
-\end{center}
+\newpage
 
-\subsection{Discussion of results}
+\subsection*{Discussion of results}
 \subsubsection*{Parameterizations and Objectives - Mixture of Gaussians vs. Logistic Regression}
 The main difference between Mixture of Gaussians and Logistic Regression as classification approaches, is the way in which the probabilities of a hypothesis being true are modelled. 
 
@@ -207,6 +241,13 @@ When a given dataset is linearly separable, then the step-size becomes zero and 
 
 The experiment run involves running logistic regression on the dataset and observing if the step begins to fluctuate back and forth after a few iterations of Newton's Algorithm. The same logistic regression experiment, as described in \ref{logistic_regression_section} has been used here, without any weight penalization parameters($\lambda$). 
 
-However, even after 100 iterations of Newton's algorithm, the iterative step does not close in on zero, which leads to the conclusion that the data points in the given set are \textbf{not linearly separable}.
+\textbf{Experimental Setup}:
+\begin{itemize}
+    \item Run Newton's algorithm iterations over the given dataset an arbitrarily high number of times.
+    \item Measure the norm of the step vector ($H^{-1} \Delta L(w)$) for every iteration.
+    \item If the norm doesn't progressively reduce and become zero, this implies that the step vector is not converging to a minima.
+\end{itemize}
+
+However, even after 1000 iterations of Newton's algorithm, the iterative step magnitude does not close in on zero. In fact, for that final 991 iterations, the norm fluctuates between magnituudes of $10^{-15}$ and $10^{-16}$. This leads to the conclusion that the data points in the given set are \textbf{not linearly separable}.
 
 \end{document}

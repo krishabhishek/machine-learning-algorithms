@@ -67,6 +67,7 @@ class GaussianMixtureProcessor(Processor):
                 self.get_class_covariance(
                     label_train_vectors[label], mean, dimensions, train_set_size
                 )
+            log.info("Variance for Label " + str(label) + ": \n" + str(numpy.diagonal(class_covariance_matrix)))
             covariance_matrix = numpy.add(covariance_matrix, class_covariance_matrix)
 
         inv_covariance_matrix = numpy.linalg.inv(covariance_matrix)
