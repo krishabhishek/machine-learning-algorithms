@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 
 import sys
 
-from processors.linear_regression_processor import LinearRegressionProcessor
+from processors.generalized_linear_regression_processor import GeneralizedLinearRegressionProcessor
 from utils.options import Options
 
 
@@ -13,7 +13,7 @@ def main(argv):
     :return: null
     """
     options = parse_args(argv)
-    processor = LinearRegressionProcessor(options)
+    processor = GeneralizedLinearRegressionProcessor(options)
     processor.process()
 
 
@@ -26,11 +26,7 @@ def parse_args(argv):
     parser = ArgumentParser(prog="linear_regression")
     parser.add_argument('--input_data_folder', metavar='Data folder',
                         type=str, required=True)
-    parser.add_argument('--min_lambda', metavar='Minimum Lambda',
-                        type=float, required=True)
-    parser.add_argument('--max_lambda', metavar='Maximum Lambda',
-                        type=float, required=True)
-    parser.add_argument('--lambda_increment', metavar='Lambda Increment',
+    parser.add_argument('--max_degree', metavar='Maximum Basis Function Degree',
                         type=float, required=True)
     parser.add_argument('--metrics_file', metavar='Metrics File',
                         type=str, required=True)

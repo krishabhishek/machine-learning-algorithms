@@ -1,26 +1,25 @@
 from processors.processor import Processor
 from utils import file_helper
 from utils import log_helper
-from utils.linear_regressor import LinearRegression
+from utils.generalized_linear_regressor import GeneralizedLinearRegression
 from utils.metrics_helper import calculate_euclidean_loss
 
-log = log_helper.get_logger("LinearRegressionProcessor")
+log = log_helper.get_logger("GeneralizedLinearRegressionProcessor")
 
 
-class LinearRegressionProcessor(Processor):
+class GeneralizedLinearRegressionProcessor(Processor):
 
     def process(self):
-        log.info("LinearRegressionProcessor begun")
+        log.info("GeneralizedLinearRegressionProcessor begun")
         log.info("input_data_folder: " + self.options.input_data_folder)
-        log.info("min_lambda: " + str(self.options.min_lambda))
-        log.info("max_lambda: " + str(self.options.max_lambda))
-        log.info("lambda_increment: " + str(self.options.lambda_increment))
+        log.info("max_degree: " + str(self.options.max_degree))
 
         log.info("Running 10-fold cross validation segment")
         results = dict()
-        l = self.options.min_lambda
         j = 1
-        while l <= self.options.max_lambda + self.options.lambda_increment:
+        regularization_parameter = 0.1
+        degree = 1
+        while degree <= self.options.max_degree:
             error_list = list()
             for j in range(1, 11):
 
@@ -38,17 +37,17 @@ class LinearRegressionProcessor(Processor):
                     X_train.extend(file_helper.read_data_file(self.options.input_data_folder + "fData" + str(i) + ".csv"))
                     y_train.extend(file_helper.read_label_file(self.options.input_data_folder + "fLabels" + str(i) + ".csv"))
 
-                lr = LinearRegression(X_train, y_train, l)
+                lr = GeneralizedLinearRegression(X_train, y_train, regularization_parameter)
                 predicted_y = lr.predict(X_test)
 
                 error = calculate_euclidean_loss(predictions=predicted_y, target=y_test)
                 error_list.append(error)
 
             avg_error = sum(error_list) / float(len(error_list))
-            log.info("For lambda = " + str(round(l, 1)) + ", euclidean loss = " + str(avg_error))
-            results[round(l, 1)] = avg_error
+            log.info("For degree = " + str(degree) + ", euclidean loss = " + str(avg_error))
+            results[degree] = avg_error
 
-            l += self.options.lambda_increment
+            degree += 1
 
         file_helper.dump_dict_to_file(results, self.options.metrics_file)
-        log.info("LinearRegressionProcessor concluded")
+        log.info("GeneralizedLinearRegressionProcessor concluded")
