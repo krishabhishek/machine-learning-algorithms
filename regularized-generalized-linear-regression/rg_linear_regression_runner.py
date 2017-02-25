@@ -27,7 +27,7 @@ def parse_args(argv):
     parser.add_argument('--input_data_folder', metavar='Data folder',
                         type=str, required=True)
     parser.add_argument('--max_degree', metavar='Maximum Basis Function Degree',
-                        type=float, required=True)
+                        type=int, required=True)
     parser.add_argument('--metrics_file', metavar='Metrics File',
                         type=str, required=True)
 

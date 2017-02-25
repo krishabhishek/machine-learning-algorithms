@@ -1,4 +1,4 @@
-# Linear Regression
+# Generalized Linear Regression
 
 ## Pre-requisites
 * Numpy
@@ -8,5 +8,7 @@
 For 10-fold Cross-Validated accuracy:
 
 ```
-PYTHONPATH=<PROJECT_DIRECTORY> /usr/bin/python <PROJECT_DIRECTORY>/rg_linear_regression_runner.py --input_data_folder <PROJECT_DIRECTORY>/data --min_lambda 0 --max_lambda 4 --lambda_increment 0.1 --metrics_file  <OUTPUT_FOLDER>/results_linear_reg.json
+export PROJECT_DIRECTORY=<PROJECT_DIRECTORY_PATH>
+
+PYTHONPATH=$PROJECT_DIRECTORY /usr/bin/python $PROJECT_DIRECTORY/rg_linear_regression_runner.py --input_data_folder $PROJECT_DIRECTORY/data/ --max_degree 1 --metrics_file $OUTPUT_FOLDER/results_linear_reg.json
 ```

@@ -2,8 +2,10 @@ from utils import file_helper
 from utils import metrics_helper
 from utils.generalized_linear_regressor import GeneralizedLinearRegression
 
-input_file = "/home/v2john/Projects/machine-learning-algorithms/regularized-generalized-linear-regression/data/fData1.csv"
-label_file = "/home/v2john/Projects/machine-learning-algorithms/regularized-generalized-linear-regression/data/fLabels1.csv"
+input_file = \
+    "/home/v2john/Projects/machine-learning-algorithms/regularized-generalized-linear-regression/data/fData1.csv"
+label_file = \
+    "/home/v2john/Projects/machine-learning-algorithms/regularized-generalized-linear-regression/data/fLabels1.csv"
 
 input_data = file_helper.read_data_file(input_file)
 labels = file_helper.read_label_file(label_file)
