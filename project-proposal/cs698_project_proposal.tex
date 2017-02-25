@@ -1,0 +1,71 @@
+\documentclass[parskip=full]{scrartcl}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor=blue
+}
+
+\begin{document}
+
+
+\title{
+    A Survey of Neural Network Techniques for Feature Extraction from Text
+}
+\subtitle{CS698 - Project Proposal}
+\author{
+    Vineet John\\
+    \texttt{v2john@uwaterloo.ca}
+}
+\date{}
+\maketitle
+
+\section{Introduction} % (fold)
+\label{sec:introduction}
+
+    A majority of the methods currently in use for text-based feature extraction rely on relatively simple statistical techniques. For instance, a word co-occurrence model like N-Grams or a bag-of-words model like TF-IDF.
+
+    The motivation of this research project is to identify and survey the techniques that use neural networks and to compare them to the traditional text feature extraction models.
+
+    Feature extraction of text can be used for a multitude of applications including - but not limited to - unsupervised semantic similarity detection, article classification and sentiment analysis.
+
+% section introduction (end)
+
+\section{Research Questions} % (fold)
+\label{sec:research_questions}
+
+    \begin{itemize}
+        \item [RQ1] What are the simpler statistical techniques to extract features from text?
+        \item [RQ2] Is there any inherent benefit to using neural networks as opposed to the simple methods.
+        \item [RQ3] What are the trade-offs that neural networks incur as opposed to the simple methods.
+        \item [RQ4] How do the different techniques compare to each other in terms of performance and accuracy.
+        \item [RQ5] In what use-cases do the trade-offs outweigh the benefits of neural networks?
+    \end{itemize}
+
+% section research_questions (end)
+
+\section{Methodology} % (fold)
+\label{sec:methodology}
+
+    The research questions listed in Section~\ref{sec:research_questions} will be tackled by surveying a few of the important overview papers\cite{goldberg2016primer}\cite{bengio2003neural}\cite{morin2005hierarchical}. A few of the groundbreaking research papers in this area will also be studied, including Word2Vec\cite{mikolov2013efficient}\cite{mikolov2013distributed}\cite{mikolov2013linguistic}.
+
+    In addition to this the other application areas include tasks like part-of-speech tagging, chunking, named entity recognition, and semantic role labeling\cite{socher2011parsing}\cite{luong2013better}\cite{maas2015lexicon}\cite{li2015hierarchical}\cite{collobert2011natural}.
+
+
+% section methodology (end)
+
+\section{Goal} % (fold)
+\label{sec:goal}
+
+    The goal of this project is the documentation of the differences, advantages and drawbacks in the domain of feature extraction from text data using neural networks. 
+
+    The project report could serve as a quick cheat-sheet for engineers looking to build a text classification or scoring pipeline, as the comparison would serve to map a use-case to a certain type of feature extraction approach.
+
+% section goal (end)
+
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\end{document}
