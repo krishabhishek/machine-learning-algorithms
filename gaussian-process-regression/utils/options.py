@@ -1,6 +1,7 @@
 class Options(object):
     input_data_folder = None
+    kernel_type = None
+    kernel = None
     metrics_file = None
-    min_lambda = None
-    max_lambda = None
-    lambda_increment = None
+    gaussian_variance = None
+    polynomial_degree = None
