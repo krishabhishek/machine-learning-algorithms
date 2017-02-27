@@ -3,16 +3,16 @@ import time
 from processors.processor import Processor
 from utils import file_helper
 from utils import log_helper
-from utils.generalized_linear_regressor import GeneralizedLinearRegression
+from utils.bayesian_linear_regressor import GeneralizedLinearRegression
 from utils.metrics_helper import calculate_euclidean_loss
 
-log = log_helper.get_logger("GeneralizedLinearRegressionProcessor")
+log = log_helper.get_logger("BayesianLinearRegressionProcessor")
 
 
-class GeneralizedLinearRegressionProcessor(Processor):
+class BayesianLinearRegressionProcessor(Processor):
 
     def process(self):
-        log.info("GeneralizedLinearRegressionProcessor begun")
+        log.info("BayesianLinearRegressionProcessor begun")
         log.info("input_data_folder: " + self.options.input_data_folder)
         log.info("max_degree: " + str(self.options.max_degree))
 
@@ -61,4 +61,4 @@ class GeneralizedLinearRegressionProcessor(Processor):
             degree += 1
 
         file_helper.dump_dict_to_file(results, self.options.metrics_file)
-        log.info("GeneralizedLinearRegressionProcessor concluded")
+        log.info("BayesianLinearRegressionProcessor concluded")

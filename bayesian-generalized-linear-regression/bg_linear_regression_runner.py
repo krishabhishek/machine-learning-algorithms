@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 
 import sys
 
-from processors.generalized_linear_regression_processor import GeneralizedLinearRegressionProcessor
+from processors.bayesian_linear_regression_processor import BayesianLinearRegressionProcessor
 from utils.options import Options
 
 
@@ -13,7 +13,7 @@ def main(argv):
     :return: null
     """
     options = parse_args(argv)
-    processor = GeneralizedLinearRegressionProcessor(options)
+    processor = BayesianLinearRegressionProcessor(options)
     processor.process()
 
 
