@@ -12,6 +12,11 @@ log = get_logger("main")
 
 
 def validate_options(options):
+    """
+    Validates the options object
+    :param options: options object
+    :return: null
+    """
     if options.kernel_type == "IdentityKernel":
         options.kernel = IdentityKernel()
     elif options.kernel_type == "GaussianKernel":
@@ -39,20 +44,20 @@ def validate_options(options):
 def main(argv):
     """
     Main function to kick start execution
-    :param argv:
+    :param argv: command line args list
     :return: null
     """
     options = parse_args(argv)
     validate_options(options)
     processor = GaussianProcessRegressionProcessor(options)
-    # processor.process()
+    processor.process()
 
 
 def parse_args(argv):
     """
     Parses command line arguments form an options object
-    :param argv:
-    :return:
+    :param argv: command line args list
+    :return: null
     """
     parser = ArgumentParser(prog="linear_regression")
     parser.add_argument('--input_data_folder', metavar='Data folder',
