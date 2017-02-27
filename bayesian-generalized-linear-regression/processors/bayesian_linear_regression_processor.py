@@ -3,7 +3,7 @@ import time
 from processors.processor import Processor
 from utils import file_helper
 from utils import log_helper
-from utils.bayesian_linear_regressor import GeneralizedLinearRegression
+from utils.bayesian_linear_regressor import BayesianLinearRegression
 from utils.metrics_helper import calculate_euclidean_loss
 
 log = log_helper.get_logger("BayesianLinearRegressionProcessor")
@@ -40,7 +40,7 @@ class BayesianLinearRegressionProcessor(Processor):
                     X_train.extend(file_helper.read_data_file(self.options.input_data_folder + "fData" + str(i) + ".csv"))
                     y_train.extend(file_helper.read_label_file(self.options.input_data_folder + "fLabels" + str(i) + ".csv"))
 
-                lr = GeneralizedLinearRegression(X_train, y_train, regularization_parameter, degree)
+                lr = BayesianLinearRegression(X_train, y_train, regularization_parameter, degree)
                 predicted_y = lr.predict(X_test)
 
                 error = calculate_euclidean_loss(predictions=predicted_y, target=y_test)

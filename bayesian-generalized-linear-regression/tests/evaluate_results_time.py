@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 results_file_path = \
     "/home/v2john/Projects/machine-learning-algorithms/assignments/a3/" \
-    "results/results_generalized_linear_regression.json"
+    "results/results_bayesian_linear_regression.json"
 
 with open(results_file_path) as results_file:
     results = json.load(results_file)
@@ -22,7 +22,7 @@ for result in results:
 
 plt.xlabel('Basis Function Degree')
 plt.ylabel('Elapsed Time (seconds)')
-plt.title('Generalized Regularized Linear Regression Computation Time')
+plt.title('Bayesian Generalized Linear Regression Computation Time')
 plt.plot(x_values, y_values, linestyle='-', marker='o', color='b')
 
 # plt.axis([0, 40, 0, 4])

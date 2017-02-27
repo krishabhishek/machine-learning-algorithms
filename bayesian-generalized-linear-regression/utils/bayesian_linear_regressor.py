@@ -1,39 +1,32 @@
-import numpy
+import numpy as np
+import numpy.linalg.linalg as lg
 
 from utils import basis_exponent_helper
 
 
-class GeneralizedLinearRegression(object):
+class BayesianLinearRegression(object):
 
     def __init__(self, x_train, y_train, lambda_value, degree):
-        self.weights = None
+        self.x_train = x_train
+        self.y_train = y_train
         self.degree = degree
-
-        x_train = self.modify_dimensions(x_train, degree)
-        dimensions = len(x_train[0])
-
-        identity_matrix = numpy.matrix(numpy.identity(dimensions))
-        lambda_matrix = identity_matrix * lambda_value
-        A = numpy.matrix(numpy.zeros((dimensions, dimensions)))
-        b = numpy.matrix(numpy.zeros((dimensions, 1)))
-        for i in range(len(x_train)):
-            nmat = numpy.matrix(x_train[i])
-            temp_a = nmat.T * nmat
-            A += temp_a
-            temp_b = nmat.T * numpy.matrix(y_train[i])
-            b += temp_b
-
-        A += 2 * lambda_matrix
-        self.weights = A.I * b
+        self.variance = 1
 
     def predict(self, x_test):
         predictions = list()
-        x_test  = self.modify_dimensions(x_test, self.degree)
 
-        for i in range(len(x_test)):
-            nmat = numpy.matrix(x_test[i])
-            res = nmat * self.weights
-            predictions.append(res.getA()[0][0])
+        self.x_train = self.modify_dimensions(self.x_train, self.degree)
+        x_test = self.modify_dimensions(x_test, self.degree)
+        dimensions = len(self.x_train[0])
+
+        X = np.asarray(self.x_train)
+        identity_matrix = np.matrix(np.identity(dimensions))
+
+        A = (self.variance * np.matmul(np.transpose(X), X)) + lg.inv(identity_matrix)
+
+        for test_vector in x_test:
+            y_prediction = np.dot(np.transpose(test_vector) * lg.inv(A) * np.transpose(X), np.transpose(self.y_train))
+            predictions.append(y_prediction.item((0, 0)))
 
         return predictions
 
