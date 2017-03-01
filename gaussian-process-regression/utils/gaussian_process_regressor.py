@@ -27,7 +27,12 @@ class GaussianProcessRegression(object):
         x_test = np.asarray(x_test)
 
         for x_vector in x_test:
-            vector_term = self.kernel.compute_kernel_function(np.transpose(x_vector), np.transpose(self.x_train))
+            vector_term = list()
+            for x_train_vector in self.x_train:
+                vector_term_item = self.kernel.compute_kernel_function(x_vector, x_train_vector)
+                vector_term.append(vector_term_item)
+
+            vector_term = np.asarray(vector_term)
             temp = np.matmul(vector_term, np.linalg.inv(self.matrix_term))
             prediction = np.matmul(temp, np.transpose(self.y_train))
             predictions.append(prediction)
