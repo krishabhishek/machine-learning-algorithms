@@ -17,26 +17,6 @@ def validate_options(options):
     :param options: options object
     :return: null
     """
-    if options.kernel_type == "IdentityKernel":
-        options.kernel = IdentityKernel()
-    elif options.kernel_type == "GaussianKernel":
-        if options.gaussian_variance:
-            options.kernel = GaussianKernel(options.gaussian_variance)
-        else:
-            msg = "'gaussian_variance' argument required for GaussianKernel"
-            log.error(msg)
-            raise RuntimeError(msg)
-    elif options.kernel_type == "PolynomialKernel":
-        if options.polynomial_degree:
-            options.kernel = PolynomialKernel(options.polynomial_degree)
-        else:
-            msg = "'polynomial_degree' argument required for PolynomialKernel"
-            log.error(msg)
-            raise RuntimeError(msg)
-    else:
-        msg = "Invalid kernel chosen. The choices are IdentityKernel, GaussianKernel & PolynomialKernel. Exiting"
-        log.error(msg)
-        raise RuntimeError(msg)
 
     log.info("Options read successfully")
 

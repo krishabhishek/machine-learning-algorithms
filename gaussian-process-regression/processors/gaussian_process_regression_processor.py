@@ -1,3 +1,8 @@
+from time import time
+
+from kernels.gaussian_kernel import GaussianKernel
+from kernels.identity_kernel import IdentityKernel
+from kernels.polynomial_kernel import PolynomialKernel
 from processors.processor import Processor
 from utils import file_helper
 from utils import log_helper
@@ -14,11 +19,58 @@ class GaussianProcessRegressionProcessor(Processor):
         log.info("input_data_folder: " + self.options.input_data_folder)
         log.info("kernel_type: " + self.options.kernel_type)
         log.info("metrics_file: " + self.options.metrics_file)
+        results = dict()
+
+        if self.options.kernel_type == "IdentityKernel":
+            self.options.kernel = IdentityKernel()
+            start_time = time()
+            error = self.run_cross_validation_phase()
+            elapsed_time = time() - start_time
+            results['error'] = error
+            results['elapsed_time'] = elapsed_time
+        elif self.options.kernel_type == "GaussianKernel":
+            if self.options.gaussian_variance:
+                for i in range(self.options.gaussian_variance):
+                    self.options.kernel = GaussianKernel(i+1)
+                    start_time = time()
+                    error = self.run_cross_validation_phase()
+                    elapsed_time = time() - start_time
+                    result = dict()
+                    result['error'] = error
+                    result['elapsed_time'] = elapsed_time
+                    results[i+1] = result
+            else:
+                msg = "'gaussian_variance' argument required for GaussianKernel"
+                log.error(msg)
+                raise RuntimeError(msg)
+        elif self.options.kernel_type == "PolynomialKernel":
+            if self.options.polynomial_degree:
+                for i in range(self.options.polynomial_degree):
+                    self.options.kernel = PolynomialKernel(i+1)
+                    start_time = time()
+                    error = self.run_cross_validation_phase()
+                    elapsed_time = time() - start_time
+                    result = dict()
+                    result['error'] = error
+                    result['elapsed_time'] = elapsed_time
+                    results[i+1] = result
+            else:
+                msg = "'polynomial_degree' argument required for PolynomialKernel"
+                log.error(msg)
+                raise RuntimeError(msg)
+        else:
+            msg = "Invalid kernel chosen. The choices are IdentityKernel, GaussianKernel & PolynomialKernel. Exiting"
+            log.error(msg)
+            raise RuntimeError(msg)
+
+        file_helper.dump_dict_to_file(results, self.options.metrics_file)
+        log.info("GaussianProcessRegressionProcessor concluded")
+
+    def run_cross_validation_phase(self):
 
         log.info("Running 10-fold cross validation segment")
-        results = dict()
         error_list = list()
-        for j in range(1, 2):
+        for j in range(1, 11):
 
             X_train = list()
             y_train = list()
@@ -43,5 +95,4 @@ class GaussianProcessRegressionProcessor(Processor):
         avg_error = sum(error_list) / float(len(error_list))
         log.info("Avg error: " + str(avg_error))
 
-        file_helper.dump_dict_to_file(results, self.options.metrics_file)
-        log.info("GaussianProcessRegressionProcessor concluded")
+        return avg_error
