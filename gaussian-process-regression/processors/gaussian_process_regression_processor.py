@@ -37,10 +37,6 @@ class GaussianProcessRegressionProcessor(Processor):
             lr = GaussianProcessRegression(X_train, y_train, self.options.kernel)
             predicted_y = lr.predict(X_test)
 
-            print("Predicted vs Actual: ")
-            print(predicted_y)
-            print(y_test)
-
             error = calculate_euclidean_loss(predictions=predicted_y, target=y_test)
             error_list.append(error)
 

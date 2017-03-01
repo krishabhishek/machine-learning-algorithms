@@ -14,7 +14,7 @@ class GaussianKernel(Kernel):
 
     def compute_kernel_function(self, x, x_prime):
 
-        exponent_term = la.norm(x - x_prime) / (2 * pow(self.std_dev, 2))
+        exponent_term = (-1 * pow(la.norm(x - x_prime), 2)) / (2 * pow(self.std_dev, 2))
 
         return exp(exponent_term)
 
