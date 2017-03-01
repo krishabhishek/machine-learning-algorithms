@@ -29,16 +29,16 @@
 \label{sec:gaussian_kernel_derivation}
 
     \subsection*{Objective} % (fold)
-    \label{sub:objective}
+    \label{sub:objective_1}
         Prove that the Gaussian kernel can be expressed as the inner product on an infinite dimensional feature space
         \begin{equation} \label{eqn:objective}
             k(x, x\prime) = e^{\frac{- {\lVert x - x\prime \rVert}^2}{2\sigma^2}}
         \end{equation}
 
-    % subsection objective (end)
+    % subsection objective_1 (end)
 
     \subsection*{Proof} % (fold)
-    \label{sub:proof}
+    \label{sub:proof_1}
 
         Expanding the exponent term in equation \ref{eqn:objective}, we get
         $$k(x, x\prime) = e^{\frac{-(x^Tx - 2x^Tx\prime + x\prime^Tx\prime)}{2\sigma^2}}$$
@@ -74,13 +74,13 @@
 
         This kernel $k_3(x, x\prime)$ can also be modified to be written as 
         \begin{equation}
-            k_3(x, x\prime) = \phi(x)\phi(x)\prime
+            k_3(x, x\prime) = \phi(x)^T\phi(x\prime)
         \end{equation}
         where $\phi$ represents a mapping of the original input feature $x$ into an infinite dimensional feature space.
 
         Hence, it has been proved that the Gaussian kernel can be expressed as the inner product on an infinite dimensional feature space.
     
-    % subsection proof (end)
+    % subsection proof_1 (end)
 
 % section gaussian_kernel_derivation (end)
 
@@ -88,6 +88,38 @@
 \section{Perceptron Learning Algorithm - Dual Formulation} % (fold)
 \label{sec:perceptron_learning_algorithm_dual_formulation}
 
+    \subsection*{Objective} % (fold)
+    \label{sub:objective_2}
+
+        Given the perceptron learning rule:
+        \begin{equation}
+            w^{t+1} = 
+            \begin{cases}
+                w^t + y_n \phi(x_n) & \text{if } y_n w^T \phi(x_n) \leq 0 \\
+                w^t              & \text{otherwise}
+            \end{cases}
+        \end{equation}
+        show that the learned weight vector $w$ can be written as a linear combination of the vectors $y_n \phi(x_n)$ where $y_n \in {+1, -1}$. Denote the coefficients of this linear combination by $a_n$.
+
+        \subsubsection{Dual Formulation Objective} % (fold)
+        \label{ssub:dual_formulation_objective}
+
+            
+        
+        % subsubsection dual_formulation_objective (end)
+
+        \subsubsection{Predictive Learning Rule formulation} % (fold)
+        \label{ssub:predictive_learning_rule_formulation}
+        
+        % subsubsection predictive_learning_rule_formulation (end)
+
+    % subsection objective_2 (end)
+
+
+    \subsection*{Proof} % (fold)
+    \label{sub:proof_2}
+    
+    % subsection proof_2 (end)
 
 % section perceptron_learning_algorithm_dual_formulation (end)
 
@@ -154,10 +186,10 @@
     
     % subsection bayesian_generalized_linear_regression (end)
 
-    \section{Gaussian Process Regression} % (fold)
-    \label{sec:gaussian_process_regression}
+    \subsection{Gaussian Process Regression} % (fold)
+    \label{sub:gaussian_process_regression}
     
-    % section gaussian_process_regression (end)
+    % subsection gaussian_process_regression (end)
 
 % section non_linear_regression_techniques (end)
 

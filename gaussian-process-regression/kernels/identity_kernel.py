@@ -8,4 +8,4 @@ class IdentityKernel(Kernel):
         super().__init__()
 
     def compute_kernel_function(self, x, x_prime):
-        return np.dot(np.transpose(x), x_prime)
+        return np.matmul(x, np.transpose(x_prime)).item(0)

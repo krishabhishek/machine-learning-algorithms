@@ -13,4 +13,4 @@ class PolynomialKernel(Kernel):
         self.degree = degree
 
     def compute_kernel_function(self, x, x_prime):
-        return pow(np.dot(np.transpose(x), x_prime) + 1, self.degree)
+        return pow(np.matmul(x, np.transpose(x_prime)).item(0) + 1, self.degree)

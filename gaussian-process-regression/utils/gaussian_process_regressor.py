@@ -1,10 +1,11 @@
+import sys
 import numpy as np
 
 
 class GaussianProcessRegression(object):
 
     def __init__(self, x_train, y_train, kernel):
-        self.x_train = x_train
+        self.x_train = np.asmatrix(x_train)
         self.y_train = np.asarray(y_train)
         self.kernel = kernel
         self.gram_matrix = self.calculate_gram_matrix(x_train)
@@ -18,13 +19,13 @@ class GaussianProcessRegression(object):
 
         for i in range(len(x_train)):
             for j in range(len(x_train)):
-                gram_matrix.itemset((i, j), self.kernel.compute_kernel_function(x_train.item(i), x_train.item(j)))
+                gram_matrix.itemset((i, j), self.kernel.compute_kernel_function(x_train[i], x_train[j]))
 
         return gram_matrix
 
     def predict(self, x_test):
         predictions = list()
-        x_test = np.asarray(x_test)
+        x_test = np.matrix(x_test)
 
         for x_vector in x_test:
             vector_term = list()
@@ -32,9 +33,7 @@ class GaussianProcessRegression(object):
                 vector_term_item = self.kernel.compute_kernel_function(x_vector, x_train_vector)
                 vector_term.append(vector_term_item)
 
-            vector_term = np.asarray(vector_term)
-            temp = np.matmul(vector_term, np.linalg.inv(self.matrix_term))
-            prediction = np.matmul(temp, np.transpose(self.y_train))
-            predictions.append(prediction)
+            prediction = np.matmul(np.matmul(np.asmatrix(vector_term), np.linalg.inv(self.matrix_term)), self.y_train)
+            predictions.append(prediction.item(0))
 
         return predictions
