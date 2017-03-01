@@ -72,6 +72,8 @@
     \subsection{Bayesian Generalized Linear Regression} % (fold)
     \label{sub:bayesian_generalized_linear_regression}
     
+        Figure \ref{fig:bglg_err_v_deg} shows how the model error varies with respect to the maximum degree of basis functions. The best performing basis function in terms of error minimization is the one with degree 4.
+
         \begin{figure}[ht]
             \centering
             \includegraphics[width=0.6\textwidth]{3b_degree_vs_error.png}
@@ -79,12 +81,25 @@
             \label{fig:bglg_err_v_deg}
         \end{figure}
 
+        Figure \ref{fig:bglg_time_v_deg} shows the variation of time required for the computation as a function of the maximum basis function degree. The patterns in the function are similar to those detected for Regularized Generalized Linear Regression. 
+
         \begin{figure}[ht]
             \centering
             \includegraphics[width=0.6\textwidth]{3b_degree_vs_time.png}
             \caption{Bayesian Generalized Linear Regression - Time vs Basis function degree}
             \label{fig:bglg_time_v_deg}
         \end{figure}
+
+        The code for Bayesian Generalized Linear Regression is present in the directory `bayesian-generalized-linear-regression' of the code archive submitted.
+
+        \subsubsection*{Regularized generalized linear regression vs. Bayesian generalized linear regression} % (fold)
+        \label{ssub:regularized_generalized_linear_regression_vs_bayesian_generalized_linear_regression}
+
+            The generalized version of linear regression allows a mapping into a higher dimensional feature space which can be utilized to perform linear regression to predict underlying functions are are non-linear. This approach is common to both Regularized generalized linear regression and Bayesian generalized linear regression.
+
+            The difference between the two models is that Bayesian linear regression models the weight parameter as a Gaussian distribution. This leads to modeling the Bayesian linear objective's target variable as a conjugate distribution. This is because both the prior and likelihood probability distributions are Gaussian, which implicity models the target variable distribution as a Gaussian, too. This different from regularized generalized linear regression, as for the latter, we simply obtain the solution by minimizing a convex optimization objective, whereas for bayesian generalized linear regression, we iteratively minimize the search space for the ideal weights by using the computed posterior of each data-point as a prior for the next expression, thus minimizing the risk of overfitting better that simple generalized linear models.
+        
+        % subsubsection regularized_generalized_linear_regression_vs_bayesian_generalized_linear_regression (end)
     
     % subsection bayesian_generalized_linear_regression (end)
 
