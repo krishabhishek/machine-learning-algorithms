@@ -28,14 +28,65 @@
 \section{Gaussian Kernel Derivation} % (fold)
 \label{sec:gaussian_kernel_derivation}
 
+    \subsection*{Objective} % (fold)
+    \label{sub:objective}
+        Prove that the Gaussian kernel can be expressed as the inner product on an infinite dimensional feature space
+        \begin{equation} \label{eqn:objective}
+            k(x, x\prime) = e^{\frac{- {\lVert x - x\prime \rVert}^2}{2\sigma^2}}
+        \end{equation}
 
+    % subsection objective (end)
+
+    \subsection*{Proof} % (fold)
+    \label{sub:proof}
+
+        Expanding the exponent term in equation \ref{eqn:objective}, we get
+        $$k(x, x\prime) = e^{\frac{-(x^Tx - 2x^Tx\prime + x\prime^Tx\prime)}{2\sigma^2}}$$
+
+        Separating the exponent terms
+        $$k(x, x\prime) = e^{\frac{-x^Tx}{2\sigma^2}} e^{\frac{x^Tx\prime}{\sigma^2}} e^{\frac{- x\prime^Tx\prime)}{2\sigma^2}}$$
+
+        which can be written in general terms as
+        \begin{equation} \label{eqn:k1_derivation}
+            k(x, x\prime) = f(x) k_1(x, x\prime) f(x\prime)
+        \end{equation}
+
+        From equation \ref{eqn:k1_derivation}, we can say that
+        $$k_1(x, x\prime) = e^{\frac{x^Tx\prime}{\sigma^2}} $$
+
+        We can also write this kernel as 
+        \begin{equation} \label{eqn:k2_derivation}
+            k_1(x, x\prime) = e^{k_2(x, x\prime)}
+        \end{equation}
+
+        From equation \ref{eqn:k2_derivation}, we can say that
+        $$k_2(x, x\prime) = \frac{x^Tx\prime}{\sigma^2}$$
+
+        This can be further generalized as a kernel representation such that
+        \begin{equation} \label{eqn:k3_derivation}
+            k_2(x, x\prime) = c k_3(x, x\prime)
+        \end{equation}
+        where $c$ is a constant term. Here $c = \frac{1}{\sigma^2}$
+
+        From equation \ref{eqn:k3_derivation}, we can say that
+        $$k_3(x, x\prime) = x^Tx\prime$$
+        which is the formulation of the identity kernel, which comprised an inner product of an input sample $x$ with another arbitrary input sample $x\prime$
+
+        This kernel $k_3(x, x\prime)$ can also be modified to be written as 
+        \begin{equation}
+            k_3(x, x\prime) = \phi(x)\phi(x)\prime
+        \end{equation}
+        where $\phi$ represents a mapping of the original input feature $x$ into an infinite dimensional feature space.
+
+        Hence, it has been proved that the Gaussian kernel can be expressed as the inner product on an infinite dimensional feature space.
+    
+    % subsection proof (end)
 
 % section gaussian_kernel_derivation (end)
 
 
 \section{Perceptron Learning Algorithm - Dual Formulation} % (fold)
 \label{sec:perceptron_learning_algorithm_dual_formulation}
-
 
 
 % section perceptron_learning_algorithm_dual_formulation (end)
