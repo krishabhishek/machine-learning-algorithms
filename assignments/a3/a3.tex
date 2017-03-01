@@ -47,6 +47,8 @@
     \subsection{Regularized Generalized Linear Regression} % (fold)
     \label{sub:regularized_generalized_linear_regression}
     
+        Figure \ref{fig:rglg_err_v_deg} shows how the model error varies with respect to the maximum degree of basis functions. The best performing basis function in terms of error minimization is the one with degree 4.
+
         \begin{figure}[ht]
             \centering
             \includegraphics[width=0.6\textwidth]{3a_degree_vs_error.png}
@@ -54,12 +56,16 @@
             \label{fig:rglg_err_v_deg}
         \end{figure}
 
+        Similarly, Figure \ref{fig:rglg_time_v_deg} shows the variation of time required for the computation as a function of the maximum basis function degree. The experiments might not be very indicative of the complexity increase, due to the low amount of time the computation actually takes, but the computation seems to be increasing monotonically for increased maximum degree of basis functions. This could be attributed to the increase of the size of the weights that need to be computed, because each `n' degree basis function is a subset of any `m' degree basis function $\forall m > n$
+
         \begin{figure}[ht]
             \centering
             \includegraphics[width=0.6\textwidth]{3a_degree_vs_time.png}
             \caption{Regularized Generalized Linear Regression - Time vs Basis function degree}
             \label{fig:rglg_time_v_deg}
         \end{figure}
+
+        The code for Regularized Generalized Linear Regression is present in the directory `regularized-generalized-linear-regression' of the code archive submitted.
 
     % subsection regularized_generalized_linear_regression (end)
 
