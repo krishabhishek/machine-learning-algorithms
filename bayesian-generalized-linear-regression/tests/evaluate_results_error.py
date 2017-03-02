@@ -21,7 +21,7 @@ for result in results:
     y_values.append(result['error'])
 
 plt.xlabel('Basis Function Degree')
-plt.ylabel('Error - Euclidean loss')
+plt.ylabel('Mean Squared Error')
 plt.title('Bayesian Generalized Linear Regression Error Graph')
 plt.plot(x_values, y_values, linestyle='-', marker='o', color='b')
 

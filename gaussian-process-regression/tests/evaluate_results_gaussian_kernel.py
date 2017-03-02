@@ -27,9 +27,9 @@ for k in results.keys():
 
 plt.figure(0)
 plt.xlabel('Gaussian - Standard Deviation')
-plt.ylabel('Error - Euclidean loss')
+plt.ylabel('Mean Squared Error')
 plt.title('Gaussian Process Regression Error Graph (Gaussian Kernel) \n Best Kernel Standard Deviation = ' + str(best_stddev))
-plt.plot(x_values, y_values, 'bx:')
+plt.plot(x_values, y_values, linestyle='-', marker='o', color='b')
 
 plt.axis([None, None, 0, None])
 
@@ -54,7 +54,7 @@ plt.figure(1)
 plt.xlabel('Gaussian - Standard Deviation')
 plt.ylabel('Computational Time (seconds)')
 plt.title('Gaussian Process Regression - Computational Time (Gaussian Kernel)')
-plt.plot(x_values, y_values, 'bx:')
+plt.plot(x_values, y_values, linestyle='-', marker='o', color='b')
 
 plt.axis([None, None, 0, 10])
 

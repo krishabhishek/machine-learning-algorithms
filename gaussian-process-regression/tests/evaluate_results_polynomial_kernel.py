@@ -25,11 +25,36 @@ for k in results.keys():
         y_min = results[k]['error']
         best_stddev = k
 
-
+plt.figure(0)
 plt.xlabel('Polynomial - Degree')
-plt.ylabel('Error - Euclidean loss')
-plt.title('Gaussian Process Regression Error Graph\n Best Kernel Standard Deviation = ' + str(best_stddev))
-plt.plot(x_values, y_values, 'bx:')
+plt.ylabel('Mean Squared Error')
+plt.title('Gaussian Process Regression Error Graph (Polynomial Kernel) \n Best Kernel Degree = ' + str(best_stddev))
+plt.plot(x_values, y_values, linestyle='-', marker='o', color='b')
+
+plt.axis([None, None, 0, None])
+
+plt.show()
+
+############################
+
+
+x_values = list()
+y_values = list()
+y_min = 10000
+
+for k in results.keys():
+    x_values.append(k)
+    y_values.append(results[k]['elapsed_time'])
+
+    if results[k]['elapsed_time'] < y_min:
+        y_min = results[k]['elapsed_time']
+        best_stddev = k
+
+plt.figure(1)
+plt.xlabel('Polynomial - Degree')
+plt.ylabel('Computational Time (seconds)')
+plt.title('Gaussian Process Regression - Computational Time (Polynomial Kernel)')
+plt.plot(x_values, y_values, linestyle='-', marker='o', color='b')
 
 plt.axis([None, None, 0, 10])
 
