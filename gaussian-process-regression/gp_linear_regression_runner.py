@@ -46,7 +46,7 @@ def parse_args(argv):
                         type=str, required=True)
     parser.add_argument('--metrics_file', metavar='Metrics File',
                         type=str, required=True)
-    parser.add_argument('--gaussian_variance', metavar='Variance for Gaussian Kernel',
+    parser.add_argument('--gaussian_stddev', metavar='Standard Deviation for Gaussian Kernel',
                         type=int, required=False)
     parser.add_argument('--polynomial_degree', metavar='Degree for Polynomial Kernel',
                         type=int, required=False)

@@ -3,5 +3,5 @@ class Options(object):
     kernel_type = None
     kernel = None
     metrics_file = None
-    gaussian_variance = None
+    gaussian_stddev = None
     polynomial_degree = None

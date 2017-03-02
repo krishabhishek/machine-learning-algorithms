@@ -29,8 +29,8 @@ class GaussianProcessRegressionProcessor(Processor):
             results['error'] = error
             results['elapsed_time'] = elapsed_time
         elif self.options.kernel_type == "GaussianKernel":
-            if self.options.gaussian_variance:
-                for i in range(self.options.gaussian_variance):
+            if self.options.gaussian_stddev:
+                for i in range(self.options.gaussian_stddev):
                     self.options.kernel = GaussianKernel(i+1)
                     start_time = time()
                     error = self.run_cross_validation_phase()
@@ -40,7 +40,7 @@ class GaussianProcessRegressionProcessor(Processor):
                     result['elapsed_time'] = elapsed_time
                     results[i+1] = result
             else:
-                msg = "'gaussian_variance' argument required for GaussianKernel"
+                msg = "'gaussian_stddev' argument required for GaussianKernel"
                 log.error(msg)
                 raise RuntimeError(msg)
         elif self.options.kernel_type == "PolynomialKernel":
