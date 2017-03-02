@@ -85,6 +85,9 @@
 % section gaussian_kernel_derivation (end)
 
 
+\newpage
+
+
 \section{Perceptron Learning Algorithm - Dual Formulation} % (fold)
 \label{sec:perceptron_learning_algorithm_dual_formulation}
 
@@ -92,25 +95,34 @@
     \label{sub:objective_2}
 
         Given the perceptron learning rule:
-        \begin{equation}
+        \begin{equation*}
             w^{t+1} = 
             \begin{cases}
                 w^t + y_n \phi(x_n) & \text{if } y_n w^T \phi(x_n) \leq 0 \\
                 w^t              & \text{otherwise}
             \end{cases}
-        \end{equation}
+        \end{equation*}
         show that the learned weight vector $w$ can be written as a linear combination of the vectors $y_n \phi(x_n)$ where $y_n \in {+1, -1}$. Denote the coefficients of this linear combination by $a_n$.
 
-        % \subsubsection{Dual Formulation Objective} % (fold)
-        % \label{ssub:dual_formulation_objective}
+        \subsubsection*{1. Dual Formulation Objective} % (fold)
+        \label{ssub:dual_formulation_objective}
 
-
+            Derive a formulation of the perceptron learning rule in terms of $a_n$. Show that the feature vector $\phi(x)$ enters only in the form of the kernel function $k(x, x\prime) = \phi(x)^T\phi(x\prime)$
         
-        % % subsubsection dual_formulation_objective (end)
+        % subsubsection dual_formulation_objective (end)
 
-        % \subsubsection{Predictive Learning Rule formulation} % (fold)
-        % \label{ssub:predictive_learning_rule_formulation}
+        \subsubsection*{2. Predictive Learning Rule formulation} % (fold)
+        \label{ssub:predictive_learning_rule_formulation}
         
+            Derive a formulation of the predictive learning rule in terms of $a_n$
+            \begin{equation*}
+                y = 
+                \begin{cases}
+                    1 & \text{if } w^T \phi(x) > 0 \\
+                    -1 & \text{otherwise}
+                \end{cases}
+            \end{equation*}
+
         % subsubsection predictive_learning_rule_formulation (end)
 
     % subsection objective_2 (end)
@@ -118,10 +130,48 @@
 
     \subsection*{Proof} % (fold)
     \label{sub:proof_2}
+
+        The implicit assumption here is that the training data $x$ has been mapping into a higher-dimensional feature space denoted by $\phi(x)$.
+
+        Thus, we can generalize the perceptron learning rule, such that
+        \begin{equation*}
+            w^{t+1} = 
+            \begin{cases}
+                w^t + \phi(x) & \text{if } \hat{y} = 1 \text{ and } y = -1 \\
+                w^t - \phi(x) & \text{if } \hat{y} = -1 \text{ and } y = 1 \\
+                w^t & \text{otherwise}
+            \end{cases}
+        \end{equation*}
+        where $\hat{y}$ is the prediction and $y$ is the target value.
+
+        This can be further generalized to express the final weight vector after all the training epochs as,
+        $$w = \sum_{n=1}^N y_n \phi(x_n), \forall \text{ misclassifications}$$
+        which can also be written as
+        \begin{equation} \label{eqn:misclassified_count}
+            w = \sum_{n=1}^N a_n y_n \phi(x_n)            
+        \end{equation}
+        where $a_n$ is the number of times $x_n$ was misclassified during the training phase. This is the only co-efficient of the linear combination equating the weight vector to $y_n \phi(x_n)$.
+
+        The final prediction $y$ is obtained using the below equation
+        $$y = sgn(w^T \phi(x)) $$
+
+        Substituting the value of $w$ as obtained in equation \ref{eqn:misclassified_count}, we get
+        $$y = sgn((\sum_{n=1}^N a_n y_n \phi(x_n)) \phi(x)) $$
+
+        \begin{equation} \label{eqn:dual_formulation_perceptron}
+            y = sgn(\sum_{n=1}^N a_n y_n (\phi(x_n)^T \phi(x)))            
+        \end{equation}
+
+        Equation \ref{eqn:dual_formulation_perceptron} obtains the term $\phi(x_n)^T \phi(x))$ which is the identity kernel representation, and which proves the Dual Formulation Objective\ref{ssub:dual_formulation_objective}.
+
+        Equation \ref{eqn:dual_formulation_perceptron} is, in itself also a formulation of the Predictive Learning Rule\ref{ssub:predictive_learning_rule_formulation} in terms of the co-efficient term $a_n$.
     
     % subsection proof_2 (end)
 
 % section perceptron_learning_algorithm_dual_formulation (end)
+
+
+\newpage
 
 
 \section{Non-linear Regression Techniques} % (fold)
