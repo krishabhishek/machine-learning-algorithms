@@ -335,9 +335,9 @@
                 \caption{Kernel Error Comparison}
                 \label{tab:kernel_error_comparison}
             \end{table}
-
             The best MSE for the Gaussian kernel was achieved for $\sigma = 4$ and the best MSE for the polynomial kernel was achieved for $d = 4$
 
+            The running times for each of the variations of the parameters for the Gaussian and Polynomial do not have significant deviations in terms of run-time, which allows computation of a regression function that scales only with the data, and not the complexity of the underlying basis function. This is indicated in Table \ref{tab:kernel_computational_time_comparison}.
             \begin{table}[ht]
                 \centering
                 \begin{tabular}{| l | c | c |}
@@ -347,9 +347,9 @@
                 \hline
                     Identity & 3.767 & - \\
                 \hline
-                    Gaussian &  & \\
+                    Gaussian & 5.761 & 0.008 \\
                 \hline
-                    Polynomial &  & \\
+                    Polynomial & 4.406 & 0.032 \\
                 \hline
                 \end{tabular}
                 \caption{Kernel Computational Time Comparison}

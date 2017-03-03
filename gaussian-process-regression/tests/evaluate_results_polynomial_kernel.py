@@ -1,3 +1,4 @@
+import numpy as np
 import json
 
 import matplotlib.pyplot as plt
@@ -49,6 +50,10 @@ for k in results.keys():
     if results[k]['elapsed_time'] < y_min:
         y_min = results[k]['elapsed_time']
         best_stddev = k
+
+times = np.asarray(y_values)
+print("Mean: " + str(np.mean(times)))
+print("Std: " + str(np.std(times)))
 
 plt.figure(1)
 plt.xlabel('Polynomial - Degree')

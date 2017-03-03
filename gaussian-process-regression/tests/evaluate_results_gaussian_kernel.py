@@ -1,3 +1,4 @@
+import numpy as np
 import json
 
 import matplotlib.pyplot as plt
@@ -55,6 +56,10 @@ plt.xlabel('Gaussian - Standard Deviation')
 plt.ylabel('Computational Time (seconds)')
 plt.title('Gaussian Process Regression - Computational Time (Gaussian Kernel)')
 plt.plot(x_values, y_values, linestyle='-', marker='o', color='b')
+
+times = np.asarray(y_values)
+print("Mean: " + str(np.mean(times)))
+print("Std: " + str(np.std(times)))
 
 plt.axis([None, None, 0, 10])
 
