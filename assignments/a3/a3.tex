@@ -71,7 +71,7 @@
 
         From equation \ref{eqn:k3_derivation}, we can say that
         $$k_3(x, x\prime) = x^Tx\prime$$
-        which is the formulation of the identity kernel, which comprised an inner product of an input sample $x$ with another arbitrary input sample $x\prime$
+        which is the formulation of the identity kernel. It comprises an inner product of an input sample $x$ with another arbitrary input sample $x\prime$.
 
         This kernel $k_3(x, x\prime)$ can also be modified to be written as 
         \begin{equation}
@@ -102,10 +102,10 @@
             w^{t+1} = 
             \begin{cases}
                 w^t + y_n \phi(x_n) & \text{if } y_n w^T \phi(x_n) \leq 0 \\
-                w^t              & \text{otherwise}
+                w^t                 & \text{otherwise}
             \end{cases}
         \end{equation}
-        show that the learned weight vector $w$ can be written as a linear combination of the vectors $y_n \phi(x_n)$ where $y_n \in {+1, -1}$. Denote the coefficients of this linear combination by $a_n$.
+        show that the learned weight vector $w$ can be written as a linear combination of the vectors $y_n \phi(x_n)$ where $y_n \in \{+1, -1\}$. Denote the coefficients of this linear combination by $a_n$.
 
         \subsubsection*{1. Dual Formulation Objective} % (fold)
         \label{ssub:dual_formulation_objective}
@@ -121,7 +121,7 @@
             \begin{equation*}
                 y = 
                 \begin{cases}
-                    1 & \text{if } w^T \phi(x) > 0 \\
+                    1  & \text{if } w^T \phi(x) > 0 \\
                     -1 & \text{otherwise}
                 \end{cases}
             \end{equation*}
@@ -156,7 +156,7 @@
         where $a_n$ is the number of times $x_n$ was misclassified during the training phase. This is the only co-efficient of the linear combination equating the weight vector to $y_n \phi(x_n)$.
 
 
-        Substituting the expression of $w$ obtained in equation \ref{eqn:misclassified_count}, into the original perceptron learning rule denoted in equation \ref{eqn:orig_perceptron_learning_rule}, we obtain:
+        Substituting the expression of $w$ obtained in equation \ref{eqn:misclassified_count} into the original perceptron learning rule denoted in equation \ref{eqn:orig_perceptron_learning_rule}, we obtain:
         \begin{equation} \label{eqn:dual_perceptron_learning_rule}
             \boxed{
                 a_n = 
@@ -264,7 +264,7 @@
 
             The generalized version of linear regression allows a mapping into a higher dimensional feature space which can be utilized to perform linear regression to predict underlying functions are are non-linear. This approach is common to both Regularized generalized linear regression and Bayesian generalized linear regression.
 
-            The difference between the two models is that Bayesian linear regression models the weight parameter as a Gaussian distribution. This leads to modeling the Bayesian linear objective's target variable as a conjugate distribution. This is because both the prior and likelihood probability distributions are Gaussian, which implicity models the target variable distribution as a Gaussian, too. This different from regularized generalized linear regression, as for the latter, we simply obtain the solution by minimizing a convex optimization objective, whereas for bayesian generalized linear regression, we iteratively minimize the search space for the ideal weights by using the computed posterior of each data-point as a prior for the next expression, thus minimizing the risk of overfitting better that simple generalized linear models.
+            The difference between the two models is that Bayesian linear regression models the weight parameter as a Gaussian distribution. This leads to modeling the Bayesian linear objective's target variable as a conjugate distribution. This is because both the prior and likelihood probability distributions are Gaussian, which implicity models the target variable distribution as a Gaussian, too. This is different from regularized generalized linear regression, as for the latter, we simply obtain the solution by minimizing a convex optimization objective. However, for bayesian generalized linear regression, we iteratively minimize the search space for the ideal weights by using the computed posterior of each data-point as a prior for the next expression, thus minimizing the risk of overfitting better than simple generalized linear models.
         
         % subsubsection regularized_generalized_linear_regression_vs_bayesian_generalized_linear_regression (end)
 
