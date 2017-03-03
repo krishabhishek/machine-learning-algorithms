@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \graphicspath {{images/}}
 \hypersetup{
     colorlinks=true,
@@ -180,7 +181,7 @@
     \subsection{Regularized Generalized Linear Regression} % (fold)
     \label{sub:regularized_generalized_linear_regression}
     
-        Figure \ref{fig:rglg_err_v_deg} shows how the model error varies with respect to the maximum degree of basis functions. The best performing basis function in terms of error minimization is the one with degree 4.
+        Figure \ref{fig:rglg_err_v_deg} shows how the model error varies with respect to the maximum degree of basis functions. 
 
         \begin{figure}[ht]
             \centering
@@ -189,7 +190,7 @@
             \label{fig:rglg_err_v_deg}
         \end{figure}
 
-        Similarly, Figure \ref{fig:rglg_time_v_deg} shows the variation of time required for the computation as a function of the maximum basis function degree. The experiments might not be very indicative of the complexity increase, due to the low amount of time the computation actually takes, but the computation seems to be increasing monotonically for increased maximum degree of basis functions. This could be attributed to the increase of the size of the weights that need to be computed, because each `n' degree basis function is a subset of any `m' degree basis function $\forall m > n$
+        Similarly, Figure \ref{fig:rglg_time_v_deg} shows the variation of time required for the computation as a function of the maximum basis function degree. 
 
         \begin{figure}[ht]
             \centering
@@ -198,6 +199,15 @@
             \label{fig:rglg_time_v_deg}
         \end{figure}
 
+        \subsubsection*{Regularized Generalized Linear Regression - Results Discussion} % (fold)
+        \label{ssub:regularized_generalized_linear_regression_results_discussion}
+
+            The best performing basis function in terms of error minimization is the one with degree 4.
+
+            The experiments for computational time might not be very indicative of the complexity increase, due to the low amount of time it takes to execute, but the computation seems to be increasing monotonically for increased maximum degree of basis functions. This could be attributed to the increase of the size of the weights that need to be computed, because each `n' degree basis function is a subset of any `m' degree basis function $\forall m > n$.
+        
+        % subsubsection regularized_generalized_linear_regression_results_discussion (end)
+
         The code for Regularized Generalized Linear Regression is present in the directory `regularized-generalized-linear-regression' of the code archive submitted.
 
     % subsection regularized_generalized_linear_regression (end)
@@ -205,7 +215,7 @@
     \subsection{Bayesian Generalized Linear Regression} % (fold)
     \label{sub:bayesian_generalized_linear_regression}
     
-        Figure \ref{fig:bglg_err_v_deg} shows how the model error varies with respect to the maximum degree of basis functions. The best performing basis function in terms of error minimization is the one with degree 4.
+        Figure \ref{fig:bglg_err_v_deg} shows how the model error varies with respect to the maximum degree of basis functions.
 
         \begin{figure}[ht]
             \centering
@@ -214,7 +224,7 @@
             \label{fig:bglg_err_v_deg}
         \end{figure}
 
-        Figure \ref{fig:bglg_time_v_deg} shows the variation of time required for the computation as a function of the maximum basis function degree. The patterns in the function are similar to those detected for Regularized Generalized Linear Regression. 
+        Figure \ref{fig:bglg_time_v_deg} shows the variation of time required for the computation as a function of the maximum basis function degree.
 
         \begin{figure}[ht]
             \centering
@@ -223,7 +233,14 @@
             \label{fig:bglg_time_v_deg}
         \end{figure}
 
-        The code for Bayesian Generalized Linear Regression is present in the directory `bayesian-generalized-linear-regression' of the code archive submitted.
+        \subsubsection*{Bayesian Generalized Linear Regression - Results Discussion} % (fold)
+        \label{ssub:bayesian_generalized_linear_regression_results_discussion}
+
+            Similar to the previous experiment[\ref{sub:regularized_generalized_linear_regression}], the best performing basis function in terms of error minimization is the one with degree 4.
+
+            The patterns for time complexity are also similar to those detected for Regularized Generalized Linear Regression. 
+        
+        % subsubsection bayesian_generalized_linear_regression_results_discussion (end)
 
         \subsubsection*{Regularized generalized linear regression vs. Bayesian generalized linear regression} % (fold)
         \label{ssub:regularized_generalized_linear_regression_vs_bayesian_generalized_linear_regression}
@@ -233,11 +250,115 @@
             The difference between the two models is that Bayesian linear regression models the weight parameter as a Gaussian distribution. This leads to modeling the Bayesian linear objective's target variable as a conjugate distribution. This is because both the prior and likelihood probability distributions are Gaussian, which implicity models the target variable distribution as a Gaussian, too. This different from regularized generalized linear regression, as for the latter, we simply obtain the solution by minimizing a convex optimization objective, whereas for bayesian generalized linear regression, we iteratively minimize the search space for the ideal weights by using the computed posterior of each data-point as a prior for the next expression, thus minimizing the risk of overfitting better that simple generalized linear models.
         
         % subsubsection regularized_generalized_linear_regression_vs_bayesian_generalized_linear_regression (end)
+
+        The code for Bayesian Generalized Linear Regression is present in the directory `bayesian-generalized-linear-regression' of the code archive submitted.
     
     % subsection bayesian_generalized_linear_regression (end)
 
     \subsection{Gaussian Process Regression} % (fold)
     \label{sub:gaussian_process_regression}
+
+        \subsubsection*{Identity Kernel} % (fold)
+        \label{ssub:identity_kernel}
+
+        The mean squared error obtained by 10 fold crossvalidation is:
+        $$MSE = 3.576$$
+        The time taken for this computation was $3.767$ seconds
+        
+        % subsubsection identity_kernel (end)
+
+        \subsubsection*{Gaussian Kernel} % (fold)
+        \label{ssub:gaussian_kernel}
+
+            Figure \ref{fig:gpr_gaussian_stddev_vs_error} shows how the model error varies with the standard deviation ($\sigma$) of the Gaussian distribution encoded in the kernel.
+
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.6\textwidth]{3c_gpr_gaussian_stddev_vs_error.png}
+                \caption{Gaussian Process Regression - Gaussian Kernel - Standard Deviation vs. Error}
+                \label{fig:gpr_gaussian_stddev_vs_error}
+            \end{figure}
+
+            Figure \ref{fig:gpr_gaussian_stddev_vs_time} shows how the time complexity varies with the standard deviation ($\sigma$) of the Gaussian distribution encoded in the kernel.
+
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.6\textwidth]{3c_gpr_gaussian_stddev_vs_time.png}
+                \caption{Gaussian Process Regression - Gaussian Kernel - Standard Deviation vs. Time}
+                \label{fig:gpr_gaussian_stddev_vs_time}
+            \end{figure}
+        
+        % subsubsection gaussian_kernel (end)
+
+        \subsubsection*{Polynomial Kernel} % (fold)
+        \label{ssub:polynomial_kernel}
+
+            Figure \ref{fig:gpr_polynomial_degree_vs_error} shows how the model error varies with the polynomial degree ($d$) of the polynomial function encoded in the kernel.
+
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.6\textwidth]{3c_gpr_polynomial_degree_vs_error.png}
+                \caption{Gaussian Process Regression - Polynomial Kernel - Degree vs. Error}
+                \label{fig:gpr_polynomial_degree_vs_error}
+            \end{figure}
+
+            Figure \ref{fig:gpr_polynomial_degree_vs_time} shows how the time complexity varies with the polynomial degree ($d$) of the polynomial function encoded in the kernel.
+
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.6\textwidth]{3c_gpr_polynomial_degree_vs_time.png}
+                \caption{Gaussian Process Regression - Polynomial Kernel - Degree vs. Time}
+                \label{fig:gpr_polynomial_degree_vs_time}
+            \end{figure}
+        
+        % subsubsection polynomial_kernel (end)
+
+        \subsubsection*{Gaussian Process Regression - Results Discusssion} % (fold)
+        \label{ssub:gaussian_process_regression_results_discusssion}
+
+            Both the Gaussian and the Polynomial kernels obtain far better results in terms of mean squared error minimization as compared to the Identity kernel. The best mean-squared error statistic for each of the kernel implementations are given in Table \ref{tab:kernel_error_comparison}.
+
+            \begin{table}[ht]
+                \centering
+                \begin{tabular}{| l | c |}
+                \hline
+                \textbf{Kernel} & \textbf{Best MSE} \\
+                \hline
+                \hline
+                    Identity & 3.576 \\
+                \hline
+                    Gaussian & 0.057 \\
+                \hline
+                    Polynomial & 0.054 \\
+                \hline
+                \end{tabular}
+                \caption{Kernel Error Comparison}
+                \label{tab:kernel_error_comparison}
+            \end{table}
+
+            The best MSE for the Gaussian kernel was achieved for $\sigma = 4$ and the best MSE for the polynomial kernel was achieved for $d = 4$
+
+            \begin{table}[ht]
+                \centering
+                \begin{tabular}{| l | c | c |}
+                \hline
+                \textbf{Kernel} & \textbf{Mean Time ($\mu$)} & \textbf{Std. Dev. Time ($\sigma$)} \\
+                \hline
+                \hline
+                    Identity & 3.767 & - \\
+                \hline
+                    Gaussian &  & \\
+                \hline
+                    Polynomial &  & \\
+                \hline
+                \end{tabular}
+                \caption{Kernel Computational Time Comparison}
+                \label{tab:kernel_computational_time_comparison}
+            \end{table}
+
+        
+        % subsubsection gaussian_process_regression_results_discusssion (end)
+
     
     % subsection gaussian_process_regression (end)
 
