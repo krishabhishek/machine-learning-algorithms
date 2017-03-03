@@ -75,7 +75,9 @@
 
         This kernel $k_3(x, x\prime)$ can also be modified to be written as 
         \begin{equation}
-            k_3(x, x\prime) = \phi(x)^T\phi(x\prime)
+            \boxed{
+                k_3(x, x\prime) = \phi(x)^T\phi(x\prime)
+            }
         \end{equation}
         where $\phi$ represents a mapping of the original input feature $x$ into an infinite dimensional feature space.
 
@@ -96,13 +98,13 @@
     \label{sub:objective_2}
 
         Given the perceptron learning rule:
-        \begin{equation*}
+        \begin{equation} \label{eqn:orig_perceptron_learning_rule}
             w^{t+1} = 
             \begin{cases}
                 w^t + y_n \phi(x_n) & \text{if } y_n w^T \phi(x_n) \leq 0 \\
                 w^t              & \text{otherwise}
             \end{cases}
-        \end{equation*}
+        \end{equation}
         show that the learned weight vector $w$ can be written as a linear combination of the vectors $y_n \phi(x_n)$ where $y_n \in {+1, -1}$. Denote the coefficients of this linear combination by $a_n$.
 
         \subsubsection*{1. Dual Formulation Objective} % (fold)
@@ -145,13 +147,28 @@
         \end{equation*}
         where $\hat{y}$ is the prediction and $y$ is the target value.
 
-        This can be further generalized to express the final weight vector after all the training epochs as,
+        This can be further generalized to express the final weight vector after $N$ training epochs as,
         $$w = \sum_{n=1}^N y_n \phi(x_n), \forall \text{ misclassifications}$$
         which can also be written as
         \begin{equation} \label{eqn:misclassified_count}
-            w = \sum_{n=1}^N a_n y_n \phi(x_n)            
+            w = \sum_{n=1}^N a_n y_n \phi(x_n)
         \end{equation}
         where $a_n$ is the number of times $x_n$ was misclassified during the training phase. This is the only co-efficient of the linear combination equating the weight vector to $y_n \phi(x_n)$.
+
+
+        Substituting the expression of $w$ obtained in equation \ref{eqn:misclassified_count}, into the original perceptron learning rule denoted in equation \ref{eqn:orig_perceptron_learning_rule}, we obtain:
+        \begin{equation} \label{eqn:dual_perceptron_learning_rule}
+            \boxed{
+                a_n = 
+                \begin{cases}
+                    a_n + 1 & \text{if } y_n (\sum_{n=1}^N a_n y_n) \phi(x_n)^T\phi(x_n) \leq 0 \\
+                    a_n     & \text{otherwise}
+                \end{cases}
+            }
+        \end{equation}
+
+        Equation \ref{eqn:dual_perceptron_learning_rule} obtains the perceptron learning rule in a formulation that ensures that data only enters as an inner product term which is $\phi(x_n)^T \phi(x))$. This proves the Dual Formulation Objective(\ref{ssub:dual_formulation_objective}).
+
 
         The final prediction $y$ is obtained using the below equation
         $$y = sgn(w^T \phi(x)) $$
@@ -159,13 +176,13 @@
         Substituting the value of $w$ as obtained in equation \ref{eqn:misclassified_count}, we get
         $$y = sgn((\sum_{n=1}^N a_n y_n \phi(x_n)) \phi(x)) $$
 
-        \begin{equation} \label{eqn:dual_formulation_perceptron}
-            y = sgn(\sum_{n=1}^N a_n y_n (\phi(x_n)^T \phi(x)))            
+        \begin{equation} \label{eqn:perceptron_prediction}
+            \boxed{
+                y = sgn(\sum_{n=1}^N a_n y_n (\phi(x_n)^T \phi(x)))            
+            }
         \end{equation}
 
-        Equation \ref{eqn:dual_formulation_perceptron} obtains the term $\phi(x_n)^T \phi(x))$ which is the identity kernel representation, and which proves the Dual Formulation Objective\ref{ssub:dual_formulation_objective}.
-
-        Equation \ref{eqn:dual_formulation_perceptron} is, in itself also a formulation of the Predictive Learning Rule\ref{ssub:predictive_learning_rule_formulation} in terms of the co-efficient term $a_n$.
+        Equation \ref{eqn:perceptron_prediction} is the formulation of the Predictive Learning Rule(\ref{ssub:predictive_learning_rule_formulation}) in terms of the co-efficient term $a_n$.
     
     % subsection proof_2 (end)
 
@@ -183,7 +200,7 @@
     
         Figure \ref{fig:rglg_err_v_deg} shows how the model error varies with respect to the maximum degree of basis functions. 
 
-        \begin{figure}[ht]
+        \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{3a_degree_vs_error.png}
             \caption{Regularized Generalized Linear Regression - Error vs Basis function degree}
@@ -192,7 +209,7 @@
 
         Similarly, Figure \ref{fig:rglg_time_v_deg} shows the variation of time required for the computation as a function of the maximum basis function degree. 
 
-        \begin{figure}[ht]
+        \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{3a_degree_vs_time.png}
             \caption{Regularized Generalized Linear Regression - Time vs Basis function degree}
@@ -208,7 +225,7 @@
         
         % subsubsection regularized_generalized_linear_regression_results_discussion (end)
 
-        The code for Regularized Generalized Linear Regression is present in the directory `regularized-generalized-linear-regression' of the code archive submitted.
+        The code for Regularized Generalized Linear Regression is present in the directory `regularized-generalized-linear-regression' of the code archive submitted. All the statistics reported were derived using 10-fold cross-validation.
 
     % subsection regularized_generalized_linear_regression (end)
 
@@ -217,7 +234,7 @@
     
         Figure \ref{fig:bglg_err_v_deg} shows how the model error varies with respect to the maximum degree of basis functions.
 
-        \begin{figure}[ht]
+        \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{3b_degree_vs_error.png}
             \caption{Bayesian Generalized Linear Regression - Error vs Basis function degree}
@@ -226,7 +243,7 @@
 
         Figure \ref{fig:bglg_time_v_deg} shows the variation of time required for the computation as a function of the maximum basis function degree.
 
-        \begin{figure}[ht]
+        \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{3b_degree_vs_time.png}
             \caption{Bayesian Generalized Linear Regression - Time vs Basis function degree}
@@ -251,17 +268,19 @@
         
         % subsubsection regularized_generalized_linear_regression_vs_bayesian_generalized_linear_regression (end)
 
-        The code for Bayesian Generalized Linear Regression is present in the directory `bayesian-generalized-linear-regression' of the code archive submitted.
+        The code for Bayesian Generalized Linear Regression is present in the directory `bayesian-generalized-linear-regression' of the code archive submitted. All the statistics reported were derived using 10-fold cross-validation.
     
     % subsection bayesian_generalized_linear_regression (end)
 
     \subsection{Gaussian Process Regression} % (fold)
     \label{sub:gaussian_process_regression}
 
+        The Gaussian process regression experiments were done on the identity, gaussian and polynomial kernels, each discussed in greater detail in the below sections.
+
         \subsubsection*{Identity Kernel} % (fold)
         \label{ssub:identity_kernel}
 
-        The mean squared error obtained by 10 fold crossvalidation is:
+        The mean squared error obtained by 10-fold cross-validation is:
         $$MSE = 3.576$$
         The time taken for this computation was $3.767$ seconds
         
@@ -272,7 +291,7 @@
 
             Figure \ref{fig:gpr_gaussian_stddev_vs_error} shows how the model error varies with the standard deviation ($\sigma$) of the Gaussian distribution encoded in the kernel.
 
-            \begin{figure}[ht]
+            \begin{figure}
                 \centering
                 \includegraphics[width=0.7\textwidth]{3c_gpr_gaussian_stddev_vs_error.png}
                 \caption{Gaussian Process Regression - Gaussian Kernel - Standard Deviation vs. Error}
@@ -281,7 +300,7 @@
 
             Figure \ref{fig:gpr_gaussian_stddev_vs_time} shows how the time complexity varies with the standard deviation ($\sigma$) of the Gaussian distribution encoded in the kernel.
 
-            \begin{figure}[ht]
+            \begin{figure}
                 \centering
                 \includegraphics[width=0.7\textwidth]{3c_gpr_gaussian_stddev_vs_time.png}
                 \caption{Gaussian Process Regression - Gaussian Kernel - Standard Deviation vs. Time}
@@ -295,7 +314,7 @@
 
             Figure \ref{fig:gpr_polynomial_degree_vs_error} shows how the model error varies with the polynomial degree ($d$) of the polynomial function encoded in the kernel.
 
-            \begin{figure}[ht]
+            \begin{figure}
                 \centering
                 \includegraphics[width=0.7\textwidth]{3c_gpr_polynomial_degree_vs_error.png}
                 \caption{Gaussian Process Regression - Polynomial Kernel - Degree vs. Error}
@@ -304,7 +323,7 @@
 
             Figure \ref{fig:gpr_polynomial_degree_vs_time} shows how the time complexity varies with the polynomial degree ($d$) of the polynomial function encoded in the kernel.
 
-            \begin{figure}[ht]
+            \begin{figure}
                 \centering
                 \includegraphics[width=0.7\textwidth]{3c_gpr_polynomial_degree_vs_time.png}
                 \caption{Gaussian Process Regression - Polynomial Kernel - Degree vs. Time}
@@ -337,12 +356,15 @@
             \end{table}
             The best MSE for the Gaussian kernel was achieved for $\sigma = 4$ and the best MSE for the polynomial kernel was achieved for $d = 4$
 
-            The running times for each of the variations of the parameters for the Gaussian and Polynomial do not have significant deviations in terms of run-time, which allows computation of a regression function that scales only with the data, and not the complexity of the underlying basis function. This is indicated in Table \ref{tab:kernel_computational_time_comparison}. This implicitly means that the input features could theoretically be mapped into an infinite dimensional space, with no added computational cost as long as the number of data points remains the same.
+            The running times for each of the variations of the parameters for the Gaussian and Polynomial do not have significant deviations in terms of run-time, which allows computation of a regression function that scales only with the data, and not the complexity of the underlying basis function. This is indicated in Table \ref{tab:kernel_computational_time_comparison}. 
+
+            This implicitly means that the input features could theoretically be mapped into an infinite dimensional space, with no added computational cost as long as the number of data points remains the same.
+            
             \begin{table}[ht]
                 \centering
-                \begin{tabular}{| l | c | c |}
+                \begin{tabular}{| c | c | c |}
                 \hline
-                \textbf{Kernel} & \textbf{Mean Time ($\mu$)} & \textbf{Std. Dev. Time ($\sigma$)} \\
+                \textbf{Kernel} & \textbf{Mean Time (s.)} & \textbf{Std. Dev. Time (s.)} \\
                 \hline
                 \hline
                     Identity & 3.767 & - \\
@@ -359,6 +381,7 @@
         
         % subsubsection gaussian_process_regression_results_discusssion (end)
 
+        The code for Gaussian Process Regression is present in the directory `gaussian-process-regression' of the code archive submitted. All the statistics reported were derived using 10-fold cross-validation.
     
     % subsection gaussian_process_regression (end)
 
