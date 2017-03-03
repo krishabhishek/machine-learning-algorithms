@@ -185,7 +185,7 @@
 
         \begin{figure}[ht]
             \centering
-            \includegraphics[width=0.6\textwidth]{3a_degree_vs_error.png}
+            \includegraphics[width=0.7\textwidth]{3a_degree_vs_error.png}
             \caption{Regularized Generalized Linear Regression - Error vs Basis function degree}
             \label{fig:rglg_err_v_deg}
         \end{figure}
@@ -194,7 +194,7 @@
 
         \begin{figure}[ht]
             \centering
-            \includegraphics[width=0.6\textwidth]{3a_degree_vs_time.png}
+            \includegraphics[width=0.7\textwidth]{3a_degree_vs_time.png}
             \caption{Regularized Generalized Linear Regression - Time vs Basis function degree}
             \label{fig:rglg_time_v_deg}
         \end{figure}
@@ -219,7 +219,7 @@
 
         \begin{figure}[ht]
             \centering
-            \includegraphics[width=0.6\textwidth]{3b_degree_vs_error.png}
+            \includegraphics[width=0.7\textwidth]{3b_degree_vs_error.png}
             \caption{Bayesian Generalized Linear Regression - Error vs Basis function degree}
             \label{fig:bglg_err_v_deg}
         \end{figure}
@@ -228,7 +228,7 @@
 
         \begin{figure}[ht]
             \centering
-            \includegraphics[width=0.6\textwidth]{3b_degree_vs_time.png}
+            \includegraphics[width=0.7\textwidth]{3b_degree_vs_time.png}
             \caption{Bayesian Generalized Linear Regression - Time vs Basis function degree}
             \label{fig:bglg_time_v_deg}
         \end{figure}
@@ -274,7 +274,7 @@
 
             \begin{figure}[ht]
                 \centering
-                \includegraphics[width=0.6\textwidth]{3c_gpr_gaussian_stddev_vs_error.png}
+                \includegraphics[width=0.7\textwidth]{3c_gpr_gaussian_stddev_vs_error.png}
                 \caption{Gaussian Process Regression - Gaussian Kernel - Standard Deviation vs. Error}
                 \label{fig:gpr_gaussian_stddev_vs_error}
             \end{figure}
@@ -283,7 +283,7 @@
 
             \begin{figure}[ht]
                 \centering
-                \includegraphics[width=0.6\textwidth]{3c_gpr_gaussian_stddev_vs_time.png}
+                \includegraphics[width=0.7\textwidth]{3c_gpr_gaussian_stddev_vs_time.png}
                 \caption{Gaussian Process Regression - Gaussian Kernel - Standard Deviation vs. Time}
                 \label{fig:gpr_gaussian_stddev_vs_time}
             \end{figure}
@@ -297,7 +297,7 @@
 
             \begin{figure}[ht]
                 \centering
-                \includegraphics[width=0.6\textwidth]{3c_gpr_polynomial_degree_vs_error.png}
+                \includegraphics[width=0.7\textwidth]{3c_gpr_polynomial_degree_vs_error.png}
                 \caption{Gaussian Process Regression - Polynomial Kernel - Degree vs. Error}
                 \label{fig:gpr_polynomial_degree_vs_error}
             \end{figure}
@@ -306,7 +306,7 @@
 
             \begin{figure}[ht]
                 \centering
-                \includegraphics[width=0.6\textwidth]{3c_gpr_polynomial_degree_vs_time.png}
+                \includegraphics[width=0.7\textwidth]{3c_gpr_polynomial_degree_vs_time.png}
                 \caption{Gaussian Process Regression - Polynomial Kernel - Degree vs. Time}
                 \label{fig:gpr_polynomial_degree_vs_time}
             \end{figure}
@@ -337,7 +337,7 @@
             \end{table}
             The best MSE for the Gaussian kernel was achieved for $\sigma = 4$ and the best MSE for the polynomial kernel was achieved for $d = 4$
 
-            The running times for each of the variations of the parameters for the Gaussian and Polynomial do not have significant deviations in terms of run-time, which allows computation of a regression function that scales only with the data, and not the complexity of the underlying basis function. This is indicated in Table \ref{tab:kernel_computational_time_comparison}.
+            The running times for each of the variations of the parameters for the Gaussian and Polynomial do not have significant deviations in terms of run-time, which allows computation of a regression function that scales only with the data, and not the complexity of the underlying basis function. This is indicated in Table \ref{tab:kernel_computational_time_comparison}. This implicitly means that the input features could theoretically be mapped into an infinite dimensional space, with no added computational cost as long as the number of data points remains the same.
             \begin{table}[ht]
                 \centering
                 \begin{tabular}{| l | c | c |}
@@ -347,9 +347,9 @@
                 \hline
                     Identity & 3.767 & - \\
                 \hline
-                    Gaussian & 5.761 & 0.008 \\
+                    Gaussian & 2.574 & 0.005 \\
                 \hline
-                    Polynomial & 4.406 & 0.032 \\
+                    Polynomial & 1.315 & 0.016 \\
                 \hline
                 \end{tabular}
                 \caption{Kernel Computational Time Comparison}
