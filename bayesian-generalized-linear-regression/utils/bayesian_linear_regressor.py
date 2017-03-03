@@ -24,9 +24,7 @@ class BayesianLinearRegression(object):
 
         A = (self.variance * np.matmul(np.transpose(X), X)) + lg.inv(identity_matrix)
 
-        for test_vector in x_test:
-            y_prediction = np.dot(np.transpose(test_vector) * lg.inv(A) * np.transpose(X), np.transpose(self.y_train))
-            predictions.append(y_prediction.item((0, 0)))
+        predictions = np.matmul(np.matmul(np.matmul(x_test, lg.inv(A)), np.transpose(X)), self.y_train).tolist()[0]
 
         return predictions
 
