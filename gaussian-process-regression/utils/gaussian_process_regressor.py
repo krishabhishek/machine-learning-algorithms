@@ -23,16 +23,19 @@ class GaussianProcessRegression(object):
         return gram_matrix
 
     def predict(self, x_test):
-        predictions = list()
         x_test = np.matrix(x_test)
 
+        vector_terms = list()
         for x_vector in x_test:
             vector_term = list()
             for x_train_vector in self.x_train:
                 vector_term_item = self.kernel.compute_kernel_function(x_vector, x_train_vector)
                 vector_term.append(vector_term_item)
+            vector_terms.append(vector_term)
 
-            prediction = np.matmul(np.matmul(np.asmatrix(vector_term), np.linalg.inv(self.matrix_term)), self.y_train)
-            predictions.append(prediction.item(0))
+        predictions = \
+            np.matmul(
+                np.matmul(np.asmatrix(vector_terms), np.linalg.inv(self.matrix_term)),
+                self.y_train).tolist()[0]
 
         return predictions
