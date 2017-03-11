@@ -5,7 +5,6 @@ test_label_file_prefix = "/testLabelSeq"
 
 file_suffix = ".csv"
 
-file_range = range(1, 6)
 
 
 def read_data_file(data_file_path):
@@ -30,7 +29,7 @@ def read_label_file(label_file_path):
     return labels
 
 
-def get_datasets(input_data_folder):
+def get_datasets(input_data_folder, file_range):
     train_set_vectors = list()
     train_set_labels = list()
     test_set_vectors = list()

@@ -7,6 +7,8 @@ from utils import log_helper
 
 log = log_helper.get_logger("GaussianMixtureProcessor")
 
+file_range = range(1, 6)
+
 
 class GaussianMixtureProcessor(Processor):
 
@@ -14,7 +16,7 @@ class GaussianMixtureProcessor(Processor):
         log.info("GaussianMixtureProcessor begun")
 
         train_set_vectors, train_set_labels, test_set_vectors, test_set_labels = \
-            file_helper.get_datasets(self.options.input_data_folder)
+            file_helper.get_datasets(self.options.input_data_folder, file_range)
 
         accuracy = self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors, test_set_labels)
         log.info("Accuracy: " + str(accuracy))
