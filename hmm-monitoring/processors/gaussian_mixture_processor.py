@@ -15,7 +15,7 @@ class GaussianMixtureProcessor(Processor):
     def process(self):
         log.info("GaussianMixtureProcessor begun")
 
-        train_set_vectors, train_set_labels, test_set_vectors, test_set_labels = \
+        train_set_vectors, train_set_labels, test_set_vectors, test_set_labels, _, _ = \
             file_helper.get_datasets(self.options.input_data_folder, file_range)
 
         accuracy = self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors, test_set_labels)
