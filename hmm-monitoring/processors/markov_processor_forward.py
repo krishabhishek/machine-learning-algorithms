@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from scipy import stats
 from copy import deepcopy
@@ -69,25 +70,20 @@ class MarkovProcessorForward(Processor):
 
         log.info("transition_probabilities_matrix: " + str(transition_probabilities_matrix))
 
-        emission_probabilities = dict()
+        class_properties = dict()
         for key in label_train_vectors.keys():
-            emission_probabilities[key] = dict()
-            emission_probabilities[key]['mean'] = np.mean(label_train_vectors[key], axis=0)
-            emission_probabilities[key]['std'] = np.std(label_train_vectors[key], axis=0)
-            emission_probabilities[key]['nd'] = \
-                stats.norm(emission_probabilities[key]['mean'], emission_probabilities[key]['std'])
-        log.debug("emission_probabilities: " + str(emission_probabilities))
+            class_properties[key] = dict()
+            class_properties[key]['mean'] = np.mean(label_train_vectors[key], axis=0)
+            class_properties[key]['std'] = np.std(label_train_vectors[key], axis=0)
+        log.debug("class_properties: " + str(class_properties))
 
         class_properties = dict()
         covariance_matrix = np.zeros((len(train_set_vectors[0]), len(train_set_vectors[0])))
         for label in distinct_labels:
-            class_count = len(label_train_vectors[label])
-            prior = class_count/len(train_set_labels)
             mean = np.mean(np.array(label_train_vectors[label]), axis=0)
 
             property = dict()
             property['mean'] = mean
-            property['prior'] = prior
             class_properties[label] = property
 
             class_covariance_matrix = \
@@ -102,39 +98,44 @@ class MarkovProcessorForward(Processor):
         for label in distinct_labels:
             historical_probability[label] = 1
 
+        inv_covariance_matrix = np.linalg.inv(covariance_matrix)
         accuracy_counter = 0
         for i in range(len(train_set_vectors)):
             log.debug("input vector = " + str(train_set_vectors[i]))
             best_score = 0
             best_label = None
-            log.debug("historical_probability: " + str(historical_probability))
             log.debug("transition_probability: " + str(transition_probability))
+            historical_probability = self.normalize_probability_weights(historical_probability)
+            log.debug("historical_probability: " + str(historical_probability))
+
+            second_term = 0
+            for label in distinct_labels:
+                second_term += transition_probability[label] * historical_probability[label]
+                log.debug("second_term: " + str(second_term))
+
             for label in distinct_labels:
                 log.debug("for label=" + str(label))
-                emission_pdf = emission_probabilities[label]['nd'].pdf(train_set_vectors[i])
+                vector_deviation = (train_set_vectors[i] - class_properties[label]['mean'])
+                expt_term = np.matmul(np.matmul(vector_deviation, inv_covariance_matrix), vector_deviation)
+                emission_pdf = math.exp(-0.5 * expt_term)
                 log.debug("emission_pdf: " + str(emission_pdf))
-                second_term = transition_probability[label] * historical_probability[label]
-                log.debug("second_term: " + str(second_term))
-                op = emission_pdf * transition_probability[label]
+                op = emission_pdf * second_term
                 log.debug("output: " + str(op))
-                historical_probability[label] = np.linalg.norm(op)
-
-                if np.linalg.norm(op) > best_score:
-                    best_score = np.linalg.norm(op)
+                historical_probability[label] = op
+                if op > best_score:
+                    best_score = op
                     best_label = label
 
-                log.debug("final prob = " + str(np.linalg.norm(op)))
-
-            historical_probability = self.normalize_probability_weights(historical_probability)
-            log.debug("best label: " + str(best_label))
+            log.debug("best_label: " + str(best_label))
+            log.debug("actual_label: " + str(train_set_labels[i]))
 
             # counting accuracy for only the test examples
-            if train_set_labels[i] == best_label and i < 500:
+            if train_set_labels[i] == best_label and i >= 500:
                 accuracy_counter += 1
 
             transition_probability = transition_probabilities_matrix[train_set_labels[i]]
 
-        return accuracy_counter/(len(train_set_vectors) / 2)
+        return accuracy_counter/ (len(train_set_vectors)/2)
 
     def get_initial_state_distribution(self, distinct_labels, label_sequences):
         initial_state_distribution = dict()

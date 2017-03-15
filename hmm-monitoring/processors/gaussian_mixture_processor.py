@@ -57,6 +57,7 @@ class GaussianMixtureProcessor(Processor):
                 )
             covariance_matrix = np.add(covariance_matrix, class_covariance_matrix)
 
+        log.debug("class_properties: " + str(class_properties))
         log.info("covariance matrix:\n" + str(covariance_matrix))
         inv_covariance_matrix = np.linalg.inv(covariance_matrix)
         accuracy_count = 0
@@ -69,11 +70,27 @@ class GaussianMixtureProcessor(Processor):
                 denom_term += class_properties[label]['prior'] * math.exp(-0.5 * expt_term)
 
             correct_label = test_set_labels[i]
-            vector_deviation = (test_set_vectors[i] - class_properties[correct_label]['mean'])
-            expt_term = np.matmul(np.matmul(vector_deviation, inv_covariance_matrix), vector_deviation)
-            prob_correct = (class_properties[correct_label]['prior'] * math.exp(-0.5 * expt_term)) / denom_term
+            log.debug("correct_label: " + str(correct_label))
 
-            if prob_correct > math.pow(len(distinct_labels), -1):
+            log.debug(test_set_vectors[i])
+            class_probabilities = dict()
+            for label in distinct_labels:
+                vector_deviation = (test_set_vectors[i] - class_properties[label]['mean'])
+                expt_term = np.matmul(np.matmul(vector_deviation, inv_covariance_matrix), vector_deviation)
+                current_prob = (class_properties[label]['prior'] * math.exp(-0.5 * expt_term)) / denom_term
+                class_probabilities[label] = current_prob
+
+            class_probabilities = self.normalize_probability_weights(class_probabilities)
+            log.debug("class_probabilities: " + str(class_probabilities))
+
+            predicted_label = None
+            highest_probability = 0
+            for label in class_probabilities.keys():
+                if class_probabilities[label] > highest_probability:
+                    highest_probability = class_probabilities[label]
+                    predicted_label = label
+
+            if correct_label == predicted_label:
                 accuracy_count += 1
 
         return accuracy_count / len(test_set_vectors)
@@ -88,3 +105,15 @@ class GaussianMixtureProcessor(Processor):
             final_matrix = np.add(final_matrix, matrix)
 
         return final_matrix/train_set_size
+
+    def normalize_probability_weights(self, current_probability_weights):
+        sum_of_probabilities = 0
+        for label in current_probability_weights.keys():
+            sum_of_probabilities += current_probability_weights[label]
+
+        if sum_of_probabilities != 1:
+            factor = 1 / sum_of_probabilities
+            for label in current_probability_weights.keys():
+                current_probability_weights[label] *= factor
+
+        return current_probability_weights
