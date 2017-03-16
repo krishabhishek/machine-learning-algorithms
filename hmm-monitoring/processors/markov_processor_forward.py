@@ -1,7 +1,6 @@
 import math
+
 import numpy as np
-from scipy import stats
-from copy import deepcopy
 
 from processors.processor import Processor
 from utils import file_helper
@@ -135,21 +134,19 @@ class MarkovProcessorForward(Processor):
         accuracy_counter = 0
         for j in range(len(test_vector_sequences)):
 
-            transition_probability = deepcopy(initial_state_distribution)
             historical_probability = dict()
             for label in distinct_labels:
                 historical_probability[label] = 1
 
             for i in range(len(test_vector_sequences[j])):
-                log.debug("input vector = " + str(test_vector_sequences[j][i]))
+                log.debug("input_vector_" + str(i) + " = " + str(test_vector_sequences[j][i]))
                 best_score = 0
                 best_label = None
-                log.debug("transition_probability: " + str(transition_probability))
                 log.debug("historical_probability: " + str(historical_probability))
 
-                for label in distinct_labels:
+                for label in sorted(distinct_labels):
 
-                    log.debug("for label=" + str(label))
+                    log.debug("current_label=" + str(label))
                     vector_deviation = (test_vector_sequences[j][i] - class_properties[label]['mean'])
                     expt_term = np.matmul(np.matmul(vector_deviation, inv_covariance_matrix), vector_deviation)
 
@@ -157,7 +154,7 @@ class MarkovProcessorForward(Processor):
                     log.debug("emission_probability: " + str(emission_probability))
 
                     belief_term = 0
-                    for previous_label in distinct_labels:
+                    for previous_label in sorted(distinct_labels):
                         belief_term += \
                             transition_probabilities_matrix[previous_label][label] * \
                             historical_probability[previous_label]
