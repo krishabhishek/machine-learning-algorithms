@@ -12,6 +12,45 @@ log = log_helper.get_logger("MarkovProcessorForward")
 file_range = range(1, 6)
 
 
+def get_initial_state_distribution(distinct_labels, label_sequences):
+    initial_state_distribution = dict()
+    for label in distinct_labels:
+        initial_state_distribution[label] = 0
+
+    for sequence in label_sequences:
+        initial_state_distribution[sequence[0]] += 1
+
+    for label in initial_state_distribution.keys():
+        initial_state_distribution[label] /= len(label_sequences)
+
+    return initial_state_distribution
+
+
+def normalize_probability_weights(current_probability_weights):
+    sum_of_probabilities = 0
+    for label in current_probability_weights.keys():
+        sum_of_probabilities += current_probability_weights[label]
+
+    if sum_of_probabilities != 1:
+        factor = 1 / sum_of_probabilities
+        for label in current_probability_weights.keys():
+            current_probability_weights[label] *= factor
+
+    return current_probability_weights
+
+
+def get_class_covariance(class_vectors, mean, dimensions, train_set_size):
+
+    final_matrix = np.zeros((dimensions, dimensions))
+
+    for i in range(len(class_vectors)):
+        vector = np.subtract(np.array(class_vectors[i]), mean)
+        matrix = np.outer(vector, np.transpose(vector))
+        final_matrix = np.add(final_matrix, matrix)
+
+    return final_matrix/train_set_size
+
+
 class MarkovProcessorForward(Processor):
 
     def process(self):
@@ -32,7 +71,7 @@ class MarkovProcessorForward(Processor):
         log.debug("distinct labels: " + str(distinct_labels))
         log.debug("train set size: " + str(len(train_set_labels)))
 
-        initial_state_distribution = self.get_initial_state_distribution(distinct_labels, label_sequences)
+        initial_state_distribution = get_initial_state_distribution(distinct_labels, label_sequences)
         log.info("initial_state_distribution: " + str(initial_state_distribution))
 
         label_train_vectors = dict()
@@ -85,7 +124,7 @@ class MarkovProcessorForward(Processor):
             class_properties[label] = property
 
             class_covariance_matrix = \
-                self.get_class_covariance(
+                get_class_covariance(
                     label_train_vectors[label], mean, len(train_set_vectors[0]), len(train_set_vectors)
                 )
             covariance_matrix = np.add(covariance_matrix, class_covariance_matrix)
@@ -104,7 +143,7 @@ class MarkovProcessorForward(Processor):
             best_score = 0
             best_label = None
             log.debug("transition_probability: " + str(transition_probability))
-            historical_probability = self.normalize_probability_weights(historical_probability)
+            historical_probability = normalize_probability_weights(historical_probability)
             log.debug("historical_probability: " + str(historical_probability))
 
             second_term = 0
@@ -130,44 +169,8 @@ class MarkovProcessorForward(Processor):
 
             # counting accuracy for only the test examples
             if test_set_labels[i] == best_label:
-                accuracy_counter += 1
+                accuracy_counter += 1   
 
             transition_probability = transition_probabilities_matrix[test_set_labels[i]]
 
         return accuracy_counter/len(test_set_vectors)
-
-    def get_initial_state_distribution(self, distinct_labels, label_sequences):
-        initial_state_distribution = dict()
-        for label in distinct_labels:
-            initial_state_distribution[label] = 0
-
-        for sequence in label_sequences:
-            initial_state_distribution[sequence[0]] += 1
-
-        for label in initial_state_distribution.keys():
-            initial_state_distribution[label] /= len(label_sequences)
-
-        return initial_state_distribution
-
-    def normalize_probability_weights(self, current_probability_weights):
-        sum_of_probabilities = 0
-        for label in current_probability_weights.keys():
-            sum_of_probabilities += current_probability_weights[label]
-
-        if sum_of_probabilities != 1:
-            factor = 1 / sum_of_probabilities
-            for label in current_probability_weights.keys():
-                current_probability_weights[label] *= factor
-
-        return current_probability_weights
-
-    def get_class_covariance(self, class_vectors, mean, dimensions, train_set_size):
-
-        final_matrix = np.zeros((dimensions, dimensions))
-
-        for i in range(len(class_vectors)):
-            vector = np.subtract(np.array(class_vectors[i]), mean)
-            matrix = np.outer(vector, np.transpose(vector))
-            final_matrix = np.add(final_matrix, matrix)
-
-        return final_matrix/train_set_size

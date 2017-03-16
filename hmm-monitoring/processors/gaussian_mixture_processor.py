@@ -10,6 +10,31 @@ log = log_helper.get_logger("GaussianMixtureProcessor")
 file_range = range(1, 6)
 
 
+def get_class_covariance(class_vectors, mean, dimensions, train_set_size):
+
+    final_matrix = np.zeros((dimensions, dimensions))
+
+    for i in range(len(class_vectors)):
+        vector = np.subtract(np.array(class_vectors[i]), mean)
+        matrix = np.outer(vector, np.transpose(vector))
+        final_matrix = np.add(final_matrix, matrix)
+
+    return final_matrix/train_set_size
+
+
+def normalize_probability_weights(current_probability_weights):
+    sum_of_probabilities = 0
+    for label in current_probability_weights.keys():
+        sum_of_probabilities += current_probability_weights[label]
+
+    if sum_of_probabilities != 1:
+        factor = 1 / sum_of_probabilities
+        for label in current_probability_weights.keys():
+            current_probability_weights[label] *= factor
+
+    return current_probability_weights
+
+
 class GaussianMixtureProcessor(Processor):
 
     def process(self):
@@ -52,7 +77,7 @@ class GaussianMixtureProcessor(Processor):
             class_properties[label] = property
 
             class_covariance_matrix = \
-                self.get_class_covariance(
+                get_class_covariance(
                     label_train_vectors[label], mean, dimensions, train_set_size
                 )
             covariance_matrix = np.add(covariance_matrix, class_covariance_matrix)
@@ -80,7 +105,7 @@ class GaussianMixtureProcessor(Processor):
                 current_prob = (class_properties[label]['prior'] * math.exp(-0.5 * expt_term)) / denom_term
                 class_probabilities[label] = current_prob
 
-            class_probabilities = self.normalize_probability_weights(class_probabilities)
+            class_probabilities = normalize_probability_weights(class_probabilities)
             log.debug("class_probabilities: " + str(class_probabilities))
 
             predicted_label = None
@@ -94,26 +119,3 @@ class GaussianMixtureProcessor(Processor):
                 accuracy_count += 1
 
         return accuracy_count / len(test_set_vectors)
-
-    def get_class_covariance(self, class_vectors, mean, dimensions, train_set_size):
-
-        final_matrix = np.zeros((dimensions, dimensions))
-
-        for i in range(len(class_vectors)):
-            vector = np.subtract(np.array(class_vectors[i]), mean)
-            matrix = np.outer(vector, np.transpose(vector))
-            final_matrix = np.add(final_matrix, matrix)
-
-        return final_matrix/train_set_size
-
-    def normalize_probability_weights(self, current_probability_weights):
-        sum_of_probabilities = 0
-        for label in current_probability_weights.keys():
-            sum_of_probabilities += current_probability_weights[label]
-
-        if sum_of_probabilities != 1:
-            factor = 1 / sum_of_probabilities
-            for label in current_probability_weights.keys():
-                current_probability_weights[label] *= factor
-
-        return current_probability_weights
