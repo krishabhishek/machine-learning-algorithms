@@ -145,25 +145,33 @@ class MarkovProcessorForward(Processor):
                 best_score = 0
                 best_label = None
                 log.debug("transition_probability: " + str(transition_probability))
-                historical_probability = normalize_probability_weights(historical_probability)
                 log.debug("historical_probability: " + str(historical_probability))
 
-                second_term = 0
                 for label in distinct_labels:
-                    second_term += transition_probability[label] * historical_probability[label]
-                log.debug("second_term: " + str(second_term))
 
-                for label in distinct_labels:
                     log.debug("for label=" + str(label))
                     vector_deviation = (test_vector_sequences[j][i] - class_properties[label]['mean'])
                     expt_term = np.matmul(np.matmul(vector_deviation, inv_covariance_matrix), vector_deviation)
-                    emission_pdf = math.exp(-0.5 * expt_term)
-                    log.debug("emission_pdf: " + str(emission_pdf))
-                    op = emission_pdf * second_term
-                    log.debug("output: " + str(op))
-                    historical_probability[label] = op
-                    if op > best_score:
-                        best_score = op
+
+                    emission_probability = math.exp(-0.5 * expt_term)
+                    log.debug("emission_probability: " + str(emission_probability))
+
+                    belief_term = 0
+                    for previous_label in distinct_labels:
+                        belief_term += \
+                            transition_probabilities_matrix[previous_label][label] * \
+                            historical_probability[previous_label]
+
+                    if i == 0:
+                        belief_term = initial_state_distribution[label]
+                    log.debug("belief_term: " + str(belief_term))
+
+                    label_probability = emission_probability * belief_term
+                    log.debug("label_probability: " + str(label_probability))
+                    historical_probability[label] = label_probability
+
+                    if label_probability > best_score:
+                        best_score = label_probability
                         best_label = label
 
                 log.debug("best_label: " + str(best_label))
@@ -172,6 +180,6 @@ class MarkovProcessorForward(Processor):
                 if test_label_sequences[j][i] == best_label:
                     accuracy_counter += 1
 
-                transition_probability = transition_probabilities_matrix[best_label]
+                historical_probability = normalize_probability_weights(historical_probability)
 
         return accuracy_counter/len(test_set_vectors)
