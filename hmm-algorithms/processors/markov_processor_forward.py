@@ -1,3 +1,4 @@
+import time
 import math
 
 import numpy as np
@@ -59,9 +60,12 @@ class MarkovProcessorForward(Processor):
             test_vector_sequences, train_label_sequences, test_label_sequences = \
             file_helper.get_datasets(self.options.input_data_folder, file_range)
 
+        start_time = time.time()
         accuracy = self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors,
                                        test_set_labels, train_vector_sequences, test_vector_sequences,
                                        train_label_sequences, test_label_sequences)
+        elapsed_time = time.time() - start_time
+        log.info("elapsed time: " + str(elapsed_time) + " seconds")
         log.info("Accuracy: " + str(accuracy))
 
         log.info("MarkovProcessorForward concluded")

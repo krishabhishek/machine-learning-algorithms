@@ -1,5 +1,8 @@
 \documentclass[parskip=half]{scrartcl}
 
+\usepackage[T1]{fontenc}
+\usepackage{diagbox}
+\usepackage{listings}
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{graphicx}
@@ -58,19 +61,195 @@
     \subsection{HMM vs. GMM - Parameters} % (fold)
     \label{sub:hmm_vs_gmm_parameters}
 
-        The code for printing the parameters for the Hidden Markov and Gaussian Mixture models is present in the folder `\texttt{hmm-algorithms}'. The README file contains instructions to run 
+        The code for printing the parameters for the Hidden Markov and Gaussian Mixture models is present in the folder `\texttt{hmm-algorithms}'. The README file contains instructions to run the code for GMM and HMM.
+
+        \textbf{Gaussian Mixture Model Parameters:}
+        All of these parameters were learned only from the training data and label sequence files.
+        \begin{itemize}
+
+            \item 
+            Class Properties: Table \ref{tab:gmm_class_properties} contains the `\texttt{mean}' and gaussian `\texttt{prior}' for each of the classes in the training set. The keys for this dictonary are the class identifiers `1', `2' and `3'.
+            \begin{table}[ht]
+                \centering
+                \begin{tabular}{| c | c | c |}
+                \hline
+                \textbf{Class} & \textbf{Mean} & \textbf{Prior Probability} \\
+                \hline
+                \hline
+                    1 & $\begin{bmatrix}3.06309217 & 0.95674654\end{bmatrix}$ & 0.434 \\
+                \hline
+                    2 & $\begin{bmatrix}2.03301478 & 2.07971921\end{bmatrix}$ & 0.406 \\
+                \hline
+                    3 & $\begin{bmatrix}0.895225 & 2.8185375\end{bmatrix}$ & 0.16 \\
+                \hline
+                \end{tabular}
+                \caption{GMM - Class Properties}
+                \label{tab:gmm_class_properties}
+            \end{table}
+            \item 
+            Covariance Matrix: The covariance matrix is listed below. 
+            $$\Sigma = 
+                \begin{bmatrix}
+                    1.17971474 & 0.41991072 \\
+                    0.41991072 & 1.09360673 
+                \end{bmatrix}$$
+
+        \end{itemize}
     
+
+        \textbf{Hidden Markov Model Parameters:}
+        All of these parameters were learned only from the training data and label sequence files.
+        \begin{itemize}
+
+            \item 
+            Initial State Distribution: All of the train label sequences have the elements at the first time-step as `2'. It follows that the initial state distribution will be biased towards the label `2'. Table \ref{tab:hmm_initial_state_distribution} defines the initial state distribution.
+            \begin{table}[ht]
+                \centering
+                \begin{tabular}{| c | c | c |}
+                \hline
+                \textbf{Class} & \textbf{Initial State Probability} \\
+                \hline
+                \hline
+                    1 & 0 \\
+                \hline
+                    2 & 1 \\
+                \hline
+                    3 & 0 \\
+                \hline
+                \end{tabular}
+                \caption{HMM - Initial State Distribution}
+                \label{tab:hmm_initial_state_distribution}
+            \end{table}
+
+            \item 
+            Multinomial Transition Distribution: Assuming each label file sequence to represent a separate experiment, the transition probabilities computed are present in
+            \begin{table}[ht]
+                \centering
+                \begin{tabular}{| c | c | c | c |}
+                \hline
+                \diagbox{$class_t$}{$class_{t+1}$} & \textbf{1} & \textbf{2} & \textbf{3}\\
+                \hline
+                \hline
+                    \textbf{1} & 0.8785 & 0.0888 & 0.0327 \\
+                \hline
+                    \textbf{2} & 0.1144 & 0.8408 & 0.0448 \\
+                \hline
+                    \textbf{3} & 0.075 & 0.125 & 0.8 \\
+                \hline
+                \end{tabular}
+                \caption{HMM - Transition Probability Distribution}
+                \label{tab:hmm_transition_probability_distribution}
+            \end{table}
+
+            \item 
+            Gaussian Emission Distribution: Since the input domain is continuous, the Gaussian distribution parameters for each of the classes are given below:
+                \begin{itemize}
+
+                    \item 
+                    Gaussian Emission Properties: Table \ref{tab:hmm_gaussian_emission_distribution} contains the `\texttt{mean}' for each of the classes in the training set. The keys for this dictonary are the class identifiers `1', `2' and `3'.
+                    \begin{table}[ht]
+                        \centering
+                        \begin{tabular}{| c | c | c |}
+                        \hline
+                        \textbf{Class} & \textbf{Mean}\\
+                        \hline
+                        \hline
+                            1 & $\begin{bmatrix}3.06309217 & 0.95674654\end{bmatrix}$ \\
+                        \hline
+                            2 & $\begin{bmatrix}2.03301478 & 2.07971921\end{bmatrix}$ \\
+                        \hline
+                            3 & $\begin{bmatrix}0.895225 & 2.8185375\end{bmatrix}$ \\
+                        \hline
+                        \end{tabular}
+                        \caption{HMM - Gaussian Emission Distribution}
+                        \label{tab:hmm_gaussian_emission_distribution}
+                    \end{table}
+                    \item 
+                    Covariance Matrix: The covariance matrix is listed below. 
+                    $$\Sigma = 
+                        \begin{bmatrix}
+                            1.17971474 & 0.41991072 \\
+                            0.41991072 & 1.09360673 
+                        \end{bmatrix}$$
+
+                \end{itemize}
+
+        \end{itemize}
+
     % subsection hmm_vs_gmm_parameters (end)
 
 
     \subsection{HMM Forward Algorithm vs. GMM - Accuracy} % (fold)
     \label{sub:hmm_forward_algorithm_vs_gmm_accuracy}
-    
+
+        The code for the Hidden Markov model Forward Algorithm and Gaussian Mixture models is present in the folder `\texttt{hmm-algorithms}'. The README file contains instructions to run the code for GMM and HMM - Forward Algorithm.
+
+        The algorithms take into account the parameters learned from the training set (Section~\ref{sub:hmm_vs_gmm_parameters}), and uses that information to predict the test set labels.
+
+        The monitoring accuracy is given in Table \ref{tab:hmm-forward-algorithm-vs-gmm-monitoring-accuracy}.
+
+        \begin{table}[ht]
+            \centering
+            \begin{tabular}{| l | r |}
+            \hline
+            \textbf{Classifier} & \textbf{Monitoring Accuracy} \\
+            \hline
+            \hline
+                Gaussian Mixture Model & 0.734 \\
+            \hline
+                Hidden Markov Model - Forward Algorithm & 0.804 \\
+            \hline
+            \end{tabular}
+            \caption{HMM Forward Algorithm vs. GMM - Monitoring Accuracy}
+            \label{tab:hmm-forward-algorithm-vs-gmm-monitoring-accuracy}
+        \end{table}
+
+        \subsubsection*{GMM vs. HMM - Result Discussion} % (fold)
+        \label{ssub:gmm_vs_hmm_result_discussion}
+
+            It is observed that the Hidden Markov Model classifier outperform the Gaussian Mixture model classifier in terms of the Monitoring Accuracy. This could be attributed to the fact that the Gaussian Mixture model merely uses the Gaussian probability density function to estimate the likelihood of an input data-point being a part of each class, whereas the Hidden Markov model incorporates additional training parameters that allows it to use the inital state of the experiments and transitions from previous observations. 
+
+            These additional parameters used by the HMM encode information about the nature of the sequential data, which is bound to perform better than a naive isolated observation approach.
+        
+        % subsubsection gmm_vs_hmm_result_discussion (end)
+
     % subsection hmm_forward_algorithm_vs_gmm_accuracy (end)
 
 
     \subsection{HMM Viterbi Algorithm Accuracy} % (fold)
     \label{sub:hmm_viterbi_algorithm_accuracy}
+
+        The code for the Hidden Markov model Viterbi Algorithm is present in the folder `\texttt{hmm-algorithms}'. The README file contains instructions to run the code.
+
+        The classification accuracy is given in Table \ref{tab:hmm-forward-vs-hmm-viterbi-accuracy}. The accuracy for the Forward Algorithm is included for a comparison.
+
+        \begin{table}[ht]
+            \centering
+            \begin{tabular}{| l | r | r |}
+            \hline
+            \textbf{Classifier} & \textbf{Accuracy} & \textbf{Run Time (millis)} \\
+            \hline
+            \hline
+                Hidden Markov Model - Forward Algorithm & 0.804 & 32.6\\
+            \hline
+                Hidden Markov Model - Viterbi Algorithm & 0.796 & 30.9 \\
+            \hline
+            \end{tabular}
+            \caption{HMM Forward Algorithm vs. HMM Viterbi Algorithm - Monitoring Accuracy}
+            \label{tab:hmm-forward-vs-hmm-viterbi-accuracy}
+        \end{table}
+
+        \subsubsection*{HMM - Forward Algorithm vs. Viterbi Algorithm - Result Discussion} % (fold)
+        \label{ssub:hmm_forward_algo_vs_viterbi_algo_discuss}
+
+            It is observed that the forward algorithm performs marginally better than the Viterbi algorithm.
+
+            The fundamental difference between the Forward and Viterbi algorithms is that the Forward algorithm predicts only a current value given the previous state in a sequence and the set of all input observations that occurred before it, whereas the Viterbi algorithm maximizes the joint probability of a particular sequence of states, given the same input. 
+
+            The Forward algorithm will be marginally more precise as it takes into account the fact that any of the label could be applicable to the previous states. However, the Viterbi algorithm considers only the maximum probability that emerges from the transition + previous state term. The performance of both algorithms in terms of computational time is also similar.
+        
+        % subsubsection hmm_forward_algo_vs_viterbi_algo_discuss (end)
+
     
     % subsection hmm_viterbi_algorithm_accuracy (end)
 
