@@ -10,4 +10,4 @@ DATADIR=$(dirname "$0")"/../data/"
 /usr/bin/python3 "$CODEDIR"/hmm_monitoring.py --input_data_folder "$DATADIR"
 
 # Run Hidden Markov Model processor - Viterbi Algorithm
-/usr/bin/python3 "$CODEDIR"/hmm_monitoring.py --input_data_folder "$DATADIR" --viterbi
+# /usr/bin/python3 "$CODEDIR"/hmm_monitoring.py --input_data_folder "$DATADIR" --viterbi

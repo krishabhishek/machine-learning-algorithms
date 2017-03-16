@@ -54,6 +54,6 @@ def get_datasets(input_data_folder, file_range):
 
         tmp_labels = read_label_file(input_data_folder + test_label_file_prefix + str(i) + file_suffix)
         test_set_labels.extend(tmp_labels)
-        label_sequences.append(tmp_labels)
+        # label_sequences.append(tmp_labels)
 
     return train_set_vectors, train_set_labels, test_set_vectors, test_set_labels, vector_sequences, label_sequences

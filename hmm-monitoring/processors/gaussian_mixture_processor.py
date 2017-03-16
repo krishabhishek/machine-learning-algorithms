@@ -57,7 +57,7 @@ class GaussianMixtureProcessor(Processor):
                 )
             covariance_matrix = np.add(covariance_matrix, class_covariance_matrix)
 
-        log.debug("class_properties: " + str(class_properties))
+        log.info("class_properties: " + str(class_properties))
         log.info("covariance matrix:\n" + str(covariance_matrix))
         inv_covariance_matrix = np.linalg.inv(covariance_matrix)
         accuracy_count = 0

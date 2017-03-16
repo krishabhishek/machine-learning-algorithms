@@ -20,14 +20,13 @@ class MarkovProcessorForward(Processor):
         train_set_vectors, train_set_labels, test_set_vectors, test_set_labels, vector_sequences, label_sequences = \
             file_helper.get_datasets(self.options.input_data_folder, file_range)
 
-        train_set_vectors.extend(test_set_vectors)
-        train_set_labels.extend(test_set_labels)
-        accuracy = self.run_classifier(train_set_vectors, train_set_labels, label_sequences)
+        accuracy = self.run_classifier(train_set_vectors, train_set_labels, test_set_vectors,
+                                       test_set_labels, label_sequences)
         log.info("Accuracy: " + str(accuracy))
 
         log.info("MarkovProcessorForward concluded")
 
-    def run_classifier(self, train_set_vectors, train_set_labels, label_sequences):
+    def run_classifier(self, train_set_vectors, train_set_labels, test_set_vectors, test_set_labels, label_sequences):
 
         distinct_labels = set(train_set_labels)
         log.debug("distinct labels: " + str(distinct_labels))
@@ -38,7 +37,6 @@ class MarkovProcessorForward(Processor):
 
         label_train_vectors = dict()
         for i in range(len(train_set_vectors)):
-
             key = train_set_labels[i]
             if key in label_train_vectors:
                 vectors = label_train_vectors[key]
@@ -91,7 +89,8 @@ class MarkovProcessorForward(Processor):
                     label_train_vectors[label], mean, len(train_set_vectors[0]), len(train_set_vectors)
                 )
             covariance_matrix = np.add(covariance_matrix, class_covariance_matrix)
-        log.info("covariance matrix:\n" + str(covariance_matrix))
+        log.info("class_properties:" + str(class_properties))
+        log.info("covariance_matrix:\n" + str(covariance_matrix))
 
         transition_probability = deepcopy(initial_state_distribution)
         historical_probability = dict()
@@ -100,8 +99,8 @@ class MarkovProcessorForward(Processor):
 
         inv_covariance_matrix = np.linalg.inv(covariance_matrix)
         accuracy_counter = 0
-        for i in range(len(train_set_vectors)):
-            log.debug("input vector = " + str(train_set_vectors[i]))
+        for i in range(len(test_set_vectors)):
+            log.debug("input vector = " + str(test_set_vectors[i]))
             best_score = 0
             best_label = None
             log.debug("transition_probability: " + str(transition_probability))
@@ -111,11 +110,11 @@ class MarkovProcessorForward(Processor):
             second_term = 0
             for label in distinct_labels:
                 second_term += transition_probability[label] * historical_probability[label]
-                log.debug("second_term: " + str(second_term))
+            log.debug("second_term: " + str(second_term))
 
             for label in distinct_labels:
                 log.debug("for label=" + str(label))
-                vector_deviation = (train_set_vectors[i] - class_properties[label]['mean'])
+                vector_deviation = (test_set_vectors[i] - class_properties[label]['mean'])
                 expt_term = np.matmul(np.matmul(vector_deviation, inv_covariance_matrix), vector_deviation)
                 emission_pdf = math.exp(-0.5 * expt_term)
                 log.debug("emission_pdf: " + str(emission_pdf))
@@ -127,15 +126,15 @@ class MarkovProcessorForward(Processor):
                     best_label = label
 
             log.debug("best_label: " + str(best_label))
-            log.debug("actual_label: " + str(train_set_labels[i]))
+            log.debug("actual_label: " + str(test_set_labels[i]))
 
             # counting accuracy for only the test examples
-            if train_set_labels[i] == best_label and i >= 500:
+            if test_set_labels[i] == best_label:
                 accuracy_counter += 1
 
-            transition_probability = transition_probabilities_matrix[train_set_labels[i]]
+            transition_probability = transition_probabilities_matrix[test_set_labels[i]]
 
-        return accuracy_counter/ (len(train_set_vectors)/2)
+        return accuracy_counter/len(test_set_vectors)
 
     def get_initial_state_distribution(self, distinct_labels, label_sequences):
         initial_state_distribution = dict()
