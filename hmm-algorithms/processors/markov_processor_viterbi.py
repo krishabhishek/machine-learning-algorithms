@@ -137,52 +137,69 @@ class MarkovProcessorViterbi(Processor):
         inv_covariance_matrix = np.linalg.inv(covariance_matrix)
         accuracy_counter = 0
         for j in range(len(test_vector_sequences)):
+            prediction_list = list()
+            belief_dict = initial_state_distribution
 
-            historical_probability = dict()
-            for label in distinct_labels:
-                historical_probability[label] = 1
-
-            for i in range(len(test_vector_sequences[j])):
+            for i in range(len(test_vector_sequences[j]) - 1):
                 log.debug("input_vector_" + str(i) + " = " + str(test_vector_sequences[j][i]))
-                best_score = 0
-                best_label = None
-                log.debug("historical_probability: " + str(historical_probability))
 
-                for label in sorted(distinct_labels):
+                next_label_probabilities = dict()
+                for current_label in sorted(distinct_labels):
 
-                    log.debug("current_label=" + str(label))
-                    vector_deviation = (test_vector_sequences[j][i] - class_properties[label]['mean'])
+                    log.debug("current_label=" + str(current_label))
+                    vector_deviation = (test_vector_sequences[j][i] - class_properties[current_label]['mean'])
                     expt_term = np.matmul(np.matmul(vector_deviation, inv_covariance_matrix), vector_deviation)
-
                     emission_probability = math.exp(-0.5 * expt_term)
                     log.debug("emission_probability: " + str(emission_probability))
 
-                    max_belief_term = 0
-                    for previous_label in sorted(distinct_labels):
-                        belief_term = \
-                            transition_probabilities_matrix[previous_label][label] * \
-                            historical_probability[previous_label]
-                        if belief_term > max_belief_term:
-                            max_belief_term = belief_term
+                    for next_label in sorted(distinct_labels):
+                        transition_probability = transition_probabilities_matrix[current_label][next_label]
+                        belief_term = belief_dict[current_label]
 
-                    if i == 0:
-                        max_belief_term = initial_state_distribution[label]
-                    log.debug("belief_term: " + str(max_belief_term))
+                        final_probability = transition_probability * emission_probability * belief_term
 
-                    label_probability = emission_probability * max_belief_term
-                    log.debug("label_probability: " + str(label_probability))
-                    historical_probability[label] = label_probability
+                        if next_label in next_label_probabilities.keys():
+                            previous_probability, _ = next_label_probabilities[next_label]
+                            if final_probability > previous_probability:
+                                next_label_probabilities[next_label] = (final_probability, current_label)
+                        else:
+                            next_label_probabilities[next_label] = (final_probability, current_label)
 
-                    if label_probability > best_score:
-                        best_score = label_probability
-                        best_label = label
+                log.debug("next_label_probabilities: " + str(next_label_probabilities))
 
-                log.debug("best_label: " + str(best_label))
-                log.debug("actual_label: " + str(test_label_sequences[j][i]))
+                # copy next label probs to belief and normalize them
+                # construct future basis prediction dict at the same time
+                prediction_dict = dict()
+                for label in next_label_probabilities.keys():
+                    probability, prev_label = next_label_probabilities[label]
+                    belief_dict[label] = probability
+                    prediction_dict[label] = prev_label
+                belief_dict = normalize_probability_weights(belief_dict)
+                log.debug("belief_dict: " + str(belief_dict))
+                log.debug("prediction_dict: " + str(prediction_dict))
 
-                if test_label_sequences[j][i] == best_label:
+                prediction_list.append(prediction_dict)
+
+            log.debug("final_belief_dict: " + str(belief_dict))
+            sequence_list = list()
+            max_prob = 0
+            for label in belief_dict:
+                if belief_dict[label] > max_prob:
+                    max_prob = belief_dict[label]
+                    final_label = label
+            log.debug("final_label: " + str(final_label))
+            sequence_list.append(final_label)
+
+            for i in range(len(test_vector_sequences[j]) - 1):
+                index = len(test_vector_sequences[j]) - i - 2
+                final_label = prediction_list[index][final_label]
+                sequence_list.append(final_label)
+
+            predictions = list(reversed(sequence_list))
+
+            for i in range(len(predictions)):
+                if predictions[i] == test_label_sequences[j][i]:
                     accuracy_counter += 1
 
-                historical_probability = normalize_probability_weights(historical_probability)
-
+        log.info("Corrected classified examples: " + str(accuracy_counter))
         return accuracy_counter/len(test_set_vectors)
