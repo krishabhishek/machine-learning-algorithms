@@ -77,9 +77,25 @@
                 P({y\prime}_1, {y\prime}_2) \in \begin{bmatrix} P(y_1 = c_1, y_2 = c_1) \\ P(y_1 = c_1, y_2 = c_2) \\ P(y_1 = c_2, y_2 = c_1) \\ P(y_1 = c_2, y_2 = c_2) \end{bmatrix} = \begin{bmatrix} P(y_1,y_2 = c_3) \\ P(y_1,y_2 = c_4) \\ P(y_1,y_2 = c_5) \\ P(y_1,y_2 = c_6) \end{bmatrix}
             \end{equation}
             \item 
-            The emission distribution will change in that the input observations $x_t$ will now depend on a length 2 tuple of states, as in Equation \ref{eqn:emission_dist_new}
+            Assume a discrete set of observations $v_1$ and $v_2$. The original set of emission probabilities can be written as
+            \begin{equation}
+                P(x_t | y_t) 
+                \in 
+                \begin{bmatrix}
+                    P(v_1|c_1), P(v_1|c_2), \\
+                    P(v_2|c_2), P(v_2|c_2)
+                \end{bmatrix}
+            \end{equation}
+            \item 
+            The emission distribution will change in that the input observations $x_t$ will now depend on a length 2 tuple of states, as in Equation \ref{eqn:emission_dist_new}. 
+            $$P(x_t | {y\prime}_t) = P(x_t, P(y_t, y_{t-1}))$$
             \begin{equation} \label{eqn:emission_dist_new}
-                P(x_t | {y\prime}_t) = P(x_t, P(y_t, y_{t-1}))
+                P(x_t | {y\prime}_t) 
+                \in 
+                \begin{bmatrix}
+                    P(v_1|c_3), P(v_1|c_4), P(v_1|c_5), P(v_1|c_6), \\
+                    P(v_2|c_3), P(v_2|c_4), P(v_2|c_5), P(v_2|c_6)
+                \end{bmatrix}
             \end{equation}
         \end{itemize}
 
@@ -108,7 +124,7 @@
             \hline
                 Transition Probabilities & 4 & 16 \\
             \hline
-                Emission Probabilities & n & n \\
+                Emission Probabilities & 4 & 8 \\
             \hline
             \end{tabular}
             \caption{HMM - Original vs. Reparametrized - Number of parameters}
