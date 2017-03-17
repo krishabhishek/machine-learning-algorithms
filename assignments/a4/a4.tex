@@ -42,7 +42,7 @@
         \textbf{Proof:}
         \begin{itemize}
             \item 
-            From the objective, it is evident that the aspects of the HMM model parameters that will change are the \underline{transition distribution}, and the \underline{initial state distribution}, as these are the parameters that attempt to predict a state given previous state information.
+            From the objective, it is evident that the aspects of the HMM model parameters that will change are the \underline{transition distribution}, and the \underline{initial state distribution}, as these are the parameters that attempt to predict a state given previous state information. The emission distribution will change only in it's generative term i.e. the class $y_t$ in $P(x_t|y_t)$
             \item 
             Consider a scenario where the set of valid states is $\{c_1, c_2\}$
             \item 
@@ -57,24 +57,34 @@
             \end{equation}
             \item 
             As per the objective, the term $y_{t-1}$ must now encode 2 time-steps in the new parametrization of the HMM. This term will now encode a joint probability in itself, of the following permutations. This ensures, that the transition and initial state distributions consider an additional time-step in the past. Each of these joint probabilities can represent a new state, say $c_3 .. c_6$ 
-            $$P({y\prime}_{t-1}) \in \begin{bmatrix} P(c_1, c_1) \\ P(c_1, c_2) \\ P(c_2, c_1) \\ P(c_2, c_2) \end{bmatrix} = \begin{bmatrix} P(c_3) \\ P(c_4) \\ P(c_5) \\ P(c_5) \end{bmatrix} $$
+            $$P({y\prime}_{t}) \in \begin{bmatrix} P(c_1, c_1) \\ P(c_1, c_2) \\ P(c_2, c_1) \\ P(c_2, c_2) \end{bmatrix} = \begin{bmatrix} P(c_3) \\ P(c_4) \\ P(c_5) \\ P(c_5) \end{bmatrix} $$
             \item 
             We can now substitute this new parametrization of $P(y_{t-1})$, denoted by ${y\prime}_{t-1}$ in Equation \ref{eqn:transition_matrix_original}, giving us
             \begin{equation} \label{eqn:transition_matrix_new}
-                P({y\prime}_t|{y\prime}_{t-1}) \in \begin{bmatrix} P(c_1|c_3) \\ P(c_1|c_4) \\ P(c_1|c_5) \\ P(c_1|c_6) \\ P(c_2|c_3) \\ P(c_2|c_4) \\ P(c_2|c_5) \\ P(c_2|c_6) \end{bmatrix}
+                P({y\prime}_t|{y\prime}_{t-1})
+                \in 
+                \begin{bmatrix}
+                    P(c_3|c_3), P(c_3|c_4), P(c_3|c_5), P(c_3|c_6), \\
+                    P(c_4|c_3), P(c_4|c_4), P(c_4|c_5), P(c_4|c_6), \\
+                    P(c_5|c_3), P(c_5|c_5), P(c_5|c_5), P(c_5|c_6), \\
+                    P(c_6|c_3), P(c_6|c_4), P(c_6|c_5), P(c_6|c_6)
+                \end{bmatrix}
             \end{equation}
             ${y\prime}_t$ here is the same as $y_t$ in the original equation \ref{eqn:transition_matrix_original}.
             \item 
             Similarly, the initial state distribution is now defined over 2 time-steps instead of 1. This too, can be expressed in terms of the new augmented set of states $c_3 .. c_6$
             \begin{equation} \label{eqn:initial_state_dist_new}
-                P({y\prime}_1, {y\prime}_2) \in \begin{bmatrix} P(y_1 = c_1, y2 = c_1) \\ P(y_1 = c_1, y2 = c_2) \\ P(y_1 = c_2, y2 = c_1) \\ P(y_1 = c_2, y2 = c_2) \end{bmatrix} = \begin{bmatrix} P(y_1,y_2 = c_3) \\ P(y_1,y_2 = c_4) \\ P(y_1,y_2 = c_5) \\ P(y_1,y_2 = c_6) \end{bmatrix}
+                P({y\prime}_1, {y\prime}_2) \in \begin{bmatrix} P(y_1 = c_1, y_2 = c_1) \\ P(y_1 = c_1, y_2 = c_2) \\ P(y_1 = c_2, y_2 = c_1) \\ P(y_1 = c_2, y_2 = c_2) \end{bmatrix} = \begin{bmatrix} P(y_1,y_2 = c_3) \\ P(y_1,y_2 = c_4) \\ P(y_1,y_2 = c_5) \\ P(y_1,y_2 = c_6) \end{bmatrix}
             \end{equation}
             \item 
-            The emission distribution remains the same, as the dependency of a state on it's observations is limited to only the one given at that particular time step.
+            The emission distribution will change in that the input observations $x_t$ will now depend on a length 2 tuple of states, as in Equation \ref{eqn:emission_dist_new}
+            \begin{equation} \label{eqn:emission_dist_new}
+                P(x_t | {y\prime}_t) = P(x_t, P(y_t, y_{t-1}))
+            \end{equation}
         \end{itemize}
 
         \textbf{Conclusion:}\\
-        Hence, it has been shown that the set of states can be augment to simulate joint state probabilities over 2 time-steps instead of 1, resulting in a modified parametrization of the HMM, as shown in equations \ref{eqn:transition_matrix_new} and \ref{eqn:initial_state_dist_new}.
+        Hence, it has been shown that the set of states can be augment to simulate joint state probabilities over 2 time-steps instead of 1, resulting in a modified parametrization of the HMM, as shown in equations \ref{eqn:transition_matrix_new}, \ref{eqn:initial_state_dist_new} and \ref{eqn:emission_dist_new}.
     
     % subsection hmm_parametrization (end)
 
@@ -96,7 +106,7 @@
             \hline
                 Initial State & 2 & 4 \\
             \hline
-                Transition Probabilities & 4 & 8 \\
+                Transition Probabilities & 4 & 16 \\
             \hline
             \end{tabular}
             \caption{HMM - Original vs. Reparametrized - Number of parameters}
@@ -116,6 +126,8 @@
 
 \section{HMM - Maximization of the likelihood of a set of sequences of hand postures} % (fold)
 \label{sec:hmm_maximization_of_the_likelihood_of_a_set_of_sequences_of_hand_postures}
+
+    
 
 % section hmm_maximization_of_the_likelihood_of_a_set_of_sequences_of_hand_postures (end)
 
@@ -299,9 +311,9 @@
             \textbf{Classifier} & \textbf{Accuracy} & \textbf{Run Time (millis)} \\
             \hline
             \hline
-                Hidden Markov Model - Forward Algorithm & 0.804 & 32.6\\
+                Hidden Markov Model - Forward Algorithm & 0.804 & 30.16\\
             \hline
-                Hidden Markov Model - Viterbi Algorithm & 0.796 & 30.9 \\
+                Hidden Markov Model - Viterbi Algorithm & 0.866 & 28.06 \\
             \hline
             \end{tabular}
             \caption{HMM Forward Algorithm vs. HMM Viterbi Algorithm - Monitoring Accuracy}
@@ -311,11 +323,11 @@
         \subsubsection*{HMM - Forward Algorithm vs. Viterbi Algorithm - Result Discussion} % (fold)
         \label{ssub:hmm_forward_algo_vs_viterbi_algo_discuss}
 
-            It is observed that the forward algorithm performs marginally better than the Viterbi algorithm.
+            It is observed that the Viterbi algorithm performs better than the Forward algorithm.
 
-            The fundamental difference between the Forward and Viterbi algorithms is that the Forward algorithm predicts only a current value given the previous state in a sequence and the set of all input observations that occurred before it, whereas the Viterbi algorithm maximizes the joint probability of a particular sequence of states, given the same input. 
+            The fundamental difference between the Forward and Viterbi algorithms is that the Forward algorithm predicts only a current value given the previous state in a sequence and the set of all input observations that occurred before it, whereas the Viterbi algorithm attempts to maximize the joint probability of an entire sequence of states, given the same input.
 
-            The Forward algorithm will be marginally more precise as it takes into account the fact that any of the label could be applicable to the previous states. However, the Viterbi algorithm considers only the maximum probability that emerges from the transition + previous state term. The performance of both algorithms in terms of computational time is also similar.
+            The dynamic programming factor which is a part of the Viterbi algorithm, allows a late binding of class prediction at each epoch, so as to take into account the states that follow it. The subsequent time-steps also influence the prediction of the Viterbi algorithm. This additional information is presumably, what makes the Viterbi algorithm more effective at predicting the probability of an entire sequence, better than the Forward algorithm, which only relies on information learned from previous epochs.
         
         % subsubsection hmm_forward_algo_vs_viterbi_algo_discuss (end)
 
