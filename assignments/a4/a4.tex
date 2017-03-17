@@ -86,7 +86,7 @@
         Determine and justify whether the reparametrization can be done without an increase in the number of parameters.
 
         \textbf{Proof:}\\
-        The count of parameters is given in Table \ref{tab:hmm-original-vs-reparametrized}.
+        Assuming the same example shown in Section~\ref{sub:hmm_parametrization} is applicable, the count of parameters is given in Table \ref{tab:hmm-original-vs-reparametrized}.
         \begin{table}[th]
             \centering
             \begin{tabular}{| l | c | c |}
@@ -96,7 +96,9 @@
             \hline
                 Initial State & 2 & 4 \\
             \hline
-                Transition Probabilities & 4 & 8 \\
+                Transition Probabilities & 4 & 12 \\
+            \hline
+                Emission Probabilities & n & n \\
             \hline
             \end{tabular}
             \caption{HMM - Original vs. Reparametrized - Number of parameters}
