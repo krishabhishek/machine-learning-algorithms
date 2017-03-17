@@ -185,4 +185,5 @@ class MarkovProcessorViterbi(Processor):
 
                 historical_probability = normalize_probability_weights(historical_probability)
 
+        log.info("Corrected classified examples: " + str(accuracy_counter))
         return accuracy_counter/len(test_set_vectors)
