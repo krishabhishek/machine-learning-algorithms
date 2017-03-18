@@ -14,7 +14,7 @@
 }
 
 \renewcommand\thesubsection{\thesection.\alph{subsection}}
-
+\DeclareMathOperator*{\argmax}{argmax}
 
 \begin{document}
 
@@ -97,6 +97,8 @@
                     P(v_2|c_3), P(v_2|c_4), P(v_2|c_5), P(v_2|c_6)
                 \end{bmatrix}
             \end{equation}
+            \item 
+            The first observation $x_1$ can be ignored in this formulation, so that we have $(n-1)$ states to correspond to $(n-1)$ observations, where $n$ is the number of states and observations in the original formulations of the problem.
         \end{itemize}
 
         \textbf{Conclusion:}\\
@@ -117,7 +119,7 @@
             \centering
             \begin{tabular}{| l | c | c |}
             \hline
-            \textbf{Parameter} & \textbf{Original} & \textbf{Reparametrized} \\
+            \textbf{Parameter} & \textbf{Size (Original)} & \textbf{Size (Reparametrized)} \\
             \hline
             \hline
                 Initial State & 2 & 4 \\
@@ -132,8 +134,8 @@
         \end{table}
 
         \textbf{Conclusion:}\\
-        The number of parameters in the reparametrization are higher than the number of parameters in the original HMM system. This leads to the conclusion that the number of parameters cannot remain the same after generalizing an HMM to consider states prior to the immediately preceding time-step.
-    
+        The number of parameters in the reparametrization are the same than the number of parameters in the original HMM system (i.e.) the initial state distribution, transition distribution and emission distribution. However, the size complexity of each parameter increases with the number of time-steps to look backwards by. 
+
     % subsection reparametrization_number_of_parameters (end)
 
 % section generalized_and_practical_hidden_markov_model (end)
@@ -145,7 +147,51 @@
 \section{HMM - Maximization of the likelihood of a set of sequences of hand postures} % (fold)
 \label{sec:hmm_maximization_of_the_likelihood_of_a_set_of_sequences_of_hand_postures}
 
-    
+    \textbf{Objective:}\\
+    In some applications, HMMs are used to model a sequence of observations while the hidden states are treated as latent variables without any meaning. For instance, in gesture recognition, an HMM can be used to model a sequence of hand postures (e.g., location, position and orientation ) defining a gesture. Specify a mathematical objective to train an HMM to maximize the likelihood of a set of sequences of hand postures. More precisely, formulate an optimization problem that could be used to learn the parameters of the HMM despite the fact that the hidden states are never observed. 
+
+    \textbf{Proof}:
+    \begin{itemize}
+        \item 
+        The Baum-Welch algorithm can be used to obtain an objective that attempts to predict the HMM parameters in the event that the states are treated as hidden/latent variable. \footnote{Tu, Stephen. "Derivation of baum-welch algorithm for hidden markov models." (2015).}
+        \item 
+        The objective used in the Forward and Viterbi algorithms assumes that the set of states $Y$ is known. This objective is represented as:
+        \begin{equation} \label{eqn:theta-original}
+            \theta^* = \argmax_{\theta} P(X, Y, \theta)
+        \end{equation}
+        where $X$ is the set of observations, $Y$ is the set of states and $\theta$ represents the set of HMM parameters.
+        \item 
+        $\theta = (\pi, T, E)$ where $\pi$ represents the initial state distribution, $T$ represents the transition matrix and $E$ represents the emission matrix.
+        \item 
+        The Baum-Welch algorithm uses an iterative process, to keep re-computing $\theta$. In the original formulation where the set of output states $Y$ is known, $\theta$ can be computed using Equation \ref{eqn:theta-original}. However, in the new objective, we use
+        \begin{equation*}
+            \theta^* = \argmax_{\theta} \sum_{y \in Y} P(X, y, \theta)
+        \end{equation*}
+        \item 
+        Firstly the joint probability $P(y,X)$ can be written as $P(y,X) = P(X) P(y|X)$
+        \item 
+        $$\argmax_\theta Q(\theta, \theta^s) = \argmax_\theta \sum_{y \in Y} log [P(X,y;\theta)] P(y,X;\theta^s) $$ 
+        \item 
+        The following steps are repeated until convergence:
+        \begin{itemize}
+            \item 
+            Compute $Q(\theta, \theta^s) = \sum_{y \in Y} log [P(X,y;\theta)] P(y,X;\theta^s)$
+            \item 
+            Set $\theta^{s+1} = \argmax_\theta Q(\theta, \theta^s)$
+        \end{itemize}
+        \item 
+        The transition probability is defined by:
+        $$P(y_t,y_{t+1}) = \prod^N_{i,j = 1} [T_{ij}]^{y_t^iy_{t+1}^j} $$
+        The initial distribution is defined by:
+        $$\pi(y_0) = \prod^N_{i = 1} {\pi_i}^{q_0^i} $$
+        Assuming the emission distribution is multinomial, we can define it as:
+        $$P(x_t|y_t, E) = \prod^N_{i,j = 1} [E_{ij}]^{y_t^ix_t^j} $$
+    \end{itemize}
+
+    sources:\\
+    https://www.cs.cmu.edu/~epxing/Class/10701-08s/recitation/em-hmm.pdf
+    https://people.eecs.berkeley.edu/~pabbeel/cs287-fa13/slides/Likelihood_EM_HMM_Kalman.pdf
+    https://people.eecs.berkeley.edu/~stephentu/writeups/hmm-baum-welch-derivation.pdf
 
 % section hmm_maximization_of_the_likelihood_of_a_set_of_sequences_of_hand_postures (end)
 
