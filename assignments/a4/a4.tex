@@ -175,7 +175,10 @@
         The following steps are repeated until convergence:
         \begin{itemize}
             \item 
-            Compute $Q(\theta, \theta^s) = \sum_{y \in Y} log [P(X,y;\theta)] P(y,X;\theta^s)$
+            Compute 
+            \begin{equation} \label{eqn:q-1}
+                Q(\theta, \theta^s) = \sum_{y \in Y} log [P(X,y;\theta)] P(y,X;\theta^s)
+            \end{equation}
             \item 
             Set $\theta^{s+1} = \argmax_\theta Q(\theta, \theta^s)$
         \end{itemize}
@@ -183,15 +186,47 @@
         The transition probability is defined by:
         $$P(y_t,y_{t+1}) = \prod^N_{i,j = 1} [T_{ij}]^{y_t^iy_{t+1}^j} $$
         The initial distribution is defined by:
-        $$\pi(y_0) = \prod^N_{i = 1} {\pi_i}^{q_0^i} $$
+        $$\pi(y_0) = {\pi_i}^{q_0^i} $$
         Assuming the emission distribution is multinomial, we can define it as:
         $$P(x_t|y_t, E) = \prod^N_{i,j = 1} [E_{ij}]^{y_t^ix_t^j} $$
+        \item 
+        \begin{equation*}
+            P(y,x; \theta) = \prod^D_{k=1} ({\pi_i}^{y_0^i} \prod^N_{i,j=1} [T_{ij}]^{y_t^iy_{t+1}^j} [E_{ij}]^{y_t^ix_t^j} )
+        \end{equation*}
+        where $D$ is the number of observation sequences.
+        \item 
+        Computing the log of this equation, we get,
+        \begin{equation*}
+            log(P(y,x; \theta)) = \sum^D_{k=1} log {\pi_i}^{y_0^i} + \sum^D_{k=1}\sum^N_{i,j=1} log [T_{ij}]^{y_t^iy_{t+1}^j} + \sum^D_{k=1}\sum^N_{i,j=1} log [E_{ij}]^{y_t^ix_t^j} 
+        \end{equation*}
+        \item 
+        Now, we substitute this result for $log(P(y,x; \theta))$ in equation \ref{eqn:q-1}.
+        \begin{equation*}
+            Q(\theta, \theta^s) = \sum_{y \in Y} \sum^D_{k=1} log {\pi_i}^{y_0^i} + \sum_{y \in Y} \sum^D_{k=1}\sum^N_{i,j=1} [T_{ij}]^{y_t^iy_{t+1}^j} + \sum_{y \in Y} \sum^D_{k=1}\sum^N_{i,j=1} [E_{ij}]^{y_t^ix_t^j} 
+        \end{equation*}
+        \item 
+        Each of $\pi, T, E$ are contrained by the fact that they are valid probability distributions. i.e.
+        \begin{equation*}
+            \sum^M_{i=1} \pi = 1
+        \end{equation*}
+        \begin{equation*}
+            \sum^M_{j=1} T_{ij} = 1
+        \end{equation*}
+        \begin{equation*}
+            \sum^M_{j=1} E_{ij} = 1
+        \end{equation*}
+        \item 
+        We can now create an optimization objective with Lagrange Multiplier, such that
+        \begin{equation} \label{eqn:optimization-objective}
+            L(\theta, \theta^s) = Q(\theta, \theta^s) - \lambda_{\pi} (\sum^M_{i=1} \pi - 1) - \sum^M_{i=1} \lambda_{T_i} (\sum^M_{j=1} T_{ij} - 1) - \sum^M_{i=1} \lambda_{E_i} (\sum^M_{j=1} E_{ij} - 1)
+        \end{equation}
+        \item 
+        This optimization objective can now be used to learn the HMM parameters, by setting the partial derivatives for each of the parameters $\pi, T, E$ to 0 in turn 
     \end{itemize}
 
-    sources:\\
-    https://www.cs.cmu.edu/~epxing/Class/10701-08s/recitation/em-hmm.pdf
-    https://people.eecs.berkeley.edu/~pabbeel/cs287-fa13/slides/Likelihood_EM_HMM_Kalman.pdf
-    https://people.eecs.berkeley.edu/~stephentu/writeups/hmm-baum-welch-derivation.pdf
+    \textbf{Conclusion:}\\
+    The derived optimization objective to learn the parameters of the Hidden Markov model without the knowledge of the space of output states, is given in equation \ref{eqn:optimization-objective}.
+
 
 % section hmm_maximization_of_the_likelihood_of_a_set_of_sequences_of_hand_postures (end)
 
