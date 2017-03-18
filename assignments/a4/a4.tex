@@ -134,7 +134,7 @@
         \end{table}
 
         \textbf{Conclusion:}\\
-        The number of parameters in the reparametrization are the same than the number of parameters in the original HMM system (i.e.) the initial state distribution, transition distribution and emission distribution. However, the size complexity of each parameter increases with the number of time-steps to look backwards by. 
+        The number of parameters in the reparametrization are the same than the number of parameters in the original HMM system (i.e.) the initial state distribution, transition distribution and emission distribution. However, the space complexity of each parameter increases with the number of time-steps to look backwards by. 
 
     % subsection reparametrization_number_of_parameters (end)
 
@@ -374,9 +374,9 @@
             \textbf{Classifier} & \textbf{Monitoring Accuracy} \\
             \hline
             \hline
-                Gaussian Mixture Model & 0.734 \\
+                Gaussian Mixture Model & 73.4\% \\
             \hline
-                Hidden Markov Model - Forward Algorithm & 0.804 \\
+                Hidden Markov Model - Forward Algorithm & 80.4\% \\
             \hline
             \end{tabular}
             \caption{HMM Forward Algorithm vs. GMM - Monitoring Accuracy}
@@ -409,9 +409,9 @@
             \textbf{Classifier} & \textbf{Accuracy} & \textbf{Run Time (millis)} \\
             \hline
             \hline
-                Hidden Markov Model - Forward Algorithm & 0.804 & 30.16\\
+                Hidden Markov Model - Forward Algorithm & 80.4\% & 30.16\\
             \hline
-                Hidden Markov Model - Viterbi Algorithm & 0.866 & 28.06 \\
+                Hidden Markov Model - Viterbi Algorithm & 86.6\% & 28.06 \\
             \hline
             \end{tabular}
             \caption{HMM Forward Algorithm vs. HMM Viterbi Algorithm - Monitoring Accuracy}
