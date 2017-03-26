@@ -35,23 +35,23 @@
     \subsection{Softmax vs. CNN vs. Fully Connected} % (fold)
     \label{sub:softmax_vs_cnn_vs_fully_connected}
 
-        The result for the vanilla experiments are given in Table \ref{tab:accuracy_comparisons_i}.
+        The result for the vanilla experiments are given in Table \ref{tab:accuracy_comparisons_network_types}.
         \begin{table}[th]
             \centering
-            \begin{tabular}{| l | r |}
+            \begin{tabular}{| l | r | r |}
             \hline
-            \textbf{Neural Net Type} & \textbf{Accuracy} \\
+            \textbf{Neural Net Type} & \textbf{Training Accuracy} & \textbf{Testing Accuracy} \\
             \hline
                 \hline
-                Softmax Regression Network & 0.9205 \\
+                Softmax Regression Network & 0.92 & 0.9205 \\
                 \hline
-                Convolutional Neural Network & 0.9664 \\
+                Convolutional Neural Network & 0.98 & 0.9664 \\
                 \hline
-                Fully-connected Feed-Forward Neural Network & 0.8985 \\
+                Fully-connected Feedforward Neural Network & 0.8981 & 0.9035 \\
             \hline
             \end{tabular}
-            \caption{Accuracy Comparisons - I}
-            \label{tab:accuracy_comparisons_i}
+            \caption{Accuracy Comparisons - Network Types}
+            \label{tab:accuracy_comparisons_network_types}
         \end{table}
 
         \textbf{Discussion:}\\
@@ -62,20 +62,22 @@
     \subsection{CNN - ReLU vs. Sigmoid Units} % (fold)
     \label{sub:cnn_relu_vs_sigmoid_units}
 
+        The results of using different activation functions in Rectified linear units and Sigmoid units are illustrated in Table \ref{tab:accuracy_comparisons_unit_types}.
+
         \begin{table}[th]
             \centering
-            \begin{tabular}{| l | r |}
+            \begin{tabular}{| l | r | r |}
             \hline
-            \textbf{Neural Net Unit Type} & \textbf{Accuracy} \\
+            \textbf{Neural Net Unit Type} & \textbf{Training Accuracy} & \textbf{Testing Accuracy} \\
             \hline
                 \hline
-                Rectified Linear Units & 0.9664 \\
+                Rectified Linear Units & 0.98 & 0.9664 \\
                 \hline
-                Sigmoid Units & 0.7903 \\
+                Sigmoid Units & 0.76 & 0.7454 \\
             \hline
             \end{tabular}
-            \caption{Accuracy Comparisons - II}
-            \label{tab:accuracy_comparisons_ii}
+            \caption{Accuracy Comparisons - Unit Types}
+            \label{tab:accuracy_comparisons_unit_types}
         \end{table}
 
         \textbf{Discussion:}\\
@@ -86,9 +88,55 @@
     \subsection{Tweaking Dropout Level} % (fold)
     \label{sub:tweaking_dropout_level}
 
-        
+        The results of varying the dropout factor for the CNN training are illustrated in Table \ref{tab:accuracy_comparisons_dropout}.
+
+        \begin{table}[th]
+            \centering
+            \begin{tabular}{| r | r | r |}
+            \hline
+            \textbf{Dropout Factor} & \textbf{Training Accuracy} & \textbf{Testing Accuracy} \\
+            \hline
+                \hline
+                0.25 & 0.92 & 0.9519 \\
+                \hline
+                0.5 & 0.98 & 0.9664 \\
+                \hline
+                0.75 & 0.96 & 0.9664 \\
+                \hline
+                1 & 0.98 & 0.9672 \\
+            \hline
+            \end{tabular}
+            \caption{Accuracy Comparisons - Dropout}
+            \label{tab:accuracy_comparisons_dropout}
+        \end{table}
     
     % subsection tweaking_dropout_level (end)
+
+    \subsection{Tweaking Network Architecture} % (fold)
+    \label{sub:tweaking_network_architecture}
+
+        The results of varying the network architecture in the fully connected feedforward neural netword are illustrated in Table \ref{tab:accuracy_comparisons_network_architecture}.
+
+        \begin{table}[th]
+            \centering
+            \begin{tabular}{| l | r | r |}
+            \hline
+            \textbf{Network architecture} & \textbf{Training Accuracy} & \textbf{Testing Accuracy} \\
+            \hline
+                \hline
+                (150) & 0.8943 & 0.8997 \\
+                \hline
+                (128) -> (32) & 0.8981 & 0.9035 \\
+                \hline
+                (85) -> (40) -> (25) & 0.8923 & 0.8967 \\
+            \hline
+            \end{tabular}
+            \caption{Accuracy Comparisons - Network Architecture}
+            \label{tab:accuracy_comparisons_network_architecture}
+        \end{table}
+    
+    
+    % subsection tweaking_network_architecture (end)
 
 % section tensorflow_mnist (end)
 
