@@ -39,6 +39,7 @@ class SoftmaxRegressionProcessor(Processor):
         # Test trained model
         correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        log.info("train_accuracy: " + str(sess.run(accuracy, feed_dict={x: mnist.train.images, y_: mnist.train.labels})))
         log.info("test_accuracy: " + str(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels})))
 
         log.info("SoftmaxRegressionProcessor concluded")
