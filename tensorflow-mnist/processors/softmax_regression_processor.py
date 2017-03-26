@@ -4,13 +4,13 @@ from tensorflow.examples.tutorials.mnist import input_data
 from processors.processor import Processor
 from utils import log_helper
 
-log = log_helper.get_logger("CNNProcessor")
+log = log_helper.get_logger("SoftmaxRegressionProcessor")
 
 
 class SoftmaxRegressionProcessor(Processor):
 
     def process(self):
-        log.info("CNNProcessor begun")
+        log.info("SoftmaxRegressionProcessor begun")
 
         # Import data
         data_dir = "/tmp/tensorflow/mnist/input_data"
@@ -39,7 +39,6 @@ class SoftmaxRegressionProcessor(Processor):
         # Test trained model
         correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        print(sess.run(accuracy, feed_dict={x: mnist.test.images,
-                                            y_: mnist.test.labels}))
+        log.info("test_accuracy: " + str(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels})))
 
-        log.info("CNNProcessor concluded")
+        log.info("SoftmaxRegressionProcessor concluded")
