@@ -35,8 +35,7 @@
     \subsection{Softmax vs. CNN vs. Fully Connected} % (fold)
     \label{sub:softmax_vs_cnn_vs_fully_connected}
 
-        CNN was run for 1000 iterations.
-
+        The result for the vanilla experiments are given in Table \ref{tab:accuracy_comparisons_i}.
         \begin{table}[th]
             \centering
             \begin{tabular}{| l | r |}
@@ -44,14 +43,19 @@
             \textbf{Neural Net Type} & \textbf{Accuracy} \\
             \hline
                 \hline
-                Softmax Regression & 0.9205 \\
+                Softmax Regression Network & 0.9205 \\
                 \hline
                 Convolutional Neural Network & 0.9664 \\
+                \hline
+                Fully-connected Feed-Forward Neural Network & 0.8985 \\
             \hline
             \end{tabular}
             \caption{Accuracy Comparisons - I}
             \label{tab:accuracy_comparisons_i}
         \end{table}
+
+        \textbf{Discussion:}
+        The reason than the CNN performs the best is because it considers patches of the image rather than the intensities of sequential pixels. Since the CNN preserves this 2-D information structure, it performs the best of the lot.
     
     % subsection softmax_vs_cnn_vs_fully_connected (end)
 
