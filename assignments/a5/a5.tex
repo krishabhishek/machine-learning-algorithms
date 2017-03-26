@@ -54,10 +54,41 @@
             \label{tab:accuracy_comparisons_i}
         \end{table}
 
-        \textbf{Discussion:}
+        \textbf{Discussion:}\\
         The reason than the CNN performs the best is because it considers patches of the image rather than the intensities of sequential pixels. Since the CNN preserves this 2-D information structure, it performs the best of the lot.
     
     % subsection softmax_vs_cnn_vs_fully_connected (end)
+
+    \subsection{CNN - ReLU vs. Sigmoid Units} % (fold)
+    \label{sub:cnn_relu_vs_sigmoid_units}
+
+        \begin{table}[th]
+            \centering
+            \begin{tabular}{| l | r |}
+            \hline
+            \textbf{Neural Net Unit Type} & \textbf{Accuracy} \\
+            \hline
+                \hline
+                Rectified Linear Units & 0.9664 \\
+                \hline
+                Sigmoid Units & 0.7903 \\
+            \hline
+            \end{tabular}
+            \caption{Accuracy Comparisons - II}
+            \label{tab:accuracy_comparisons_ii}
+        \end{table}
+
+        \textbf{Discussion:}\\
+        ReLUs were found to greatly accelerate the convergence of stochastic gradient descent compared to the sigmoid function. It is argued that this is due to its linear, non-saturating form. (Saturation happens for the sigmoid function at the tail of it's outputs 0 and 1, where the gradient is almost 0.)
+    
+    % subsection cnn_relu_vs_sigmoid_units (end)
+
+    \subsection{Tweaking Dropout Level} % (fold)
+    \label{sub:tweaking_dropout_level}
+
+        
+    
+    % subsection tweaking_dropout_level (end)
 
 % section tensorflow_mnist (end)
 
