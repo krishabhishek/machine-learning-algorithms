@@ -109,6 +109,10 @@
             \caption{Accuracy Comparisons - Dropout}
             \label{tab:accuracy_comparisons_dropout}
         \end{table}
+
+        \textbf{Discussion:}\\
+        Unit dropout is used primarily to avoid overfitting and help the neural network become invariant to the training cycles. This is intended to make the network robust to predicting new data-points that are part of the test set. This explains why additional dropbout corresponds to an increasing accuracy score for the testing data.
+
     
     % subsection tweaking_dropout_level (end)
 
@@ -134,6 +138,9 @@
             \caption{Accuracy Comparisons - Network Architecture}
             \label{tab:accuracy_comparisons_network_architecture}
         \end{table}
+
+        \textbf{Discussion:}\\
+        Both the training and test accuracies have a very low factor of deviation when it comes to varying the depth of the network. However, the number of neurons is the same and each layer is fully connected to the next layer in the network.
     
     
     % subsection tweaking_network_architecture (end)
@@ -143,6 +150,43 @@
 
 \section{Object Recognition} % (fold)
 \label{sec:object_recognition}
+
+    \subsection{Single Convolutions} % (fold)
+    \label{sub:single_convolutions}
+
+        Yes, the feature representation will be translation invariant.
+
+        \textbf{Justification:}\\
+        The image is always 10 pixels away from the nearest border. This fact itself ensures that the object in the foreground, can remain translation invariant for upto a single convolution of upto $10*10$ pixels.
+
+        To explain this more intuitively, the foreground image has a $(n-10)*(n-10)$ pixel area of possible translation.
+
+        The resulting feature set would be $(n-4)*(n-4)$ pixels in dimension.
+    
+    % subsection single_convolutions (end)
+
+
+    \subsection{Double Convolution and Max Pooling} % (fold)
+    \label{sub:double_convolution_and_max_pooling}
+
+        No, the feature representation will not be translation invariant.
+
+        This is because, each feature of the final representation will only be invariant if it abstracts the information of pixels at most 10px away from itself. Let us consider the steps involved with the Double convolution and max pooling layers.
+
+        \textbf{Justification:}\\
+        \begin{itemize}
+            \item 
+            Conv. Layer 1 (Convolution=5x5, Stride=1): Each resulting feature after this step encapsulates information of pixels that are at most 5 pixels away, inclusive of itself. 
+            \item 
+            Conv. Layer 2 (Convolution=5x5, Stride=1): Each resulting feature after this step encapsulates information of pixels that are at most $5 + 4 = 9$ pixels away, inclusive of itself.
+            \item 
+            Pooling layer (Convolution=4x4, Stride=4): Each resulting feature after this step encapsulates information of pixels that are at most $9 + 4 = 13$ pixels away, inclusive of itself.
+        \end{itemize}
+
+        This shows that the final representation of the image has every pixel that is representative of a 13x13 pixel area. However, if the original image or the translated version of the same image is at the edge of the $(n-10)*(n-10)$ pixel area of possible translation, as explained in the previous answer.
+
+    % subsection double_convolution_and_max_pooling (end)
+
 
 % section object_recognition (end)
 
