@@ -47,7 +47,7 @@
                 \hline
                 Convolutional Neural Network & 0.98 & 0.9664 \\
                 \hline
-                Fully-connected Feedforward Neural Network & 0.8981 & 0.9035 \\
+                Fully-connected Feedforward Neural Network & 0.8727 & 0.8838 \\
             \hline
             \end{tabular}
             \caption{Accuracy Comparisons - Network Types}
@@ -101,9 +101,9 @@
                 \hline
                 0.5 & 0.98 & 0.9664 \\
                 \hline
-                0.75 & 0.96 & 0.9664 \\
+                0.75 & 0.98 & 0.9708 \\
                 \hline
-                1 & 0.98 & 0.9672 \\
+                1 & 0.96 & 0.9672 \\
             \hline
             \end{tabular}
             \caption{Accuracy Comparisons - Dropout}
@@ -111,7 +111,7 @@
         \end{table}
 
         \textbf{Discussion:}\\
-        Unit dropout is used primarily to avoid overfitting and help the neural network become invariant to the training cycles. This is intended to make the network robust to predicting new data-points that are part of the test set. This explains why additional dropbout corresponds to an increasing accuracy score for the testing data.
+        Unit dropout is used primarily to avoid overfitting and help the neural network become invariant to the training cycles. This is intended to make the network robust to predicting new data-points that are part of the test set. This explains why additional dropbout corresponds to an increasing accuracy score for the testing data. The best \texttt{keep\_prob} rate for this particular dataset and CNN config appears to be 0.75.
 
     
     % subsection tweaking_dropout_level (end)
@@ -128,11 +128,11 @@
             \textbf{Network architecture} & \textbf{Training Accuracy} & \textbf{Testing Accuracy} \\
             \hline
                 \hline
-                (150) & 0.8943 & 0.8997 \\
+                (150) & 0.8712 & 0.8814 \\
                 \hline
-                (128) -> (32) & 0.8981 & 0.9035 \\
+                (128) -> (32) & 0.8727 & 0.8838 \\
                 \hline
-                (85) -> (40) -> (25) & 0.8923 & 0.8967 \\
+                (85) -> (40) -> (25) & 0.8566 & 0.8611 \\
             \hline
             \end{tabular}
             \caption{Accuracy Comparisons - Network Architecture}
@@ -161,7 +161,7 @@
 
         To explain this more intuitively, the foreground image has a $(n-10)*(n-10)$ pixel area of possible translation.
 
-        The resulting feature set would be $(n-4)*(n-4)$ pixels in dimension.
+        The resulting feature set of the single convolution layer would be $(n-4)*(n-4)$ pixels in dimension. This ensures that there is no loss of data, since the image itself exists on a smaller subset of that dimension ($(n-10)*(n-10)$).
     
     % subsection single_convolutions (end)
 
@@ -176,14 +176,14 @@
         \textbf{Justification:}\\
         \begin{itemize}
             \item 
-            Conv. Layer 1 (Convolution=5x5, Stride=1): Each resulting feature after this step encapsulates information of pixels that are at most 5 pixels away, inclusive of itself. 
+            Conv. Layer 1 (Convolution:5x5, Stride:1): Each resulting feature after this step encapsulates information of pixels that are at most 5 pixels away, inclusive of itself. 
             \item 
-            Conv. Layer 2 (Convolution=5x5, Stride=1): Each resulting feature after this step encapsulates information of pixels that are at most $5 + 4 = 9$ pixels away, inclusive of itself.
+            Conv. Layer 2 (Convolution:5x5, Stride:1): Each resulting feature after this step encapsulates information of pixels that are at most $5 + 4 = 9$ pixels away, inclusive of itself.
             \item 
-            Pooling layer (Convolution=4x4, Stride=4): Each resulting feature after this step encapsulates information of pixels that are at most $9 + 4 = 13$ pixels away, inclusive of itself.
+            Pooling layer (Convolution:4x4, Stride:4): Each resulting feature after this step encapsulates information of pixels that are at most $9 + 3 = 12$ pixels away, inclusive of itself.
         \end{itemize}
 
-        This shows that the final representation of the image has every pixel that is representative of a 13x13 pixel area. However, if the original image or the translated version of the same image is at the edge of the $(n-10)*(n-10)$ pixel area of possible translation, as explained in the previous answer.
+        This shows that the final representation of the image has every pixel that is representative of a 12x12 pixel area. However, if the original image or the translated version of the same image is at the edge of the $(n-10)*(n-10)$ pixel area of possible translation, as explained in the previous answer, the final pooling layer output will be different for the original image and the translated image, thus resulting in translational invariance.
 
     % subsection double_convolution_and_max_pooling (end)
 
