@@ -140,8 +140,7 @@
         \end{table}
 
         \textbf{Discussion:}\\
-        Both the training and test accuracies have a very low factor of deviation when it comes to varying the depth of the network. However, the number of neurons is the same and each layer is fully connected to the next layer in the network.
-    
+        Both the training and test accuracies have a very low factor of deviation when it comes to varying the depth of the network. However, the number of neurons is the same for each experiment and each layer is fully connected to the next layer in the network. It seems to be that the 2 layer network performs marginally better than the other. 
     
     % subsection tweaking_network_architecture (end)
 
@@ -151,41 +150,98 @@
 \section{Object Recognition} % (fold)
 \label{sec:object_recognition}
 
+    \textbf{Assumptions}
+    \begin{itemize}
+        \item 
+        The original image dimensions are $m*m$.
+        \item 
+        As stated in the question is that the foreground objects is away from the image borders by at least 10px always.
+        \item 
+        The weights of the model are fixed, and both the original and translated images are evaluated purely on the basis of their neuron activates at the penultimate layer.
+    \end{itemize}
+
     \subsection{Single Convolutions} % (fold)
     \label{sub:single_convolutions}
 
-        Yes, the feature representation will be translation invariant.
+        No, the feature representation \textbf{will not be translation invariant}.
 
         \textbf{Justification:}\\
-        The image is always 10 pixels away from the nearest border. This fact itself ensures that the object in the foreground, can remain translation invariant for upto a single convolution of upto $10*10$ pixels.
+        The original and translation images are convolved over a $5*5$ patch in the image.
+        The translation of the image for through a given number of pixels `n', results in a representation of dimensions $(m-4)*(m-4)$.
 
-        To explain this more intuitively, the foreground image has a $(n-10)*(n-10)$ pixel area of possible translation.
+        However, the translation results in a different set of activated units for the original vs. the translated image, thus, leading to the conclusion that the neural networks' representation will not be translation invariant.
 
-        The resulting feature set of the single convolution layer would be $(n-4)*(n-4)$ pixels in dimension. This ensures that there is no loss of data, since the image itself exists on a smaller subset of that dimension ($(n-10)*(n-10)$).
-    
+        \textbf{Counter-example:}\\
+        Consider the original image having a final-layer representation as below:
+        \begin{equation*}
+            \begin{bmatrix}
+                0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0
+            \end{bmatrix}
+        \end{equation*}
+        As the translated image has not aggregated in a disjoint manner such as to ensure that the final activation units do not change, an example of the final-layer can be given as follows:
+        \begin{equation*}
+            \begin{bmatrix}
+                0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0
+            \end{bmatrix}
+        \end{equation*}
+        Since the output being fed to the softmax layer is different, this CNN setup is \textbf{not translational invariant} to any pixel translations.
+
+
     % subsection single_convolutions (end)
 
 
-    \subsection{Double Convolution and Max Pooling} % (fold)
-    \label{sub:double_convolution_and_max_pooling}
+    \subsection{Convolution and Max Pooling} % (fold)
+    \label{sub:convolution_and_max_pooling}
 
-        No, the feature representation will not be translation invariant.
-
-        This is because, each feature of the final representation will only be invariant if it abstracts the information of pixels at most 10px away from itself. Let us consider the steps involved with the Double convolution and max pooling layers.
+        No, the feature representation \textbf{will not be translation invariant}.
 
         \textbf{Justification:}\\
-        \begin{itemize}
-            \item 
-            Conv. Layer 1 (Convolution:5x5, Stride:1): Each resulting feature after this step encapsulates information of pixels that are at most 5 pixels away, inclusive of itself. 
-            \item 
-            Conv. Layer 2 (Convolution:5x5, Stride:1): Each resulting feature after this step encapsulates information of pixels that are at most $5 + 4 = 9$ pixels away, inclusive of itself.
-            \item 
-            Pooling layer (Convolution:4x4, Stride:4): Each resulting feature after this step encapsulates information of pixels that are at most $9 + 3 = 12$ pixels away, inclusive of itself.
-        \end{itemize}
+        Although there are scenarios where the network will remain translation invariant, this justification focuses on a failure scenario, where the representation varies due to translation.
 
-        This shows that the final representation of the image has every pixel that is representative of a 12x12 pixel area. However, if the original image or the translated version of the same image is at the edge of the $(n-10)*(n-10)$ pixel area of possible translation, as explained in the previous answer, the final pooling layer output will be different for the original image and the translated image, thus resulting in translational invariance.
+        \textbf{Counter-example:}\\
+        Consider the original image having a post convnet layer representation as below. The vertical separator delineates  
+        \[
+            \left[
+                \begin{array}{cccc|cccc}
+                    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+                    0 & 1 & 6 & 2 & 0 & 0 & 0 & 0 \\
+                    0 & 3 & 1 & 3 & 1 & 0 & 0 & 0 \\
+                    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+                \end{array}
+            \right]
+        \]
+        This will be max-pooled to create the activation units
+        \[
+            \left[
+                \begin{array}{cc}
+                    6 & 1
+                \end{array}
+            \right]
+        \]
 
-    % subsection double_convolution_and_max_pooling (end)
+        Now consider that this representation has been translated 2px to the right such that it's representation is as below.
+        \[
+            \left[
+                \begin{array}{cccc|cccc}
+                    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+                    0 & 0 & 0 & 1 & 6 & 2 & 0 & 0 \\
+                    0 & 0 & 0 & 3 & 1 & 3 & 1 & 0 \\
+                    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+                \end{array}
+            \right]
+        \]
+        This will be max-pooled to create the activation units, which are different from those created by the original image.
+        \[
+            \left[
+                \begin{array}{cc}
+                    3 & 6
+                \end{array}
+            \right]
+        \]
+
+        Since the output being fed to the softmax layer is different, this CNN setup is not translational invariant to this pixel translation. However, there are certain translations that the network can still be invariant too. The answer is based on it's response to any translation that is within 10px, and the invariance property is not satisfied for the above illustrated translation.
+
+    % subsection convolution_and_max_pooling (end)
 
 
 % section object_recognition (end)
