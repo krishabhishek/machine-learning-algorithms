@@ -1,66 +1,73 @@
-\documentclass[parskip=half]{scrartcl}
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{acl2017}
+\usepackage{times}
+\usepackage{latexsym}
 
-\usepackage{amsmath}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
     citecolor=blue
 }
 
+
+\aclfinalcopy % Uncomment this line for the final submission
+%\def\aclpaperid{***} %  Enter the acl Paper ID here
+
+\setlength\titlebox{5cm}
+
+\title{A Survey of Neural Network Techniques for Feature Extraction from Text}
+
+\author{
+  Vineet John \\
+  University of Waterloo \\
+  {\tt v2john@uwaterloo.ca} \\
+}
+
+\date{}
+
 \begin{document}
 
-
-\title{
-    A Survey of Neural Network Techniques for Feature Extraction from Text
-}
-\subtitle{CS698 - Project Proposal}
-\author{
-    Vineet John\\
-    \texttt{v2john@uwaterloo.ca}
-}
-\date{}
 \maketitle
 
 \section{Introduction} % (fold)
 \label{sec:introduction}
 
-    A majority of the methods currently in use for text-based feature extraction rely on relatively simple statistical techniques. For instance, a word co-occurrence model like N-Grams or a bag-of-words model like TF-IDF.
+  A majority of the methods currently in use for text-based feature extraction rely on relatively simple statistical techniques. For instance, a word co-occurrence model like N-Grams or a bag-of-words model like TF-IDF.
 
-    The motivation of this research project is to identify and survey the techniques that use neural networks and to compare them to the traditional text feature extraction models.
+  The motivation of this research project is to identify and survey the techniques that use neural networks and to compare them to the traditional text feature extraction models.
 
-    Feature extraction of text can be used for a multitude of applications including - but not limited to - unsupervised semantic similarity detection, article classification and sentiment analysis.
+  Feature extraction of text can be used for a multitude of applications including - but not limited to - unsupervised semantic similarity detection, article classification and sentiment analysis.
 
 % section introduction (end)
 
 \section{Research Questions} % (fold)
 \label{sec:research_questions}
 
-    \begin{itemize}
-        \item [RQ1] What are the simpler statistical techniques to extract features from text?
-        \item [RQ2] Is there any inherent benefit to using neural networks as opposed to the simple methods?
-        \item [RQ3] What are the trade-offs that neural networks incur as opposed to the simple methods?
-        \item [RQ4] How do the different techniques compare to each other in terms of performance and accuracy?
-        \item [RQ5] In what use-cases do the trade-offs outweigh the benefits of neural networks?
-    \end{itemize}
+  \begin{itemize}
+    \item [RQ1] What are the simpler statistical techniques to extract features from text?
+    \item [RQ2] Is there any inherent benefit to using neural networks as opposed to the simple methods?
+    \item [RQ3] What are the trade-offs that neural networks incur as opposed to the simple methods?
+    \item [RQ4] How do the different techniques compare to each other in terms of performance and accuracy?
+    \item [RQ5] In what use-cases do the trade-offs outweigh the benefits of neural networks?
+  \end{itemize}
 
 % section research_questions (end)
 
 \section{Methodology} % (fold)
 \label{sec:methodology}
 
-    The research questions listed in Section~\ref{sec:research_questions} will be tackled by surveying a few of the important overview papers on the topic\cite{goldberg2016primer}\cite{bengio2003neural}\cite{morin2005hierarchical}. A few of the groundbreaking research papers in this area will also be studied, including Word2Vec\cite{mikolov2013efficient}\cite{mikolov2013distributed}\cite{mikolov2013linguistic}.
+  The research questions listed in Section~\ref{sec:research_questions} will be tackled by surveying a few of the important overview papers on the topic\cite{goldberg2016primer}\cite{bengio2003neural}\cite{morin2005hierarchical}. A few of the groundbreaking research papers in this area will also be studied, including Word2Vec\cite{mikolov2013efficient}\cite{mikolov2013distributed}\cite{mikolov2013linguistic}.
 
-    In addition to this, other application areas in NLP will be surveyed, including tasks like part-of-speech tagging, chunking, named entity recognition, and semantic role labeling. \cite{socher2011parsing}\cite{luong2013better}\cite{maas2015lexicon}\cite{li2015hierarchical}\cite{collobert2011natural}\cite{pennington2014glove}
-
+  In addition to this, other application areas in NLP will be surveyed, including tasks like part-of-speech tagging, chunking, named entity recognition, and semantic role labeling. \cite{socher2011parsing}\cite{luong2013better}\cite{maas2015lexicon}\cite{li2015hierarchical}\cite{collobert2011natural}\cite{pennington2014glove}
 
 % section methodology (end)
 
 \section{Goal} % (fold)
 \label{sec:goal}
 
-    The goal of this project is the documentation of the differences, advantages and drawbacks in the domain of feature extraction from text data using neural networks. 
+  The goal of this project is the documentation of the differences, advantages and drawbacks in the domain of feature extraction from text data using neural networks. 
 
-    The project report could serve as a quick cheat-sheet for engineers looking to build a text classification or scoring pipeline, as the comparison would serve to map a use-case to a certain type of feature extraction approach.
+  The project report could serve as a quick cheat-sheet for engineers looking to build a text classification or scoring pipeline, as the comparison would serve to map a use-case to a certain type of feature extraction approach.
 
 % section goal (end)
 
@@ -71,31 +78,28 @@
 \section{A Primer of Neural Net Models for NLP} % (fold)
 \label{sec:a_primer_of_neural_net_models_for_nlp}
 
-    \begin{itemize}
-        \item 
-        Fully connected feed-forward neural networks are non-linear learners that can, be used as a drop-in replacement wherever a linear learner is used.
-        \item 
-        The high accuracy is a result of this non-linearity along with the availability of pre-trained word embeddings.
-        \item 
-        Multi-layer feed-forward networks can provide competitive results on sentiment classification and factoid question answering
-        \item 
-        Convolutional and pooling architecture show promising results on many tasks, including document classification, short-text categorization, sentiment classification, relation type classification between entities, event detection, paraphrase identification, semantic role labeling, question answering, predicting box-office revenues of movies based on critic reviews, modeling text interestingness, and modeling the relation between character-sequences and part-of-speech tags.
-        \item 
-        Convolutional and pooling architectures allow us to encode arbitrary large items as fixed size vectors capturing their most salient features, they do so by sacrificing most of the structural information.
-        \item 
-        Recurrent and recursive networks allows using sequences and trees and preserve the structural information.
-        \item 
-        Recurrent models have been shown to produce very strong results for language modeling as well as for sequence tagging, machine translation, dependency parsing, sentiment analysis, noisy text normalization, dialog state tracking, response generation, and modeling the relation between character sequences and part-of-speech tags. 
-        \item 
-        Recursive models were shown to produce state-of-the-art or near state-of-the-art results for constituency and dependency parse re-ranking, discourse parsing, semantic relation classification, political ideology detection based on parse trees, sentiment classification, target-dependent sentiment classification and question answering.
-        \item 
-        Convolutional nets seem to work well for summarization related tasks and recurrent/recursive nets seem to work well for language modeling tasks.
-    \end{itemize}
+  \begin{itemize}
+    \item 
+    Fully connected feed-forward neural networks are non-linear learners that can, be used as a drop-in replacement wherever a linear learner is used.
+    \item 
+    The high accuracy is a result of this non-linearity along with the availability of pre-trained word embeddings.
+    \item 
+    Multi-layer feed-forward networks can provide competitive results on sentiment classification and factoid question answering
+    \item 
+    Convolutional and pooling architecture show promising results on many tasks, including document classification, short-text categorization, sentiment classification, relation type classification between entities, event detection, paraphrase identification, semantic role labeling, question answering, predicting box-office revenues of movies based on critic reviews, modeling text interestingness, and modeling the relation between character-sequences and part-of-speech tags.
+    \item 
+    Convolutional and pooling architectures allow us to encode arbitrary large items as fixed size vectors capturing their most salient features, they do so by sacrificing most of the structural information.
+    \item 
+    Recurrent and recursive networks allows using sequences and trees and preserve the structural information.
+    \item 
+    Recurrent models have been shown to produce very strong results for language modeling as well as for sequence tagging, machine translation, dependency parsing, sentiment analysis, noisy text normalization, dialog state tracking, response generation, and modeling the relation between character sequences and part-of-speech tags. 
+    \item 
+    Recursive models were shown to produce state-of-the-art or near state-of-the-art results for constituency and dependency parse re-ranking, discourse parsing, semantic relation classification, political ideology detection based on parse trees, sentiment classification, target-dependent sentiment classification and question answering.
+    \item 
+    Convolutional nets seem to work well for summarization related tasks and recurrent/recursive nets seem to work well for language modeling tasks.
+  \end{itemize}
 
 % section a_primer_of_neural_net_models_for_nlp (end)
-
-
-
 
 \bibliographystyle{unsrt}
 \bibliography{cs698_project_report}
