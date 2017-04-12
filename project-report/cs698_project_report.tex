@@ -116,6 +116,18 @@
     We propose to fight the curse of dimensionality by learning a distributed representation for words which allows each training sentence to inform the model about an exponential number of semantically neighboring sentences.
     \item 
     A fundamental problem that makes language modeling and other learning problems difficult is the curse of dimensionality. It is particularly obvious in the case when one wants to model the joint distribution between many discrete random variables (such as words in a sentence, or discrete attributes in a data-mining task)
+    \item 
+    State-of-the art results are typically obtained using trigrams.
+    \item 
+    Language generation via subtitution of semantically similar language constructs of existing sentences can be done via shared-parameter multi-layer neural networks.
+    \item 
+    The objective of this paper is to obtain real-valued vector sequences of words and learn a joint probability function for those sequences of words alongside the feature vector, and hence, jointly learn both the real-value vector representation and the parameters of the probability distribution.
+    \item 
+    This probability function can be tuned in order to maximize log-likelihood of the training data, while penalizing with a cost function similar to the one used in Ridge regression.
+    \item 
+    This will ensure that semantically similar words end up with an almost equivalent feature vectors, called learned distributed feature vectors.
+    \item 
+    
   \end{itemize}
 
 % section a_neural_probabilistic_language_model (end)
