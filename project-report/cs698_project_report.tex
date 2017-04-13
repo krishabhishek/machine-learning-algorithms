@@ -5,8 +5,8 @@
 
 \usepackage{hyperref}
 \hypersetup{
-    colorlinks=true,
-    citecolor=blue
+  colorlinks=true,
+  citecolor=blue
 }
 
 
@@ -135,7 +135,47 @@
   \textbf{Goal of the paper:}
   Knowing the basic structure of a sentence, we should be able to create a new sentence by replacing parts of the old sentence with interchangeable elements.
 
+  \textbf{Challenges:}
+  \begin{itemize}
+    \item 
+    The main bottleneck for the neural computation is while computing the activations of the output layer
+  \end{itemize}
+
+  \textbf{Optimizations:}
+  \begin{itemize}
+    \item 
+    Data parallel processing (different processor working on a different subsets of data) and asynchronous processor usage of shared memory.
+  \end{itemize}
+
 % section a_neural_probabilistic_language_model (end)
+
+
+\section{A Hierarchical Neural Autoencoder for Paragraphs and Documents} % (fold)
+\label{sec:a_hierarchical_neural_autoencoder_for_paragraphs_and_documents}
+
+  \begin{itemize}
+    \item 
+    Attempts to build a paragraph embedding from the underlying word and sentence embeddings, and then proceeds to encode the paragraph embedding in an attempt to reconstruct the original paragraph.
+    \item 
+    For this to happen, we need to preserve, syntactic, semantic and discourse related properties while creating the embedded representation.
+    \item 
+    Hierarchical LSTM utilized to preserve sentence structure.
+    \item 
+  \end{itemize}
+
+  \textbf{Implementation:}
+  \begin{itemize}
+    \item 
+    An LSTM layer to convert words into a vector representation of a sentence. Another LSTM layer after that to convert multiple sentences into a paragraph.
+    \item 
+    Parameters are estimated by maximizing likelihood of outputs given inputs, similar to standard sequence-to-sequence models.
+    \item 
+    Estimations are calculated using softmax functions to maximize the likelihood of the consituent words.
+    \item 
+    Attention models using the hierarchical autoencoder could be utilized for dialogue systems, since it explicitly models for discourse.
+  \end{itemize}
+
+% section a_hierarchical_neural_autoencoder_for_paragraphs_and_documents (end)
 
 
 \newpage
