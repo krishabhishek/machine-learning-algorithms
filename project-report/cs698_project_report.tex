@@ -9,9 +9,7 @@
   citecolor=blue
 }
 
-
-\aclfinalcopy % Uncomment this line for the final submission
-%\def\aclpaperid{***} %  Enter the acl Paper ID here
+\aclfinalcopy 
 
 \setlength\titlebox{5cm}
 
@@ -31,7 +29,7 @@
 
 
 \begin{abstract}
-  This paper aims to catalyze the discussions about text feature extraction techniques using neural network techniques. 
+  This paper aims to catalyze the discussions about text feature extraction techniques using neural network techniques, for the CS 698 Final Project. The research questions focus on the newly emerging areas of neural network techniques that have proven to be useful tools for language processing, language generation, text classification and other computational linguistics areas.
 \end{abstract}
 
 
@@ -81,7 +79,7 @@
 \section{Document Vectorization} % (fold)
 \label{sec:document_vectorization}
 
-  Document vectorization is needed to convert the text content of the SemEval headlines into a numeric vector representation that can be utilized as feature vectors, which can then be used to train a machine learning model on. For the purposes of this project, the methods for vectorization considered are listed in the subsections below. \cite{SemEvalPaper}
+  Document vectorization is needed to convert text content into a numeric vector representation that can be utilized as feature vectors, which can then be used to train a machine learning model on. This section talks about a few different statistical methods for computing this feature vector. \cite{SemEvalPaper}
 
   \subsection{N-gram Model} % (fold)
   \label{sub:n_gram_model}
@@ -100,14 +98,13 @@
 
     A Paragraph Vector representation of text is an unsupervised learning algorithm that learns fixed-size vector representations for variable-length pieces of texts such as sentences and documents \cite{le2014distributed}. The vector representations are learned to predict the surrounding words in contexts sampled from the paragraph. In the context of the SemEval headlines, the vector representations were learned for the complete headline.
 
-    Two distinct implementations were explored while attempting to vectorize the headlines using the Paragraph Vector approach.
+    Two distinct implementations have gained prominence in the community of late
     \begin{itemize}
       \item 
         Doc2Vec: A Python library implementation in Gensim\footnote{https://radimrehurek.com/gensim/models/doc2vec.html}.
       \item 
         FastText: A standalone implementation in C++ \cite{bojanowski2016enriching} \cite{joulin2016bag}.
     \end{itemize}
-    Doc2Vec was the final choice that was opted for due to the ease of integration into the existing system.
   
   % subsection paragraph_vectors_doc2vec (end)
 
@@ -230,6 +227,8 @@
     Back-off n-grams are used for this approach too, and we attempt to learn a real-valued vector representation of each word.
     \item 
     The word embeddings learnt are shared across all the participating nodes in the distributed architecture.
+    \item 
+    A very important component of the whole model is the choice of the words binary encoding, i.e. of the hierarchical word clustering. In this paper the authors combine empirical statistics with prior knowledge from the WordNet resource.
   \end{itemize}
 
 % section hierarchical_probabilistic_neural_network_language_model (end)
