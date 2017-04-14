@@ -101,9 +101,9 @@
     Two distinct implementations have gained prominence in the community of late
     \begin{itemize}
       \item 
-        Doc2Vec: A Python library implementation in Gensim\footnote{https://radimrehurek.com/gensim/models/doc2vec.html}.
+        Doc2Vec: A Python library implementation in Gensim. \footnote{https://radimrehurek.com/gensim/models/doc2vec.html}.
       \item 
-        FastText: A standalone implementation in C++ \cite{bojanowski2016enriching} \cite{joulin2016bag}.
+        FastText: A standalone implementation in C++. \cite{bojanowski2016enriching} \cite{joulin2016bag}.
     \end{itemize}
   
   % subsection paragraph_vectors_doc2vec (end)
@@ -275,6 +275,65 @@
   
 % section better_word_representations_with_recursive_neural_networks_for_morphology (end)
 
+
+\section{Efficient Estimation of Word Representations in Vector Space} % (fold)
+\label{sec:efficient_estimation_of_word_representations_in_vector_space}
+
+  \textbf{Goal:}
+  The main goal of this paper is to introduce techniques that can be used for learning high-quality word vectors from huge data sets with billions of words, and with millions of words in the vocabulary. This is one of the seminal papers that led to the creation of Word2Vec, which is a state-of-the-art word embeddding tool. \cite{mikolov2013efficient}
+
+  \textbf{Approach:}
+  \begin{itemize}
+    \item 
+    The ideas presented in this paper build on the previous ideas presented by Bengio et.al.\cite{bengio2003neural}
+    \item 
+    The objective was to obtain high-quality word embeddings that capture the syntactic and semantic characteristics of words in a manner that allows algebraic operations to proxy the distances in vector space.
+    $$man - woman = king - queen$$ or $$tell - told = walk - walked$$
+    \item 
+    The training time here scales with the dimensionality of the learned feature vectors and not on the volume of training data.
+    \item 
+    The approach attempts to find a distributed vector representation of values as opposed to a continuous representation of values as computed by methods like LSA and LDA.
+    \item 
+    The models are trained using stochastic gradient descent and backpropagation.
+    \item 
+    The RNN models are touted to be able to have an inherently better representation of sentence structure for complex patterns, without the need to specify context length.
+    \item 
+    To allow for the distributed training of the data, the framework DistBelief was used with mutiple replicas of the model. Adagrad was utilized for asynchronous gradient descent.
+    \item 
+    Two distint models were conceptualized for the training of the word vectors based on context, both of which are continous and distributed representations of words.
+    \begin{itemize}
+      \item 
+      Continuous Bag-of-Words model: This model uses the context of a word i.e. the words that precede and follow it, to be able to predict the current word.
+      \item 
+      Skip-gram model: This model uses the current word to be able to predict the context it appeared in.
+    \end{itemize}
+  \end{itemize}
+
+  \textbf{Challenges:}
+  \begin{itemize}
+    \item 
+    The computational complexity that arises at the fully-connected output layer of the neural network is the dominant part of the computation. A couple of methods suggested to mitigate this is to use hierarchical versions of the softmax output activation units, or to refrain from performing normalization at the final layer altogether.
+  \end{itemize}
+
+  The experimental results show that the CBOW and Skipgram models consistently out-performed the then, state-of-the-art models. It was also observed that after a point, increasing the dimensions and the size of the data began providing diminishing returns.
+
+% section efficient_estimation_of_word_representations_in_vector_space (end)
+
+
+\section{Distributed Representations of Words and Phrases and their Compositionality} % (fold)
+\label{sec:distributed_representations_of_words_and_phrases_and_their_compositionality}
+
+  \textbf{Goal:}
+  This paper builds upon the idea of the Word2Vec skip-gram model, and presents optimizations in terms of quality of the word embeddings as well as speed-ups while training. It also proposes an alternative to the hierarchical softmax final layer, called negative sampling.
+
+  \textbf{Approach:}
+  \begin{itemize}
+    \item 
+    
+  \end{itemize}
+
+
+% section distributed_representations_of_words_and_phrases_and_their_compositionality (end)
 
 
 \newpage
