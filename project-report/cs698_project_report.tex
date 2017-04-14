@@ -13,7 +13,7 @@
 
 \setlength\titlebox{5cm}
 
-\title{A Survey of Neural Network Techniques for Feature Extraction from Text}
+\title{A Survey of Neural Network Techniques\\for Feature Extraction from Text}
 
 \author{
   Vineet John \\
@@ -214,8 +214,8 @@
 \section{Hierarchical Probabilistic Neural Network Language Model} % (fold)
 \label{sec:hierarchical_probabilistic_neural_network_language_model}
 
-  \textbf{Goal}
-  Implementing a  hierarchical decomposition of the conditional probabilities that yields a speed-up of about 200 both during training and recognition. The hierarchical decomposition is a binary hierarchical clustering constrained by the prior knowledge extracted from the WordNet semantic hierarchy
+  \textbf{Goal}\\
+  Implementing a  hierarchical decomposition of the conditional probabilities that yields a speed-up of about 200 both during training and recognition. The hierarchical decomposition is a binary hierarchical clustering constrained by the prior knowledge extracted from the WordNet semantic hierarchy.\\
 
   \textbf{Summary:}
   \begin{itemize}
@@ -237,8 +237,8 @@
 \section{Better Word Representations with Recursive Neural Networks for Morphology} % (fold)
 \label{sec:better_word_representations_with_recursive_neural_networks_for_morphology}
 
-  \textbf{Goal:}
-  The paper aims to address the inaccuracy in vector representations of complex and rare words, supposedly caused by the lack of relation between morphologically related words. \cite{luong2013better}
+  \textbf{Goal:}\\
+  The paper aims to address the inaccuracy in vector representations of complex and rare words, supposedly caused by the lack of relation between morphologically related words. \cite{luong2013better}\\
 
   \textbf{Approach:}
   \begin{itemize}
@@ -279,8 +279,8 @@
 \section{Efficient Estimation of Word Representations in Vector Space} % (fold)
 \label{sec:efficient_estimation_of_word_representations_in_vector_space}
 
-  \textbf{Goal:}
-  The main goal of this paper is to introduce techniques that can be used for learning high-quality word vectors from huge data sets with billions of words, and with millions of words in the vocabulary. This is one of the seminal papers that led to the creation of Word2Vec, which is a state-of-the-art word embeddding tool. \cite{mikolov2013efficient}
+  \textbf{Goal:}\\
+  The main goal of this paper is to introduce techniques that can be used for learning high-quality word vectors from huge data sets with billions of words, and with millions of words in the vocabulary. This is one of the seminal papers that led to the creation of Word2Vec, which is a state-of-the-art word embeddding tool. \cite{mikolov2013efficient}\\
 
   \textbf{Approach:}
   \begin{itemize}
@@ -300,7 +300,13 @@
     \item 
     To allow for the distributed training of the data, the framework DistBelief was used with mutiple replicas of the model. Adagrad was utilized for asynchronous gradient descent.
     \item 
-    Two distint models were conceptualized for the training of the word vectors based on context, both of which are continous and distributed representations of words.
+    Two distint models were conceptualized for the training of the word vectors based on context, both of which are continous and distributed representations of words. These are illustrated in Figure
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=.5\textwidth]{cbow-skipgram}
+      \caption{CBOW and Skipgram models}
+      \label{fig:cbow-skipgram}
+    \end{figure}
     \begin{itemize}
       \item 
       Continuous Bag-of-Words model: This model uses the context of a word i.e. the words that precede and follow it, to be able to predict the current word.
@@ -323,8 +329,49 @@
 \section{Distributed Representations of Words and Phrases and their Compositionality} % (fold)
 \label{sec:distributed_representations_of_words_and_phrases_and_their_compositionality}
 
-  \textbf{Goal:}
-  This paper builds upon the idea of the Word2Vec skip-gram model, and presents optimizations in terms of quality of the word embeddings as well as speed-ups while training. It also proposes an alternative to the hierarchical softmax final layer, called negative sampling.
+  \textbf{Goal:}\\
+  This paper builds upon the idea of the Word2Vec skip-gram model, and presents optimizations in terms of quality of the word embeddings as well as speed-ups while training. It also proposes an alternative to the hierarchical softmax final layer, called negative sampling.\\
+
+  \textbf{Approach:}
+  \begin{itemize}
+    \item 
+    One of the optimizations suggested is to sub-sample the training set words to achieve a speed-up in training the words.
+    \item 
+    Given a sequence of training words $w_1 , w_2 , w_3 , . . . , w_T$ , the objective of the Skip-gram model is to maximize the average log probability 
+    \begin{equation}
+      \frac{1}{T} \sum_{t=1}^T \sum_{-c \leq j \leq c; j \neq 0} \log P(w_{t+j}, w_t)
+    \end{equation}
+    where $c$ is the window or context surrounding the current word being trained on. 
+    \item 
+    As introduced by Morin, Bengio et.al.\cite{morin2005hierarchical}, a computationally efficient approximation of the full softmax is the hierarchical softmax. The hierarchical softmax uses a binary tree representation of the output layer with the W words as its leaves and, for each node, explicitly represents the relative probabilities of its child nodes. These define a random walk that assigns probabilities to words.
+    \item 
+    The authors use a binary Huffman tree, as it assigns short codes to the frequent words which results in fast training. It has been observed before that grouping words together by their frequency works well as a very simple speedup technique for the neural network based language models.
+    \item 
+    Noise Contrastive Estimation (NCE), which is an alternative to hierarchical softmax,  posits that a good model should be able to differentiate data from noise by means of logistic regression.
+    \item 
+    To counter the imbalance between the rare and frequent words, we used a simple subsampling approach: each word wi in the training set is discarded with probability computed by the below formula. 
+    $$P(w_i) = 1 - \sqrt{\frac{t}{f(w_i)}} $$
+    This is similar to a dropout of neurons from the network, except that it is statistically more likely that frequent words are removed from the corpus by virtue of this method.
+    \item 
+    Discarding the frequently occurring words allows for a reduction in computational and memory cost.
+    \item 
+    The individual words can easily be coalesced into phrases using unigram and bigram frequency counts, as shown below.
+    $$score(w_i, w_j) = \frac{count(w_i w_j) - \delta}{count(w_i) * count(w_j)} $$
+    \item 
+    Another interesting property of learning these distributed representations is that the word and phrase representations learned by the Skip-gram model exhibit a linear structure that makes it possible to perform precise analogical reasoning using simple vector arithmetic.
+  \end{itemize}
+
+
+% section distributed_representations_of_words_and_phrases_and_their_compositionality (end)
+
+
+
+\section{Linguistic Regularities in Continuous Space Word Representations} % (fold)
+\label{sec:linguistic_regularities_in_continuous_space_word_representations}
+
+
+  \textbf{Goal:}\\
+  \\
 
   \textbf{Approach:}
   \begin{itemize}
@@ -333,7 +380,9 @@
   \end{itemize}
 
 
-% section distributed_representations_of_words_and_phrases_and_their_compositionality (end)
+
+% section linguistic_regularities_in_continuous_space_word_representations (end)
+
 
 
 \newpage
