@@ -78,6 +78,43 @@
 % section goal (end)
 
 
+\section{Document Vectorization} % (fold)
+\label{sec:document_vectorization}
+
+  Document vectorization is needed to convert the text content of the SemEval headlines into a numeric vector representation that can be utilized as feature vectors, which can then be used to train a machine learning model on. For the purposes of this project, the methods for vectorization considered are listed in the subsections below. \cite{SemEvalPaper}
+
+  \subsection{N-gram Model} % (fold)
+  \label{sub:n_gram_model}
+    N-grams are contiguous sequences of `n' items from a given sequence of text or speech. Given a complete corpus of documents, each tuple of `n' grams, either characters or words are represented by a unique bit in a bit vector, which when aggregated for a body of text, form a sparse vectorized representation of the text in the form of n-gram occurrences.
+  
+  % subsubsection n_gram_model (end)
+
+  \subsection{TF-IDF Model} % (fold)
+  \label{sub:tf_idf_model}
+    Term frequency-inverse document frequency (TF-IDF), is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus \cite{sparck1972statistical}. The TF-IDF value increases proportionally to the number of times a word appears in the document, but is offset by the frequency of the word in the corpus, which helps to adjust for the fact that some words appear more frequently in general. It is a bag-of-words model, and doesn't preserve word ordering.
+  
+  % subsubsection tf_idf_model (end)
+
+  \subsection{Paragraph Vector Model} % (fold)
+  \label{sub:paragraph_vectors_doc2vec}
+
+    A Paragraph Vector representation of text is an unsupervised learning algorithm that learns fixed-size vector representations for variable-length pieces of texts such as sentences and documents \cite{le2014distributed}. The vector representations are learned to predict the surrounding words in contexts sampled from the paragraph. In the context of the SemEval headlines, the vector representations were learned for the complete headline.
+
+    Two distinct implementations were explored while attempting to vectorize the headlines using the Paragraph Vector approach.
+    \begin{itemize}
+      \item 
+        Doc2Vec: A Python library implementation in Gensim\footnote{https://radimrehurek.com/gensim/models/doc2vec.html}.
+      \item 
+        FastText: A standalone implementation in C++ \cite{bojanowski2016enriching} \cite{joulin2016bag}.
+    \end{itemize}
+    Doc2Vec was the final choice that was opted for due to the ease of integration into the existing system.
+  
+  % subsection paragraph_vectors_doc2vec (end)
+
+% section document_vectorization (end)
+
+
+
 \section{A Primer of Neural Net Models for NLP} % (fold)
 \label{sec:a_primer_of_neural_net_models_for_nlp}
 
@@ -180,7 +217,20 @@
 \section{Hierarchical Probabilistic Neural Network Language Model} % (fold)
 \label{sec:hierarchical_probabilistic_neural_network_language_model}
 
-  
+  \textbf{Goal}
+  Implementing a  hierarchical decomposition of the conditional probabilities that yields a speed-up of about 200 both during training and recognition. The hierarchical decomposition is a binary hierarchical clustering constrained by the prior knowledge extracted from the WordNet semantic hierarchy
+
+  \textbf{Summary:}
+  \begin{itemize}
+    \item 
+    Similar to the previous paper, attempts to tackle the `curse of dimensionality' as in \ref{sec:a_neural_probabilistic_language_model}. 
+    \item 
+    It attempts to produce a much faster variant.
+    \item 
+    Back-off n-grams are used for this approach too, and we attempt to learn a real-valued vector representation of each word.
+    \item 
+    The word embeddings learnt are shared across all the participating nodes in the distributed architecture.
+  \end{itemize}
 
 % section hierarchical_probabilistic_neural_network_language_model (end)
 
