@@ -2,7 +2,7 @@
 \usepackage[hyperref]{acl2017}
 \usepackage{times}
 \usepackage{latexsym}
-
+\usepackage{graphicx}
 \usepackage{hyperref}
 \hypersetup{
   colorlinks=true,
@@ -232,6 +232,49 @@
   \end{itemize}
 
 % section hierarchical_probabilistic_neural_network_language_model (end)
+
+
+\section{Better Word Representations with Recursive Neural Networks for Morphology} % (fold)
+\label{sec:better_word_representations_with_recursive_neural_networks_for_morphology}
+
+  \textbf{Goal:}
+  The paper aims to address the inaccuracy in vector representations of complex and rare words, supposedly caused by the lack of relation between morphologically related words. \cite{luong2013better}
+
+  \textbf{Approach:}
+  \begin{itemize}
+    \item 
+    The authors treat each morpheme as a basic unit in the RNNs and construct representations for morpho- logically complex words on the fly from their morphemes. By training a neural language model (NLM) and integrating RNN structures for complex words, they utilize contextual information to learn morphemic semantics and their compositional properties.
+    \item 
+    Discusses a problem that the Word2Vec syntactic relations like $$x_{apples} - x_{apple} \approx x_{cars} - x_{car}$$ might not hold true if the vector representation of a rare word is inaccurate to begin with.
+    \item 
+    \texttt{morphoRNN} operates at the morpheme level rather than the word level. An example of the this is illustrated in Figure \ref{fig:rnn-morphology}.
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=.4\textwidth]{rnn-morphology}
+      \caption{morphoRNN}
+      \label{fig:rnn-morphology}
+    \end{figure}
+    \item 
+    Parent words are created by combining a stem vector and an affix vector, as shown in Equation \ref{eqn:parent-vector}.
+    \begin{equation} \label{eqn:parent-vector}
+      p = f (W_m [x_{stem} ; x_{affix}] + b_m)
+    \end{equation}
+    \item 
+    The cost function is expression in terms of the squared Euclidean loss between the newly constructed representation $p_c(x_i)$ and the reference representation $p_r(x_i)$. The cost function is given in Equation \ref{eqn:cost-function-morphornn}.
+    \begin{equation} \label{eqn:cost-function-morphornn}
+      J(\theta) = \sum_{i=1}^N (|| p_c(x_i) - p_c(x_i) ||^2_2) + \frac{\lambda}{2} ||\theta||^2_2
+    \end{equation}
+    \item 
+    The paper describes both context sensitive and insensitive versions of the Morphological RNN.
+    \item 
+    Similar to a typical RNN, the network is trained by computing the activation functions and propagating the errors backward in a forward-backward pass architecture.
+  \end{itemize}
+
+  \textbf{Analysis:}
+  This RNN model performs better than most of the other neural language model, and could be used to supplement word vectors.
+  
+% section better_word_representations_with_recursive_neural_networks_for_morphology (end)
+
 
 
 \newpage
