@@ -111,7 +111,6 @@
 % section document_vectorization (end)
 
 
-
 \section{A Primer of Neural Net Models for NLP} % (fold)
 \label{sec:a_primer_of_neural_net_models_for_nlp}
 
@@ -234,6 +233,48 @@
 % section hierarchical_probabilistic_neural_network_language_model (end)
 
 
+\section{Linguistic Regularities in Continuous Space Word Representations} % (fold)
+\label{sec:linguistic_regularities_in_continuous_space_word_representations}
+
+
+  \textbf{Goal:}\\
+  In this paper, we examine the vector-space word representations that are implicitly learned by the input-layer weights. We find that these representations are surprisingly good at capturing syntactic and semantic regularities in language, and that each relationship is characterized by a relation-specific vector offset. This allows vector-oriented reasoning based on the offsets between words. \cite{mikolov2013linguistic} \\
+
+  \textbf{Approach:}
+  \begin{itemize}
+    \item 
+    A defining feature of neural network language models is their representation of words as high dimensional real valued vectors.
+    \item 
+    In this model, words are converted via a learned lookup-table into real valued vectors which are used as the inputs to a neural network.
+    \item 
+    One of the main advantages of these models is that the distributed representation achieves a level of generalization that is not possible with classical n-gram language models.
+    \item 
+    The word representations in this paper are learned by a recurrent neural network language model.
+    \item 
+    The input vector $w(t)$ represents input word at time $t$ encoded using 1-of-N coding, and the output layer $y(t)$ produces a probability distribution over words. The hidden layer $s(t)$ maintains a representation of the sentence history. The input vector $w(t)$ and the output vector $y(t)$ have dimensionality of the vocabulary.
+    \item 
+    The values in the hidden and output layers are computed as follows:
+    $$s(t) = f(Uw(t) + Ws(t-1))$$
+    $$t(t) = g(Vs(t))$$
+    where
+    $f(z) = \frac{1}{1 + e^{-z}}$ and $g(z_m) = \frac{e^{z_m}}{\sum_k e^{z_k}} $
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=.4\textwidth]{rnn-lang-model}
+      \caption{RNN Language Model}
+      \label{fig:rnn-lang-model}
+    \end{figure}
+    \item 
+    One of the biggest features of having real-valued feature representations is the ability to compute the answer to an analogy question $a:b; c:d$ where $d$ is unknown. With continuous space word representations, this becomes as simple as calculating 
+    $$y = x_b - x_a + x_c$$
+    $y$ is the best estimate of $d$ that the model could compute. If there is no vector amongst the trained words such that $y == x_w$, we can estimate the nearest vector representation using cosine similarity.
+    $$w^* = argmax_w \frac{x_w y}{||x_w|| ||y||}$$
+  \end{itemize}
+
+
+% section linguistic_regularities_in_continuous_space_word_representations (end)
+
+
 \section{Better Word Representations with Recursive Neural Networks for Morphology} % (fold)
 \label{sec:better_word_representations_with_recursive_neural_networks_for_morphology}
 
@@ -303,7 +344,7 @@
     Two distint models were conceptualized for the training of the word vectors based on context, both of which are continous and distributed representations of words. These are illustrated in Figure
     \begin{figure}[ht]
       \centering
-      \includegraphics[width=.5\textwidth]{cbow-skipgram}
+      \includegraphics[width=.4\textwidth]{cbow-skipgram}
       \caption{CBOW and Skipgram models}
       \label{fig:cbow-skipgram}
     \end{figure}
@@ -365,27 +406,11 @@
 % section distributed_representations_of_words_and_phrases_and_their_compositionality (end)
 
 
+\section{Glove: Global Vectors for Word Representation} % (fold)
+\label{sec:glove_global_vectors_for_word_representation}
 
-\section{Linguistic Regularities in Continuous Space Word Representations} % (fold)
-\label{sec:linguistic_regularities_in_continuous_space_word_representations}
+% section glove_global_vectors_for_word_representation (end)
 
-
-  \textbf{Goal:}\\
-  \\
-
-  \textbf{Approach:}
-  \begin{itemize}
-    \item 
-    
-  \end{itemize}
-
-
-
-% section linguistic_regularities_in_continuous_space_word_representations (end)
-
-
-
-\newpage
 
 \bibliographystyle{unsrt}
 \bibliography{cs698_project_report}
