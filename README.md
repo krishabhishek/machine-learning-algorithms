@@ -13,7 +13,7 @@ All of the algorithms are implemented from scratch.
 * [Generalized Linear Regression](https://github.com/v1n337/machine-learning-algorithms/tree/master/regularized-generalized-linear-regression)
 * [Bayesian Linear Regression](https://github.com/v1n337/machine-learning-algorithms/tree/master/bayesian-generalized-linear-regression)
 * [Gaussian Process Regression](https://github.com/v1n337/machine-learning-algorithms/tree/master/gaussian-process-regression)
-* [Hidden Markov Models](https://github.com/v1n337/machine-learning-algorithms/tree/master/hmm-algorithms)
+* [Hidden Markov Models (Forward/Viterbi)](https://github.com/v1n337/machine-learning-algorithms/tree/master/hmm-algorithms)
 * [Deep Learning - Tensorflow](https://github.com/v1n337/machine-learning-algorithms/tree/master/tensorflow-mnist)
 
 ## Assignments - Including theory

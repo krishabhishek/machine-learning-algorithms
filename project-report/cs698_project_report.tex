@@ -4,6 +4,14 @@
 \usepackage{latexsym}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
 \hypersetup{
   colorlinks=true,
   citecolor=blue
@@ -13,7 +21,8 @@
 
 \setlength\titlebox{5cm}
 
-\title{A Survey of Neural Network Techniques\\for Feature Extraction from Text}
+
+\title{A Survey of Neural Network Techniques\\ for Feature Extraction from Text\\ \large CS 698 (Winter 2017) - Project}
 
 \author{
   Vineet John \\
@@ -29,7 +38,7 @@
 
 
 \begin{abstract}
-  This paper aims to catalyze the discussions about text feature extraction techniques using neural network techniques, for the CS 698 Final Project. The research questions focus on the newly emerging areas of neural network techniques that have proven to be useful tools for language processing, language generation, text classification and other computational linguistics areas.
+  This paper aims to catalyze the discussions about text feature extraction techniques using neural network techniques. The research questions focus on the newly emerging areas of neural network techniques that have proven to be useful tools for language processing, language generation, text classification and other computational linguistics areas.
 \end{abstract}
 
 
@@ -48,11 +57,16 @@
 \label{sec:research_questions}
 
   \begin{itemize}
-    \item [RQ1] What are the simpler statistical techniques to extract features from text?
-    \item [RQ2] Is there any inherent benefit to using neural networks as opposed to the simple methods?
-    \item [RQ3] What are the trade-offs that neural networks incur as opposed to the simple methods?
-    \item [RQ4] How do the different techniques compare to each other in terms of performance and accuracy?
-    \item [RQ5] In what use-cases do the trade-offs outweigh the benefits of neural networks?
+    \item [RQ1] 
+    What are the simpler statistical techniques to extract features from text?
+    \item [RQ2] 
+    Is there any inherent benefit to using neural networks as opposed to the simple methods?
+    \item [RQ3] 
+    What are the trade-offs that neural networks incur as opposed to the simple methods?
+    \item [RQ4] 
+    How do the different techniques compare to each other in terms of performance and accuracy?
+    \item [RQ5] 
+    In what use-cases do the trade-offs outweigh the benefits of neural networks?
   \end{itemize}
 
 % section research_questions (end)
@@ -409,7 +423,72 @@
 \section{Glove: Global Vectors for Word Representation} % (fold)
 \label{sec:glove_global_vectors_for_word_representation}
 
+  \textbf{Goal:}\\
+  This paper proposes a global log-bilinear regression model that combines the advantages of the two major model families in the literature: global matrix factorization and local context window methods\\
+
+  \textbf{Approach:}
+  \begin{itemize}
+    \item 
+    While methods like LSA efficiently leverage statistical information, they do relatively poorly on the word analogy task, indicating a sub-optimal vector space structure. Methods like skip-gram may do better on the analogy task, but they poorly utilize the statistics of the corpus since they train on separate local context windows instead of on global co-occurrence counts.
+    \item 
+    The relationship between any arbitrary words can be examined by studying the ratio of their co-occurrence probabilities with various probe words.
+    \item 
+    The authors suggest that the appropriate starting point for word vector learning should be with ratios of co-occurrence probabilities rather than the probabilities themselves.
+    \item 
+    We can express this co-occurrence relation as shown below
+    $$F((w_i - w_j)^T w_k) = \frac{P_{ik}}{P_{jk}}$$
+    This makes the feature matrix interchangeable with its transpose.
+    \item 
+    An additive shift is included in the logarithm, $$\log(X_{ik}) \Rightarrow log(1 + X_{ik})$$ which maintains the sparsity of X while avoiding the divergences while computing the co-occurrences matrix.
+    \item 
+    The model obtained in the paper could be compared to a global skip-gram model as opposed to a fixed window-size skip-gram model as proposed by Mikolov et.al.\cite{mikolov2013efficient}.
+  \end{itemize}
+
 % section glove_global_vectors_for_word_representation (end)
+
+
+\section{Discussion} % (fold)
+\label{sec:discussion}
+
+  Following the  of the survey papers, this section re-visits the original research questions and points the reader to a succint summary that can be concluded from the experimental results and other conclusions drawn from the original papers.
+
+  \begin{itemize}
+    \item [RQ1] 
+    \textbf{What are the simpler statistical techniques to extract features from text?} \\
+    n-gram and a simple bag-of-words model such as TF-IDF are still the easiest tools to obtain an numeric vector representation of text.
+    \item [RQ2] 
+    \textbf{Is there any inherent benefit to using neural networks as opposed to the simple methods?} \\
+    The benefit around using neural nets primarily is the ability for neural nets to identify obscure patterns, and remain flexible enough for a varied set of application areas from Topic classification to Document similarity.
+    \item [RQ3] 
+    \textbf{What are the trade-offs that neural networks incur as opposed to the simple methods?} \\
+    The trade-offs are typically expressed in terms of computational cost and memory usage, although model complexity is a factor too, given that neural nets can be trained to learn arbitrarily complex generative models.
+    \item [RQ4] 
+    \textbf{How do the different techniques compare to each other in terms of performance and accuracy?} \\
+    This question can only be answered subjectively as it varies from application to application. Typically, document similarity can be tackled with a simple statistical approach like tf-idf. CNNs inherently model input data in a manner that iteratively reduces the dimensionality, making it a great fit for topic classification. RNNs are great at modeling sequences of text, which make them apt for language syntax modeling. Amongst the frameworks, GloVe's pre-trained word-embedding seem to perform better than Word2Vec, which is considered state-of-the-art.
+    \item [RQ5] 
+    \textbf{In what use-cases do the trade-offs outweigh the benefits of neural networks?} \\
+    As explained for the previous question, for a simple information retrieval use case such as document ranking, models such as tf-idf, and word PMI (pointwise mutual information) are sufficient, and neural networks would be overkill in such use-cases.
+  \end{itemize}
+
+% section discussion (end)
+
+
+\section{Conclusion} % (fold)
+\label{sec:conclusion}
+
+  This paper has summarized the important aspects of the state-of-the-art neural network techniques that have emerged in recent years. The field of machine translation, natural language understanding and natural language generation are important areas of research when it comes to developing a range of applications from a simple chatbot, to the conceptualization of a general AI entity.
+
+  The discussion section coalesces the papers surveyed and offers a ready reference for new-comers to the field. For future work, it is intended to experimentally compare different word-embedding approaches to act as a bootstrapping method to iteratively build high quality datasets for future machine learning model usage.
+
+% section conclusion (end)
+
+
+\section{Acknowledgements} % (fold)
+\label{sec:acknowledgements}
+
+  The author would like to thank Dr. Pascal Poupart for his constructive feedback on the survey proposal.
+
+% section acknowledgements (end)
 
 
 \bibliographystyle{unsrt}
