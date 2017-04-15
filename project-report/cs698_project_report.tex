@@ -82,6 +82,65 @@
 % section goal (end)
 
 
+\section{NLP Tasks - Background} % (fold)
+\label{sec:nlp_tasks_background}
+
+  \subsection{Part-of-Speech Tagging} % (fold)
+  \label{sub:part_of_speech_tagging}
+
+    \begin{itemize}
+      \item 
+      POS aims at labeling each word with a unique tag that indicates its syntactic role, like noun, verb, adjective.
+      \item 
+      The best POS classifiers are based on classifiers trained on windows of text, which are then fed to a bidirectional decoding algorithm during inference.
+      \item 
+      In general models resemble a bi-directional dependency network, and can be trained using a variety of methods including support vector machines, as well as bi-directional Viterbi decoders.
+    \end{itemize}
+  
+  % subsection part_of_speech_tagging (end)
+
+  \subsection{Chunking} % (fold)
+  \label{sub:chunking}
+
+    \begin{itemize}
+      \item 
+      Chunking aims at labeling segments of a sentence with syntactic constituents such as noun or verb phrases. It is also called shallow parsing and can be viewed as a generalization of part-of-speech tagging to phrases instead of words.
+      \item 
+      The implementation of chunking usually requires an underlying POS implementation, after which the words are compounded or chunked by concatenation.
+    \end{itemize}
+  
+  % subsection chunking (end)
+
+  \subsection{Named Entity Recognition} % (fold)
+  \label{sub:named_entity_recognition}
+  
+    \begin{itemize}
+      \item 
+      NER labels atomic elements in the sentence into categories such as “PERSON” or “LOCATION”.
+      \item 
+      Features to train NER classifiers could include POS tags, CHUNK tags, prefixes and suffixes, and large lexicons of the labelled entities. 
+    \end{itemize}
+
+  % subsection named_entity_recognition (end)
+
+  \subsection{Semantic Role Labeling} % (fold)
+  \label{sub:semantic_role_labeling}
+  
+    \begin{itemize}
+      \item 
+      SRL aims at giving a semantic role to a syntactic constituent of a sentence.
+      \item 
+      State-of-the-art SRL systems consist of several stages: producing a parse tree, identifying which parse tree nodes represent the arguments of a given verb, and finally classifying these nodes to compute the corresponding SRL tags.
+      \item 
+      SRL systems usually entail numerous features like the parts of speech and syntactic labels of words and nodes in the tree, the syntactic path to the verb in the parse tree, whether a node in the parse tree is part of a noun or verb phrase etc.
+    \end{itemize}
+
+  % subsection semantic_role_labeling (end)
+
+
+% section nlp_tasks_background (end)
+
+
 \section{Document Vectorization} % (fold)
 \label{sec:document_vectorization}
 
@@ -434,6 +493,8 @@
     An additive shift is included in the logarithm, $$\log(X_{ik}) \Rightarrow log(1 + X_{ik})$$ which maintains the sparsity of X while avoiding the divergences while computing the co-occurrences matrix.
     \item 
     The model obtained in the paper could be compared to a global skip-gram model as opposed to a fixed window-size skip-gram model as proposed by Mikolov et.al.\cite{mikolov2013efficient}.
+    \item 
+    The performance seems to increase monotonically with an increase in training data.
   \end{itemize}
 
 % section glove_global_vectors_for_word_representation (end)
