@@ -30,16 +30,17 @@
 
 
 \begin{abstract}
-  This paper aims to catalyze the discussions about text feature extraction techniques using neural network techniques. The research questions focus on the newly emerging areas of neural network techniques that have proven to be useful tools for language processing, language generation, text classification and other computational linguistics areas.
+  This paper aims to catalyze the discussions about text feature extraction techniques using neural network architectures. 
+  The research questions discussed in the paper focus on the state-of-the-art neural network techniques that have proven to be useful tools for language processing, language generation, text classification and other computational linguistics tasks.
 \end{abstract}
 
 
 \section{Introduction} % (fold)
 \label{sec:introduction}
 
-  A majority of the methods currently in use for text-based feature extraction rely on relatively simple statistical techniques. For instance, a word co-occurrence model like N-Grams or a bag-of-words model like TF-IDF.
+  A majority of the methods currently in use for text-based feature extraction rely on relatively simple statistical techniques. For instance, a word co-occurrence model like n-grams or a bag-of-words model like TF-IDF.
 
-  The motivation of this research project is to identify and survey the techniques that use neural networks and to compare them to the traditional text feature extraction models.
+  The motivation of this research project is to identify and survey the techniques that use neural networks and study them in juxtaposition with the traditional text feature extraction models to show their differences in approach.
 
   Feature extraction of text can be used for a multitude of applications including - but not limited to - unsupervised semantic similarity detection, article classification and sentiment analysis.
 
@@ -49,15 +50,15 @@
 \label{sec:research_questions}
 
   \begin{itemize}
-    \item [RQ1] 
+    \item [\textbf{RQ1}] 
     What are the simpler statistical techniques to extract features from text?
-    \item [RQ2] 
+    \item [\textbf{RQ2}] 
     Is there any inherent benefit to using neural networks as opposed to the simple methods?
-    \item [RQ3] 
+    \item [\textbf{RQ3}] 
     What are the trade-offs that neural networks incur as opposed to the simple methods?
-    \item [RQ4] 
+    \item [\textbf{RQ4}] 
     How do the different techniques compare to each other in terms of performance and accuracy?
-    \item [RQ5] 
+    \item [\textbf{RQ5}] 
     In what use-cases do the trade-offs outweigh the benefits of neural networks?
   \end{itemize}
 
@@ -75,7 +76,7 @@
 \section{Goal} % (fold)
 \label{sec:goal}
 
-  The goal of this project is the documentation of the differences, advantages and drawbacks in the domain of feature extraction from text data using neural networks. 
+  The goal of this project is to document of the differences, advantages and drawbacks in the domain of feature extraction from text data using neural networks. It also sketches an evolution of such techniques.
 
   The project report could serve as a quick cheat-sheet for engineers looking to build a text classification or scoring pipeline, as the comparison would serve to map a use-case to a certain type of feature extraction approach.
 
@@ -84,6 +85,8 @@
 
 \section{NLP Tasks - Background} % (fold)
 \label{sec:nlp_tasks_background}
+
+  This section discusses a high level background of the tasks within Computational Linguistics
 
   \subsection{Part-of-Speech Tagging} % (fold)
   \label{sub:part_of_speech_tagging}
@@ -206,10 +209,18 @@
 \section{A Neural Probabilistic Language Model} % (fold)
 \label{sec:a_neural_probabilistic_language_model}
 
-  \textbf{Background:}
+  \textbf{Goal:}
+  Knowing the basic structure of a sentence, we should be able to create a new sentence by replacing parts of the old sentence with interchangeable elements.
+
+  \textbf{Challenges:}
+  The main bottleneck for the neural computation is while computing the activations of the output layer
+
+  \textbf{Approach:}
   \begin{itemize}
     \item 
-    We propose to fight the curse of dimensionality by learning a distributed representation for words which allows each training sentence to inform the model about an exponential number of semantically neighboring sentences.
+    One of the major contributions of this paper in terms of optimizations was data parallel processing (different processors working on a different subsets of data) and asynchronous processor usage of shared memory.
+    \item 
+    The authors propose to fight the curse of dimensionality by learning a distributed representation for words which allows each training sentence to inform the model about an exponential number of semantically neighboring sentences.
     \item 
     A fundamental problem that makes language modeling and other learning problems difficult is the curse of dimensionality. It is particularly obvious in the case when one wants to model the joint distribution between many discrete random variables (such as words in a sentence, or discrete attributes in a data-mining task)
     \item 
@@ -230,40 +241,23 @@
     New sequences of words can be generated by effectively gluing together the popular combinations i.e. n-grams with very high frequency counts.
   \end{itemize}
 
-  \textbf{Goal of the paper:}
-  Knowing the basic structure of a sentence, we should be able to create a new sentence by replacing parts of the old sentence with interchangeable elements.
-
-  \textbf{Challenges:}
-  \begin{itemize}
-    \item 
-    The main bottleneck for the neural computation is while computing the activations of the output layer
-  \end{itemize}
-
-  \textbf{Optimizations:}
-  \begin{itemize}
-    \item 
-    Data parallel processing (different processor working on a different subsets of data) and asynchronous processor usage of shared memory.
-  \end{itemize}
-
 % section a_neural_probabilistic_language_model (end)
 
 
 \section{A Hierarchical Neural Autoencoder for Paragraphs and Documents} % (fold)
 \label{sec:a_hierarchical_neural_autoencoder_for_paragraphs_and_documents}
 
+  \textbf{Goal:}
+  Attempts to build a paragraph embedding from the underlying word and sentence embeddings, and then proceeds to encode the paragraph embedding in an attempt to reconstruct the original paragraph.
+
+  \textbf{Approach:}
   \begin{itemize}
     \item 
-    Attempts to build a paragraph embedding from the underlying word and sentence embeddings, and then proceeds to encode the paragraph embedding in an attempt to reconstruct the original paragraph.
+    An LSTM layer to convert words into a vector representation of a sentence. Another LSTM layer after that to convert multiple sentences into a paragraph.
     \item 
     For this to happen, we need to preserve, syntactic, semantic and discourse related properties while creating the embedded representation.
     \item 
     Hierarchical LSTM utilized to preserve sentence structure.
-  \end{itemize}
-
-  \textbf{Implementation:}
-  \begin{itemize}
-    \item 
-    An LSTM layer to convert words into a vector representation of a sentence. Another LSTM layer after that to convert multiple sentences into a paragraph.
     \item 
     Parameters are estimated by maximizing likelihood of outputs given inputs, similar to standard sequence-to-sequence models.
     \item 
@@ -281,7 +275,7 @@
   \textbf{Goal}\\
   Implementing a  hierarchical decomposition of the conditional probabilities that yields a speed-up of about 200 both during training and recognition. The hierarchical decomposition is a binary hierarchical clustering constrained by the prior knowledge extracted from the WordNet semantic hierarchy.\\
 
-  \textbf{Summary:}
+  \textbf{Approach:}
   \begin{itemize}
     \item 
     Similar to the previous paper, attempts to tackle the `curse of dimensionality' as in \ref{sec:a_neural_probabilistic_language_model}. 
@@ -388,6 +382,9 @@
   \textbf{Goal:}\\
   The main goal of this paper is to introduce techniques that can be used for learning high-quality word vectors from huge data sets with billions of words, and with millions of words in the vocabulary. This is one of the seminal papers that led to the creation of Word2Vec, which is a state-of-the-art word embeddding tool. \cite{mikolov2013efficient}\\
 
+  \textbf{Challenges:}
+  The computational complexity that arises at the fully-connected output layer of the neural network is the dominant part of the computation. A couple of methods suggested to mitigate this is to use hierarchical versions of the softmax output activation units, or to refrain from performing normalization at the final layer altogether.
+
   \textbf{Approach:}
   \begin{itemize}
     \item 
@@ -419,12 +416,6 @@
       \item 
       Skip-gram model: This model uses the current word to be able to predict the context it appeared in.
     \end{itemize}
-  \end{itemize}
-
-  \textbf{Challenges:}
-  \begin{itemize}
-    \item 
-    The computational complexity that arises at the fully-connected output layer of the neural network is the dominant part of the computation. A couple of methods suggested to mitigate this is to use hierarchical versions of the softmax output activation units, or to refrain from performing normalization at the final layer altogether.
   \end{itemize}
 
   The experimental results show that the CBOW and Skipgram models consistently out-performed the then, state-of-the-art models. It was also observed that after a point, increasing the dimensions and the size of the data began providing diminishing returns.
@@ -503,7 +494,7 @@
 \section{Discussion} % (fold)
 \label{sec:discussion}
 
-  Following the  of the survey papers, this section re-visits the original research questions and points the reader to a succint summary that can be concluded from the experimental results and other conclusions drawn from the original papers.
+  Following the literature survey, this section re-visits the original research questions and provides a succint summary that can be inferred from the experimental results and conclusions drawn from the original papers.
 
   \begin{itemize}
     \item [RQ1] 
