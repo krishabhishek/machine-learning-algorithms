@@ -16,7 +16,7 @@
 
 \setlength\titlebox{5cm}
 
-\title{A Survey of Neural Network Techniques\\ for Feature Extraction from Text\\ \large CS 698 (Winter 2017) - Project}
+\title{A Survey of Neural Network Techniques for Feature Extraction from Text\\ \large CS 698 (Winter 2017) - Project}
 
 \author{
   Vineet John \\
@@ -32,13 +32,12 @@
 
 
 \begin{abstract}
-  This paper aims to catalyze the discussions about text feature extraction techniques using neural network architectures.
-  The research questions discussed in the paper focus on the state-of-the-art neural network techniques that have proven to be useful tools for language processing, language generation, text classification and other computational linguistics tasks.
+  This paper aims to catalyze research discussions about text feature extraction techniques using neural network architectures.
+  The research questions discussed here focus on the state-of-the-art neural network techniques that have proven to be useful tools for language processing, language generation, text classification and other computational linguistics tasks.
 \end{abstract}
 
-
-\section{Introduction} % (fold)
-\label{sec:introduction}
+\section{Motivation} % (fold)
+\label{sec:motivation}
 
   A majority of the methods currently in use for text-based feature extraction rely on relatively simple statistical techniques. For instance, a word co-occurrence model like n-grams or a bag-of-words model like TF-IDF.
 
@@ -46,7 +45,11 @@
 
   Feature extraction of text can be used for a multitude of applications including - but not limited to - unsupervised semantic similarity detection, article classification and sentiment analysis.
 
-% section introduction (end)
+  The goal of this project is to document of the differences, advantages and drawbacks in the domain of feature extraction from text data using neural networks. It also sketches the evolution of such techniques over time.
+
+  This report could serve as a quick cheat-sheet for engineers looking to build a text classification or regression pipeline, as the discussion (Section \ref{sec:discussion}) would serve to map a use-cases to feature extraction implementation specifics.
+
+% section motivation (end)
 
 \section{Research Questions} % (fold)
 \label{sec:research_questions}
@@ -69,24 +72,15 @@
 \section{Methodology} % (fold)
 \label{sec:methodology}
 
-  The research questions listed in Section~\ref{sec:research_questions} will be tackled by surveying a few of the important overview papers on the topic\cite{goldberg2016primer}\cite{bengio2003neural}\cite{morin2005hierarchical}. A few of the groundbreaking research papers in this area will also be studied, including word embeddings.\cite{mikolov2013efficient}\cite{mikolov2013distributed}\cite{mikolov2013linguistic}.
+  The research questions listed in Section~\ref{sec:research_questions} will be tackled by surveying a few of the important overview papers on the topic\cite{goldberg2016primer}\cite{bengio2003neural}\cite{morin2005hierarchical}. A few of the groundbreaking research papers in this area will also be studied, including word embeddings\cite{mikolov2013efficient}\cite{mikolov2013distributed}\cite{mikolov2013linguistic}.
 
   In addition to this, other less-obvious methods of features extraction will be surveyed, including tasks like part-of-speech tagging, chunking, named entity recognition, and semantic role labeling\cite{socher2011parsing}\cite{luong2013better}\cite{maas2015lexicon}\cite{li2015hierarchical}\cite{collobert2011natural}\cite{pennington2014glove}.
 
 % section methodology (end)
 
-\section{Goal} % (fold)
-\label{sec:goal}
 
-  The goal of this project is to document of the differences, advantages and drawbacks in the domain of feature extraction from text data using neural networks. It also sketches the evolution of such techniques over time.
-
-  This report could serve as a quick cheat-sheet for engineers looking to build a text classification or regression pipeline, as the discussion (Section \ref{sec:discussion}) would serve to map a use-cases to feature extraction implementation specifics.
-
-% section goal (end)
-
-
-\section{NLP Tasks - Background} % (fold)
-\label{sec:nlp_tasks_background}
+\section{Background} % (fold)
+\label{sec:background}
 
   This section provides a high level background of the tasks within Computational Linguistics.
 
@@ -99,7 +93,7 @@
       \item
       The best POS taggers are based on classifiers trained on windows of text, which are then fed to a bidirectional decoding algorithm during inference.
       \item
-      In general, models resemble a bi-directional dependency network, and can be trained using a variety of methods including support vector machines, as well as bi-directional Viterbi decoders.
+      In general, models resemble a bi-directional dependency network, and can be trained using a variety of methods including support vector machines and bi-directional Viterbi decoders.
     \end{itemize}
 
   % subsection part_of_speech_tagging (end)
@@ -143,7 +137,7 @@
   % subsection semantic_role_labeling (end)
 
 
-% section nlp_tasks_background (end)
+% section background (end)
 
 
 \section{Document Vectorization} % (fold)
@@ -153,13 +147,13 @@
 
   \subsection{N-gram Model} % (fold)
   \label{sub:n_gram_model}
-    N-grams are contiguous sequences of `n' items from a given sequence of text or speech. Given a complete corpus of documents, each tuple of `n' grams, either characters or words are represented by a unique bit in a bit vector, which when aggregated for a body of text, form a sparse vectorized representation of the text in the form of n-gram occurrences.
+    N-grams are contiguous sequences of `n' items from a given sequence of text or speech. Given a complete corpus of documents, each tuple of `n' grams, either characters or words are represented by a unique bit in a bit vector, which, when aggregated for a body of text, form a sparse vectorized representation of the text in the form of n-gram occurrences.
 
   % subsubsection n_gram_model (end)
 
   \subsection{TF-IDF Model} % (fold)
   \label{sub:tf_idf_model}
-    Term frequency-inverse document frequency (TF-IDF), is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus \cite{sparck1972statistical}. The TF-IDF value increases proportionally to the number of times a word appears in the document, but is offset by the frequency of the word in the corpus, which helps to adjust for the fact that some words appear more frequently in general. It is a bag-of-words model, and doesn't preserve word ordering.
+    Term frequency - inverse document frequency (TF-IDF), is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus \cite{sparck1972statistical}. The TF-IDF value increases proportionally to the number of times a word appears in the document, but is offset by the frequency of the word in the corpus, which helps to adjust for the fact that some words appear more frequently in general. It is a bag-of-words model, and doesn't preserve word ordering.
 
   % subsubsection tf_idf_model (end)
 
@@ -186,7 +180,7 @@
 
   \begin{itemize}
     \item
-    Fully connected feed-forward neural networks are non-linear learners that can, be used as a drop-in replacement wherever a linear learner is used.
+    Fully connected feed-forward neural networks are non-linear learners that can be used as a drop-in replacement wherever a linear learner is used.
     \item
     The high accuracy observed in experimental results is a consequence of this non-linearity along with the availability of pre-trained word embeddings.
     \item
@@ -194,7 +188,7 @@
     \item
     Convolutional and pooling architecture show promising results on many tasks, including document classification, short-text categorization, sentiment classification, relation type classification between entities, event detection, paraphrase identification, semantic role labeling, question answering, predicting box-office revenues of movies based on critic reviews, modeling text interestingness, and modeling the relation between character-sequences and part-of-speech tags.
     \item
-    Convolutional and pooling architectures allow us to encode arbitrary large items as fixed size vectors capturing their most salient features, but, they do so by sacrificing most of the structural information.
+    Convolutional and pooling architectures allow us to encode arbitrarily large items as fixed size vectors capturing their most salient features, but, they do so by sacrificing most of the structural information.
     \item
     Recurrent and recursive networks allows using sequences and trees and preserve the structural information.
     \item
@@ -202,7 +196,7 @@
     \item
     Recursive models were shown to produce state-of-the-art or near state-of-the-art results for constituency and dependency parse re-ranking, discourse parsing, semantic relation classification, political ideology detection based on parse trees, sentiment classification, target-dependent sentiment classification and question answering.
     \item
-    Convolutional nets seem to work well for summarization related tasks and recurrent/recursive nets seem to work well for language modeling tasks.
+    Convolutional nets are observed to to work well for summarization related tasks, just as recurrent/recursive nets work well for language modeling tasks.
   \end{itemize}
 
 % section a_primer_of_neural_net_models_for_nlp (end)
@@ -212,10 +206,10 @@
 \label{sec:a_neural_probabilistic_language_model}
 
   \textbf{Goal:}
-  Knowing the basic structure of a sentence, one should be able to create a new sentence by replacing parts of the old sentence with interchangeable elements\cite{bengio2003neural}.\\
+  Knowing the basic structure of a sentence, one should be able to create a new sentence by replacing parts of the old sentence with interchangeable entities\cite{bengio2003neural}.\\
 
   \textbf{Challenge:}
-  The main bottleneck for the neural computation is while computing the activations of the output layer, since it is a fully-connected softmax activation layer. \\
+  The main bottleneck is computing the activations of the output layer, since it is a fully-connected softmax activation layer. \\
 
   \textbf{Description:}
   \begin{itemize}
@@ -230,9 +224,9 @@
     \item
     Language generation via substitution of semantically similar language constructs of existing sentences can be done via shared-parameter multi-layer neural networks.
     \item
-    The objective of this paper is to obtain real-valued vector sequences of words and learn a joint probability function for those sequences of words alongside the feature vector, and hence, jointly learn both the real-value vector representation and the parameters of the probability distribution.
+    The objective of this paper is to obtain real-valued vector sequences of words and learn a joint probability function for those sequences of words alongside the feature vector, and hence, jointly learn both the real-valued vector representation and the parameters of the probability distribution.
     \item
-    This probability function can be tuned in order to maximize log-likelihood of the training data, while penalizing with a cost function similar to the one used in Ridge regression.
+    This probability function can be tuned in order to maximize log-likelihood of the training data, while penalizing the cost function, similar to the penalty term one used in Ridge regression.
     \item
     This will ensure that semantically similar words end up with an almost equivalent feature vectors, called learned distributed feature vectors.
     \item
@@ -257,7 +251,7 @@
     \item
     Similar to the previous paper, attempts to tackle the `curse of dimensionality' (Section \ref{sec:a_neural_probabilistic_language_model}) and attempts to produce a much faster variant.
     \item
-    Back-off n-grams are used for this approach too, and the authors attempt to learn a real-valued vector representation of each word.
+    Back-off n-grams are used to learn a real-valued vector representation of each word.
     \item
     The word embeddings learned are shared across all the participating nodes in the distributed architecture.
     \item
@@ -276,7 +270,7 @@
   \textbf{Description:}
   \begin{itemize}
     \item
-    The implementation uses an LSTM layer to convert words into a vector representation of a sentence. Another LSTM layer after that to convert multiple sentences into a paragraph.
+    The implementation uses an LSTM layer to convert words into a vector representation of a sentence. A subsequent LSTM layer converts multiple sentences into a paragraph.
     \item
     For this to happen, we need to preserve, syntactic, semantic and discourse related properties while creating the embedded representation.
     \item
@@ -284,7 +278,7 @@
     \item
     Parameters are estimated by maximizing likelihood of outputs given inputs, similar to standard sequence-to-sequence models.
     \item
-    Estimations are calculated using softmax functions to maximize the likelihood of the constituent words.
+    Estimates are calculated using softmax functions to maximize the likelihood of the constituent words.
     \item
     Attention models using the hierarchical autoencoder could be utilized for dialog systems, since it explicitly models for discourse.
   \end{itemize}
@@ -297,12 +291,12 @@
 
 
   \textbf{Goal:}
-  In this paper, the authors examine the vector-space word representations that are implicitly learned by the input-layer weights. We find that these representations are surprisingly good at capturing syntactic and semantic regularities in language, and that each relationship is characterized by a relation-specific vector offset. This allows vector-oriented reasoning based on the offsets between words\cite{mikolov2013linguistic}. This is one of the seminal papers that led to the creation of Word2Vec, which is a state-of-the-art word embedding tool\cite{mikolov2013efficient}.\\
+  In this paper, the authors examine the vector-space word representations that are implicitly learned by the input-layer weights. These representations are surprisingly good at capturing syntactic and semantic regularities in language, and that each relationship is characterized by a relation-specific vector offset. This allows vector-oriented reasoning based on the offsets between words\cite{mikolov2013linguistic}. This is one of the seminal papers that led to the creation of Word2Vec, which is a state-of-the-art word embedding tool\cite{mikolov2013efficient}.\\
 
   \textbf{Description:}
   \begin{itemize}
     \item
-    A defining feature of neural network language models is their representation of words as high dimensional real valued vectors.
+    A defining feature of neural network language models is their representation of words as high dimensional real-valued vectors.
     \item
     In this model, words are converted via a learned lookup-table into real valued vectors which are used as the inputs to a neural network.
     \item
@@ -314,7 +308,7 @@
     \item
     The values in the hidden and output layers are computed as follows:
     $$s(t) = f(Uw(t) + Ws(t-1))$$
-    $$t(t) = g(Vs(t))$$
+    $$y(t) = g(Vs(t))$$
     where
     $f(z) = \frac{1}{1 + e^{-z}}$ and $g(z_m) = \frac{e^{z_m}}{\sum_k e^{z_k}} $
     \begin{figure}[ht]
@@ -338,7 +332,7 @@
 \label{sec:better_word_representations_with_recursive_neural_networks_for_morphology}
 
   \textbf{Goal:}
-  The paper aims to address the inaccuracy in vector representations of complex and rare words, supposedly caused by the lack of relation between morphologically related words. \cite{luong2013better}\\
+  The paper aims to address the inaccuracy in vector representations of complex and rare words, supposedly caused by the lack of relation between morphologically related words\cite{luong2013better}.\\
 
   \textbf{Description:}
   \begin{itemize}
@@ -362,14 +356,14 @@
     \item
     The cost function is expression in terms of the squared Euclidean loss between the newly constructed representation $p_c(x_i)$ and the reference representation $p_r(x_i)$. The cost function is given in Equation \ref{eqn:cost-function-morphornn}.
     \begin{equation} \label{eqn:cost-function-morphornn}
-      J(\theta) = \sum_{i=1}^N (|| p_c(x_i) - p_c(x_i) ||^2_2) + \frac{\lambda}{2} ||\theta||^2_2
+      J(\theta) = \sum_{i=1}^N (|| p_r(x_i) - p_c(x_i) ||^2_2) + \frac{\lambda}{2} ||\theta||^2_2
     \end{equation}
     \item
     The paper describes both context sensitive and insensitive versions of the Morphological RNN.
     \item
     Similar to a typical RNN, the network is trained by computing the activation functions and propagating the errors backward in a forward-backward pass architecture.
     \item 
-    This RNN model performs better than most of the other neural language model, and could be used to supplement word vectors.
+    This RNN model performs better than most of the other neural language models, and could be used to supplement word vectors.
   \end{itemize}
 
 % section better_word_representations_with_recursive_neural_networks_for_morphology (end)
@@ -398,7 +392,7 @@
     \item
     The models are trained using stochastic gradient descent and backpropagation.
     \item
-    The RNN models are touted to be able to have an inherently better representation of sentence structure for complex patterns, without the need to specify context length.
+    The RNN models are touted to have an inherently better representation of sentence structure for complex patterns, without the need to specify context length.
     \item
     To allow for the distributed training of the data, the framework DistBelief was used with multiple replicas of the model. Adagrad was utilized for asynchronous gradient descent.
     \item
@@ -417,7 +411,7 @@
     \end{itemize}
   \end{itemize}
 
-  The experimental results show that the CBOW and skip-gram models consistently out-performed the then state-of-the-art models. It was also observed that after a point, increasing the dimensions and the size of the data began providing diminishing returns.
+  The experimental results show that the CBOW and skip-gram models consistently out-perform the then state-of-the-art models. It was also observed that after a point, increasing the dimensions and the size of the data began providing diminishing returns.
 
 % section efficient_estimation_of_word_representations_in_vector_space (end)
 
@@ -484,7 +478,7 @@
     \item
     The model obtained in the paper could be compared to a global skip-gram model as opposed to a fixed window-size skip-gram model as proposed by Mikolov et al.\cite{mikolov2013efficient}.
     \item
-    The performance seems to increase monotonically with an increase in training data.
+    The performance increases monotonically with an increase in training data.
   \end{itemize}
 
 % section glove_global_vectors_for_word_representation (end)
@@ -507,7 +501,7 @@
     The trade-offs are typically expressed in terms of computational cost and memory usage, although model complexity is a factor too, given that neural nets can be trained to learn arbitrarily complex generative models.
     \item [RQ4]
     \textbf{How do the different techniques compare to each other in terms of performance and accuracy?} \\
-    This question can only be answered subjectively as it varies from application to application. Typically, document similarity can be tackled with a simple statistical approach like TF-IDF. CNNs inherently model input data in a manner that iteratively reduces the dimensionality, making it a great fit for topic classification and document summarization. RNNs are great at modeling sequences of text, which make them apt for language syntax modeling. Amongst the frameworks, GloVe's pre-trained word-embedding seem to perform better than vanilla Word2Vec, which is considered state-of-the-art.
+    This question can only be answered subjectively as it varies from application to application. Typically, document similarity can be tackled with a simple statistical approach like TF-IDF. CNNs inherently model input data in a manner that iteratively reduces the dimensionality, making it a great fit for topic classification and document summarization. RNNs are great at modeling sequences of text, which make them apt for language syntax modeling. Amongst the frameworks, GloVe's pre-trained word-embeddings perform better than vanilla Word2Vec, which is considered state-of-the-art.
     \item [RQ5]
     \textbf{In what use-cases do the trade-offs outweigh the benefits of neural networks?} \\
     As explained for the previous question, for a simple information retrieval use case such as document ranking, models such as TF-IDF, and word PMI (pointwise mutual information) are sufficient, and neural networks would be overkill in such use-cases.
