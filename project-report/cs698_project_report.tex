@@ -14,7 +14,7 @@
 
 \setlength\titlebox{5cm}
 
-\title{A Survey of Neural Network Techniques\\ for Feature Extraction from Text\\ \large CS 698 (Winter 2017) - Project}
+\title{A Survey of Neural Network Techniques\\ for Feature Extraction from Text}
 
 \author{
   Vineet John \\
@@ -319,7 +319,7 @@
     $f(z) = \frac{1}{1 + e^{-z}}$ and $g(z_m) = \frac{e^{z_m}}{\sum_k e^{z_k}} $
     \begin{figure}[ht]
       \centering
-      \includegraphics[width=.4\textwidth]{rnn-lang-model}
+      \includegraphics[width=.4\textwidth]{rnn-lang-model.png}
       \caption{RNN Language Model}
       \label{fig:rnn-lang-model}
     \end{figure}
@@ -350,7 +350,7 @@
     \texttt{morphoRNN} operates at the morpheme level rather than the word level. An example of the this is illustrated in Figure \ref{fig:rnn-morphology}.
     \begin{figure}[ht]
       \centering
-      \includegraphics[width=.4\textwidth]{rnn-morphology}
+      \includegraphics[width=.4\textwidth]{rnn-morphology.png}
       \caption{morphoRNN}
       \label{fig:rnn-morphology}
     \end{figure}
@@ -388,7 +388,7 @@
   \textbf{Approach:}
   \begin{itemize}
     \item 
-    The ideas presented in this paper build on the previous ideas presented by Bengio et.al.\cite{bengio2003neural}
+    The ideas presented in this paper build on the previous ideas presented by \cite{bengio2003neural}.
     \item 
     The objective was to obtain high-quality word embeddings that capture the syntactic and semantic characteristics of words in a manner that allows algebraic operations to proxy the distances in vector space.
     $$man - woman = king - queen$$ or $$tell - told = walk - walked$$
@@ -440,7 +440,7 @@
     \end{equation}
     where $c$ is the window or context surrounding the current word being trained on. 
     \item 
-    As introduced by Morin, Bengio et.al.\cite{morin2005hierarchical}, a computationally efficient approximation of the full softmax is the hierarchical softmax. The hierarchical softmax uses a binary tree representation of the output layer with the W words as its leaves and, for each node, explicitly represents the relative probabilities of its child nodes. These define a random walk that assigns probabilities to words.
+    As introduced by \cite{morin2005hierarchical}, a computationally efficient approximation of the full softmax is the hierarchical softmax. The hierarchical softmax uses a binary tree representation of the output layer with the W words as its leaves and, for each node, explicitly represents the relative probabilities of its child nodes. These define a random walk that assigns probabilities to words.
     \item 
     The authors use a binary Huffman tree, as it assigns short codes to the frequent words which results in fast training. It has been observed before that grouping words together by their frequency works well as a very simple speedup technique for the neural network based language models.
     \item 
@@ -483,7 +483,7 @@
     \item 
     An additive shift is included in the logarithm, $$\log(X_{ik}) \Rightarrow log(1 + X_{ik})$$ which maintains the sparsity of X while avoiding the divergences while computing the co-occurrences matrix.
     \item 
-    The model obtained in the paper could be compared to a global skip-gram model as opposed to a fixed window-size skip-gram model as proposed by Mikolov et.al.\cite{mikolov2013efficient}.
+    The model obtained in the paper could be compared to a global skip-gram model as opposed to a fixed window-size skip-gram model as proposed by \cite{mikolov2013efficient}.
     \item 
     The performance seems to increase monotonically with an increase in training data.
   \end{itemize}
@@ -535,7 +535,7 @@
 % section acknowledgements (end)
 
 
-\bibliographystyle{unsrt}
+\bibliographystyle{acl_natbib}
 \bibliography{cs698_project_report}
 
 \end{document}
